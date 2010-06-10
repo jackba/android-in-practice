@@ -7,8 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class ViewActivity extends Activity {
-    /** Called when the activity is first created. */
-	
+    
 	private MandelbrotView brot = null;
 	private Button reset = null;
 	

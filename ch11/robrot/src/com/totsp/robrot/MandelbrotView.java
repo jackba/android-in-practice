@@ -110,7 +110,7 @@ public class MandelbrotView extends View {
         this.start();
     }
 
-    public void setxScale(float scale) {
+    public void setScale(float scale) {
         this.scale = scale;
     }
 
