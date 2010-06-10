@@ -21,11 +21,26 @@ import java.io.InputStreamReader;
 
 
 public class MandelbrotView extends View {
+    private static final ComplexNumber temp = new ComplexNumber(0, 0);
     private Bitmap renderBitmap;
     private Canvas renderCanvas;
     private Handler handler = new Handler();
     private OnTouchListener onTouchListener = null;
     private Paint simplePaint = new Paint();
+    private final Runnable invalidator = new Runnable() {
+            @Override
+            public void run() {
+                invalidate();
+            }
+        };
+
+    private final Runnable renderRunnable = new Runnable() {
+            @Override
+            public void run() {
+                renderMandelbrot();
+            }
+        };
+
     private Thread renderThread = null;
     private int[] colorSpace = null;
     private float scale = 2;
@@ -40,11 +55,11 @@ public class MandelbrotView extends View {
         super.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                	if(onTouchListener != null && onTouchListener.onTouch(v, event)){
-                		return true;
-                	}
-                	
-                	
+                    if ((onTouchListener != null) &&
+                            onTouchListener.onTouch(v, event)) {
+                        return true;
+                    }
+
                     if (event.getAction() != MotionEvent.ACTION_DOWN) {
                         return false;
                     }
@@ -94,6 +109,10 @@ public class MandelbrotView extends View {
         return onTouchListener;
     }
 
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
+
     public float getScale() {
         return scale;
     }
@@ -110,18 +129,9 @@ public class MandelbrotView extends View {
         this.start();
     }
 
-    public void setScale(float scale) {
-        this.scale = scale;
-    }
-
     public void start() {
         if (this.renderThread == null) {
-            this.renderThread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            renderMandelbrot();
-                        }
-                    });
+            this.renderThread = new Thread(this.renderRunnable);
             this.renderThread.start();
         }
     }
@@ -142,14 +152,14 @@ public class MandelbrotView extends View {
 
     private static int escapeIteration(ComplexNumber startValue,
         int maxIterations) {
-        ComplexNumber z = new ComplexNumber(startValue);
+        temp.setValue(startValue);
 
         for (int i = 0; i < maxIterations; i++) {
-            if (z.abs() > 2.0) {
+            if (temp.abs() > 2.0) {
                 return i;
             }
 
-            z.multiply(z).add(startValue);
+            temp.multiply(temp).add(startValue);
         }
 
         return maxIterations;
@@ -224,11 +234,6 @@ public class MandelbrotView extends View {
     }
 
     private void threadShiftInvalidate() {
-        this.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    invalidate();
-                }
-            });
+        this.handler.post(invalidator);
     }
 }

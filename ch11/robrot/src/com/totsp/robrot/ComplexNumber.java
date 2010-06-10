@@ -9,13 +9,13 @@ public class ComplexNumber {
         this.imaginary = imag;
     }
     
-    public ComplexNumber(ComplexNumber copy){
+    public void setValue(ComplexNumber copy){
     	this.real = copy.real;
     	this.imaginary = copy.imaginary;
     }
 
     public ComplexNumber add(ComplexNumber b) {
-        ComplexNumber a = this; // invoking object
+        ComplexNumber a = this;
         double real = a.real + b.real;
         double imag = a.imaginary + b.imaginary;
         this.real = real;
