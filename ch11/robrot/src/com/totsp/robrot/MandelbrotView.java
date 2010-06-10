@@ -80,8 +80,6 @@ public class MandelbrotView extends View {
 
     public MandelbrotView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        // TODO Auto-generated constructor stub
     }
 
     public MandelbrotView(Context context) {
@@ -138,7 +136,6 @@ public class MandelbrotView extends View {
         this.stopRender();
         this.height = View.MeasureSpec.getSize(heightSpecId);
         this.width = View.MeasureSpec.getSize(widthSpecId);
-        System.out.println("=======" + width + "x" + height);
         setMeasuredDimension(this.width, this.height);
         start();
     }
