@@ -35,6 +35,6 @@ public class MyMovies extends ListActivity {
 
    protected void onListItemClick(ListView l, View v, int position, long id) {
       this.adapter.toggleMovie(position);
-      this.adapter.notifyDataSetChanged();
+      this.adapter.notifyDataSetInvalidated();
    }
 }
