@@ -13,12 +13,14 @@
   <application android:icon="@drawable/icon" android:label="@string/app_name"
     android:theme="@style/MyMoviesTheme">
 
-    <activity android:name=".MyMovies" android:label="@string/app_name">
+    <activity android:name=".SplashScreen" android:label="@string/app_name" android:theme="@style/SplashScreen">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
+    <activity android:name=".MyMovies" />
 
   </application>
 
