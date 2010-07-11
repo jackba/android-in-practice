@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 
 public class SplashScreen extends Activity {
 
-   public static final int SPLASH_TIMEOUT = 4500;
+   public static final int SPLASH_TIMEOUT = 2000;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
