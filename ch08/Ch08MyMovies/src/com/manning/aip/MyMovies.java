@@ -1,14 +1,23 @@
 package com.manning.aip;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Handler.Callback;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class MyMovies extends ListActivity {
+public class MyMovies extends ListActivity implements Callback {
 
    private MovieAdapter adapter;
+
+   private String updateUrl =
+            "http://android-in-practice.googlecode.com/files/update_notice.txt";
 
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -27,6 +36,8 @@ public class MyMovies extends ListActivity {
       this.adapter = new MovieAdapter(this);
       listView.setAdapter(this.adapter);
       listView.setItemsCanFocus(false);
+
+      new UpdateNoticeTask(new Handler(this)).execute(updateUrl);
    }
 
    public void backToTop(View view) {
@@ -36,5 +47,21 @@ public class MyMovies extends ListActivity {
    protected void onListItemClick(ListView l, View v, int position, long id) {
       this.adapter.toggleMovie(position);
       this.adapter.notifyDataSetInvalidated();
+   }
+
+   public boolean handleMessage(Message msg) {
+      String updateNotice = msg.getData().getString("text");
+      AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+      dialog.setTitle("What's new");
+      dialog.setMessage(updateNotice);
+      dialog.setIcon(android.R.drawable.ic_dialog_info);
+      dialog.setPositiveButton(getString(android.R.string.ok),
+               new OnClickListener() {
+                  public void onClick(DialogInterface dialog, int which) {
+                     dialog.dismiss();
+                  }
+               });
+      dialog.show();
+      return false;
    }
 }
