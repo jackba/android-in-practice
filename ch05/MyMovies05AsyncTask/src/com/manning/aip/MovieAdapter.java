@@ -45,6 +45,7 @@ public class MovieAdapter extends ArrayAdapter<String> {
       checkMark.setChecked(isInCollection(position));
 
       ImageView imageView = (ImageView) listItem.findViewById(R.id.movie_icon);
+      imageView.setImageDrawable(null);
       imageView.setTag(position);
       String imageUrl = this.movieIconUrls[position];
       new DownloadTask(position, imageView).execute(imageUrl);
