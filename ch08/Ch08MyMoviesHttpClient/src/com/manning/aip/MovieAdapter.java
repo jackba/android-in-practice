@@ -17,7 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 
-public class MovieAdapter extends ArrayAdapter<String> {
+
+public class MovieAdapter extends ArrayAdapter<Movie> {
 
    private HashMap<Integer, Boolean> movieCollection =
             new HashMap<Integer, Boolean>();
@@ -27,8 +28,8 @@ public class MovieAdapter extends ArrayAdapter<String> {
    private ThreadPoolExecutor executor;
 
    public MovieAdapter(Context context) {
-      super(context, R.layout.movie_item, android.R.id.text1, context
-               .getResources().getStringArray(R.array.movies));
+      super(context, R.layout.movie_item, android.R.id.text1, Movie
+               .inflateFromXml(context));
 
       movieIconUrls =
                context.getResources().getStringArray(R.array.movie_thumbs);
@@ -76,6 +77,7 @@ public class MovieAdapter extends ArrayAdapter<String> {
       checkMark.setChecked(isInCollection(position));
 
       ImageView imageView = (ImageView) listItem.findViewById(R.id.movie_icon);
+      imageView.setImageDrawable(null);
       imageView.setTag(position);
       downloadImageForView(position, imageView);
 

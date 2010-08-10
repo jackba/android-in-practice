@@ -1,18 +1,63 @@
 package com.manning.aip;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.conn.params.ConnPerRouteBean;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.os.Handler.Callback;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemLongClickListener;
 
-public class MyMovies extends ListActivity implements Callback {
+
+public class MyMovies extends ListActivity implements Callback,
+         OnItemLongClickListener {
+
+   private static final HttpClient httpClient;
+
+   static {
+      SchemeRegistry schemeRegistry = new SchemeRegistry();
+      schemeRegistry.register(new Scheme("http", PlainSocketFactory
+               .getSocketFactory(), 80));
+
+      HttpParams connManagerParams = new BasicHttpParams();
+      ConnManagerParams.setMaxTotalConnections(connManagerParams, 5);
+      ConnManagerParams.setMaxConnectionsPerRoute(connManagerParams,
+               new ConnPerRouteBean(5));
+      ConnManagerParams.setTimeout(connManagerParams, 15 * 1000);
+
+      ThreadSafeClientConnManager cm =
+               new ThreadSafeClientConnManager(connManagerParams,
+                        schemeRegistry);
+
+      HttpParams clientParams = new BasicHttpParams();
+      HttpProtocolParams.setUserAgent(clientParams, "MyMovies/1.0");
+      HttpConnectionParams.setConnectionTimeout(clientParams, 15 * 1000);
+      HttpConnectionParams.setSoTimeout(clientParams, 15 * 1000);
+      httpClient = new DefaultHttpClient(cm, clientParams);
+   }
+
+   public static HttpClient getHttpClient() {
+      return httpClient;
+   }
 
    private MovieAdapter adapter;
 
@@ -22,6 +67,7 @@ public class MyMovies extends ListActivity implements Callback {
       setContentView(R.layout.main);
 
       ListView listView = getListView();
+      listView.setOnItemLongClickListener(this);
 
       Button backToTop =
                (Button) getLayoutInflater().inflate(R.layout.list_footer, null);
@@ -34,7 +80,7 @@ public class MyMovies extends ListActivity implements Callback {
       listView.setAdapter(this.adapter);
       listView.setItemsCanFocus(false);
 
-      new UpdateNoticeTask(new Handler(this)).execute();
+      //new UpdateNoticeTask(new Handler(this)).execute();
    }
 
    public void backToTop(View view) {
@@ -44,6 +90,14 @@ public class MyMovies extends ListActivity implements Callback {
    protected void onListItemClick(ListView l, View v, int position, long id) {
       this.adapter.toggleMovie(position);
       this.adapter.notifyDataSetInvalidated();
+   }
+
+   public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position,
+            long arg3) {
+      Toast.makeText(this, "Getting details...", Toast.LENGTH_LONG).show();
+      Movie movie = adapter.getItem(position);
+      new GetMovieRatingTask(this).execute(movie.getId());
+      return false;
    }
 
    public boolean handleMessage(Message msg) {
