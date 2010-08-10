@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-public class UpdateNoticeTask extends AsyncTask<String, Void, String> {
+public class UpdateNoticeTask extends AsyncTask<Void, Void, String> {
+
+   private String updateUrl =
+            "http://android-in-practice.googlecode.com/files/update_notice.txt";
 
    private HttpURLConnection connection;
 
@@ -22,9 +25,9 @@ public class UpdateNoticeTask extends AsyncTask<String, Void, String> {
    }
 
    @Override
-   protected String doInBackground(String... params) {
+   protected String doInBackground(Void... params) {
       try {
-         URL url = new URL(params[0]);
+         URL url = new URL(updateUrl);
          connection = (HttpURLConnection) url.openConnection();
          connection.setRequestMethod("GET");
          connection.setRequestProperty("Accept", "text/plain");

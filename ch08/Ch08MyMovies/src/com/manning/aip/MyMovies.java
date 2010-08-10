@@ -16,9 +16,6 @@ public class MyMovies extends ListActivity implements Callback {
 
    private MovieAdapter adapter;
 
-   private String updateUrl =
-            "http://android-in-practice.googlecode.com/files/update_notice.txt";
-
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
 
@@ -37,7 +34,7 @@ public class MyMovies extends ListActivity implements Callback {
       listView.setAdapter(this.adapter);
       listView.setItemsCanFocus(false);
 
-      new UpdateNoticeTask(new Handler(this)).execute(updateUrl);
+      new UpdateNoticeTask(new Handler(this)).execute();
    }
 
    public void backToTop(View view) {
