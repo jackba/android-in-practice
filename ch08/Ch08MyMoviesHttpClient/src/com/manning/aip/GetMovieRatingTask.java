@@ -10,7 +10,7 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.manning.aip.xml.SAXMovieParser;
+import com.manning.aip.xml.XmlPullMovieParser;
 
 public class GetMovieRatingTask extends AsyncTask<String, Void, Movie> {
 
@@ -34,7 +34,8 @@ public class GetMovieRatingTask extends AsyncTask<String, Void, Movie> {
 
          HttpResponse response = httpClient.execute(request);
 
-         return SAXMovieParser.parseMovie(response.getEntity().getContent());
+         return XmlPullMovieParser
+                  .parseMovie(response.getEntity().getContent());
       } catch (Exception e) {
          return null;
       }
