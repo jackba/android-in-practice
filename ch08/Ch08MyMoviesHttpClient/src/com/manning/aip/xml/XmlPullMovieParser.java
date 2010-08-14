@@ -14,16 +14,16 @@ public class XmlPullMovieParser {
    private XmlPullParser xpp;
 
    public static Movie parseMovie(InputStream xml) throws Exception {
-      return new XmlPullMovieParser(xml).parse();
+      return new XmlPullMovieParser().parse(xml);
    }
 
-   public XmlPullMovieParser(InputStream xml) throws Exception {
+   public XmlPullMovieParser() throws Exception {
       xpp = XmlPullParserFactory.newInstance().newPullParser();
-      xpp.setInput(xml, "UTF-8");
+      movie = new Movie();
    }
 
-   public Movie parse() throws Exception {
-      movie = new Movie();
+   public Movie parse(InputStream xml) throws Exception {
+      xpp.setInput(xml, "UTF-8");
 
       skipToTag("name");
       movie.setTitle(xpp.nextText());
@@ -34,7 +34,7 @@ public class XmlPullMovieParser {
       return movie;
    }
 
-   public void skipToTag(String tagName) throws Exception {
+   private void skipToTag(String tagName) throws Exception {
       int event = xpp.getEventType();
       while (event != XmlPullParser.END_DOCUMENT
                && !tagName.equals(xpp.getName())) {
