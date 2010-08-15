@@ -12,7 +12,7 @@ public final class Section {
    public static Section getInstance(final Section section) {
       Section copy = new Section();
       copy.title = section.title;
-      if (section.items != null && !section.items.isEmpty()) {
+      if ((section.items != null) && !section.items.isEmpty()) {
          copy.items = new ArrayList<Item>(section.items.size());
          for (Item item : section.items) {
             copy.items.add(Item.getInstance(item));
@@ -47,23 +47,30 @@ public final class Section {
 
    @Override
    public boolean equals(Object obj) {
-      if (this == obj)
+      if (this == obj) {
          return true;
-      if (obj == null)
+      }
+      if (obj == null) {
          return false;
-      if (getClass() != obj.getClass())
+      }
+      if (getClass() != obj.getClass()) {
          return false;
+      }
       Section other = (Section) obj;
       if (this.items == null) {
-         if (other.items != null)
+         if (other.items != null) {
             return false;
-      } else if (!this.items.equals(other.items))
+         }
+      } else if (!this.items.equals(other.items)) {
          return false;
+      }
       if (this.title == null) {
-         if (other.title != null)
+         if (other.title != null) {
             return false;
-      } else if (!this.title.equals(other.title))
+         }
+      } else if (!this.title.equals(other.title)) {
          return false;
+      }
       return true;
    }
 }

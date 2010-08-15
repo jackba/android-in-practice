@@ -10,7 +10,7 @@ public class DealAlarmReceiver extends BroadcastReceiver {
    // onReceive must be very quick and not block, so it just fires up a Service
    @Override
    public void onReceive(Context context, Intent intent) {
-      Log.i(Constants.LOG_TAG, "DealAlarmReceiver invoked, starting DealService in background");      
+      Log.i(Constants.LOG_TAG, "DealAlarmReceiver invoked, starting DealService in background");
       context.startService(new Intent(context, DealService.class));
-   }   
+   }
 }

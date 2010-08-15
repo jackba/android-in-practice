@@ -44,7 +44,7 @@ public class DealService extends Service {
       handleCommand(intent);
       // We want this service to continue running until it is explicitly
       // stopped, so return sticky.
-      return START_NOT_STICKY;
+      return Service.START_NOT_STICKY;
    }
 
    private void handleCommand(Intent intent) {
@@ -64,7 +64,7 @@ public class DealService extends Service {
          ArrayList<Item> items = sections.get(0).items;
          int currentSize = app.deals.size();
          for (Item item : items) {
-            if (!app.deals.containsKey(item.itemId) && currentSize > 0) {
+            if (!app.deals.containsKey(item.itemId) && (currentSize > 0)) {
                newDeals++;
             }
          }

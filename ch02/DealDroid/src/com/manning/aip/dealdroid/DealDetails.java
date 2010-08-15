@@ -39,6 +39,9 @@ public class DealDetails extends Activity {
          TextView title = (TextView) findViewById(R.id.details_title);
          title.setText(item.title);
 
+         TextView desc = (TextView) findViewById(R.id.details_desc);
+         desc.setText(item.desc);
+
          CharSequence pricePrefix = getText(R.string.deal_details_price_prefix);
          TextView price = (TextView) findViewById(R.id.details_price);
          price.setText(pricePrefix + item.convertedCurrentPrice);
@@ -59,9 +62,9 @@ public class DealDetails extends Activity {
 
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
-      menu.add(NONE, MAIL, NONE, R.string.deal_details_mail_menu);
-      menu.add(NONE, BROWSE, NONE, R.string.deal_details_browser_menu);
-      menu.add(NONE, SHARE, NONE, R.string.deal_details_share_menu);
+      menu.add(DealDetails.NONE, DealDetails.MAIL, DealDetails.NONE, R.string.deal_details_mail_menu);
+      menu.add(DealDetails.NONE, DealDetails.BROWSE, DealDetails.NONE, R.string.deal_details_browser_menu);
+      menu.add(DealDetails.NONE, DealDetails.SHARE, DealDetails.NONE, R.string.deal_details_share_menu);
       return true;
    }
 

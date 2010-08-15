@@ -23,6 +23,7 @@ public class DealBootReceiver extends BroadcastReceiver {
       PendingIntent pendingIntent =
                PendingIntent.getBroadcast(context, 0, new Intent(context, DealAlarmReceiver.class), 0);
       // use inexact repeating which is easier on battery (system can phase events and not wake at exact times)
-      alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, TRIGGER_AT_TIME, INTERVAL, pendingIntent);
+      alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, DealBootReceiver.TRIGGER_AT_TIME,
+               DealBootReceiver.INTERVAL, pendingIntent);
    }
 }

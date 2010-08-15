@@ -83,69 +83,69 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
                   ///Log.d(Constants.LOG_TAG, "  start tag: " + name);                  
 
                   // establish sections
-                  if (name.equalsIgnoreCase(EBAY_DAILY_DEALS)) {
+                  if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.EBAY_DAILY_DEALS)) {
                      ///Log.d(Constants.LOG_TAG, "   created section: Daily Deals");
                      currentSection = new Section();
                      currentSection.title = "Daily Deals";
-                  } else if (name.equalsIgnoreCase(SECTION_TITLE)) {
+                  } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.SECTION_TITLE)) {
                      String title = parser.nextText();
                      ///Log.d(Constants.LOG_TAG, "   created more details section: " + title);
                      currentSection = new Section();
                      currentSection.title = title;
-                  } else if (name.equalsIgnoreCase(ITEM) && currentSection != null) {
+                  } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.ITEM) && (currentSection != null)) {
                      currentItem = new Item();
                   }
 
                   // when MoreDeals starts, DailyDeals are over, more are nested (which is odd)
-                  if (name.equalsIgnoreCase(MORE_DEALS)) {
+                  if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.MORE_DEALS)) {
                      ///Log.d(Constants.LOG_TAG, "   adding Daily Deals section to sections list");
                      sections.add(Section.getInstance(currentSection));
                      currentSection = null;
                   }
 
                   // establish items
-                  if (currentSection != null && currentItem != null) {
-                     if (name.equalsIgnoreCase(ITEM_ID)) {
+                  if ((currentSection != null) && (currentItem != null)) {
+                     if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.ITEM_ID)) {
                         try {
                            currentItem.itemId = Long.valueOf(parser.nextText());
                         } catch (NumberFormatException e) {
                            Log.e(Constants.LOG_TAG, "Error parsing itemId", e);
                         }
-                     } else if (name.equalsIgnoreCase(END_TIME)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.END_TIME)) {
                         try {
                            currentItem.endTime = Long.valueOf(parser.nextText());
                         } catch (NumberFormatException e) {
                            Log.e(Constants.LOG_TAG, "Error parsing endTime", e);
                         }
-                     } else if (name.equalsIgnoreCase(PICTURE_URL)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.PICTURE_URL)) {
                         currentItem.picUrl = parser.nextText();
-                     } else if (name.equalsIgnoreCase(SMALL_PICTURE_URL)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.SMALL_PICTURE_URL)) {
                         currentItem.smallPicUrl = parser.nextText();
-                     } else if (name.equalsIgnoreCase(TITLE)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.TITLE)) {
                         currentItem.title = parser.nextText();
-                     } else if (name.equalsIgnoreCase(DESCRIPTION)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.DESCRIPTION)) {
                         currentItem.desc = parser.nextText();
-                     } else if (name.equalsIgnoreCase(DEAL_URL)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.DEAL_URL)) {
                         currentItem.dealUrl = parser.nextText();
-                     } else if (name.equalsIgnoreCase(CONVERTED_CURRENT_PRICE)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.CONVERTED_CURRENT_PRICE)) {
                         currentItem.convertedCurrentPrice = parser.nextText();
-                     } else if (name.equalsIgnoreCase(PRIMARY_CATEGORY_NAME)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.PRIMARY_CATEGORY_NAME)) {
                         currentItem.primaryCategoryName = parser.nextText();
-                     } else if (name.equalsIgnoreCase(LOCATION)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.LOCATION)) {
                         currentItem.location = parser.nextText();
-                     } else if (name.equalsIgnoreCase(QUANTITY)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.QUANTITY)) {
                         try {
                            currentItem.quantity = Integer.valueOf(parser.nextText());
                         } catch (NumberFormatException e) {
                            Log.e(Constants.LOG_TAG, "Error parsing quantity", e);
                         }
-                     } else if (name.equalsIgnoreCase(QUANTITY_SOLD)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.QUANTITY_SOLD)) {
                         currentItem.picUrl = parser.nextText();
-                     } else if (name.equalsIgnoreCase(MSRP)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.MSRP)) {
                         currentItem.msrp = parser.nextText();
-                     } else if (name.equalsIgnoreCase(SAVINGS_RATE)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.SAVINGS_RATE)) {
                         currentItem.savingsRate = parser.nextText();
-                     } else if (name.equalsIgnoreCase(HOT)) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.HOT)) {
                         currentItem.hot = Boolean.valueOf(parser.nextText());
                      }
                   }
@@ -154,11 +154,12 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
                   name = parser.getName();
                   ///Log.d(Constants.LOG_TAG, "  end tag: " + name);
                   if (name != null) {
-                     if (name.equalsIgnoreCase(MORE_DEALS_SECTION) && currentSection != null) {
+                     if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.MORE_DEALS_SECTION)
+                              && (currentSection != null)) {
                         ///Log.d(Constants.LOG_TAG, "   adding section to sections list: " + currentSection.title);
                         sections.add(Section.getInstance(currentSection));
                         currentSection = null;
-                     } else if (name.equalsIgnoreCase(ITEM) && currentItem != null) {
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.ITEM) && (currentItem != null)) {
                         ///Log.d(Constants.LOG_TAG, "   adding item " + currentItem.title + " to current section");
                         currentSection.items.add(Item.getInstance(currentItem));
                         currentItem = null;
