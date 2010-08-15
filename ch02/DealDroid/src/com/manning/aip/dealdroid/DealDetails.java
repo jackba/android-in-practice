@@ -2,13 +2,16 @@ package com.manning.aip.dealdroid;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.manning.aip.dealdroid.model.Item;
 
 public class DealDetails extends Activity {
 
@@ -26,19 +29,32 @@ public class DealDetails extends Activity {
 
       app = (DealDroidApp) getApplication();
 
-      /*
-      Bitmap bitmap = app.getIconCache().get(item.itemId);
-      ImageView icon = (ImageView) findViewById(R.id.details_icon);
-      icon.setImageBitmap(bitmap);      
-      */
-      
-      TextView title = (TextView) findViewById(R.id.details_title);
-      title.setText(app.getCurrentItem().title);
-      
-      CharSequence pricePrefix = getText(R.string.deal_details_price_prefix);
-      TextView price = (TextView) findViewById(R.id.details_price);
-      price.setText(pricePrefix + app.getCurrentItem().convertedCurrentPrice);
+      Item item = app.getCurrentItem();
 
+      if (item != null) {
+         Bitmap bitmap = app.getIconCache().get(item.itemId);
+         ImageView icon = (ImageView) findViewById(R.id.details_icon);
+         icon.setImageBitmap(bitmap);
+
+         TextView title = (TextView) findViewById(R.id.details_title);
+         title.setText(item.title);
+
+         CharSequence pricePrefix = getText(R.string.deal_details_price_prefix);
+         TextView price = (TextView) findViewById(R.id.details_price);
+         price.setText(pricePrefix + item.convertedCurrentPrice);
+
+         TextView msrp = (TextView) findViewById(R.id.details_msrp);
+         msrp.setText(item.msrp);
+
+         TextView quantity = (TextView) findViewById(R.id.details_quantity);
+         quantity.setText(Integer.toString(item.quantity));
+
+         TextView location = (TextView) findViewById(R.id.details_location);
+         location.setText(item.location);
+
+      } else {
+         Toast.makeText(this, "Error, no current item selected, nothing to see here", Toast.LENGTH_LONG).show();
+      }
    }
 
    @Override
@@ -47,7 +63,6 @@ public class DealDetails extends Activity {
       menu.add(NONE, BROWSE, NONE, R.string.deal_details_browser_menu);
       menu.add(NONE, SHARE, NONE, R.string.deal_details_share_menu);
       return true;
-
    }
 
    @Override
@@ -66,39 +81,11 @@ public class DealDetails extends Activity {
       return false;
    }
 
-   /*
-   
-   @Override
-   public void onResume(){                                                  
-     super.onResume();
-     if (app.getFeed() == null){                                            
-       progressDialog = ProgressDialog.show(this,                           
-         getString(R.string.progress_dialog_title),                        
-         getString(R.string.progress_dialog_message),                       
-         true, false);
-         Runnable task = new Runnable(){                                    
-        @Override
-        public void run() {
-          try {
-            feed = DealsFeedParser.parseFeed();
-            app.setFeed(feed);
-            app.setCurrentSection(feed);
-            handler.sendEmptyMessage(RESULT_OK);
-          } catch (Exception e) {
-            Log.e("DealList","Exception parsing Deals feed", e);
-          }
-        }   
-         };
-         Thread thread = new Thread(task);
-        thread.start(); 
-     }
-     */
-
    private void mailDeal() {
       Intent i = new Intent(Intent.ACTION_SEND);
       i.setType("text/html");
       i.putExtra(Intent.EXTRA_SUBJECT, "Subject:");
-      i.putExtra(Intent.EXTRA_TEXT, "Mail text for deal");
+      i.putExtra(Intent.EXTRA_TEXT, createMailMessage());
       try {
          startActivity(Intent.createChooser(i, "Send mail..."));
       } catch (android.content.ActivityNotFoundException ex) {
@@ -115,8 +102,19 @@ public class DealDetails extends Activity {
       Intent i = new Intent(Intent.ACTION_SEND);
       i.setType("text/*");
       i.putExtra(Intent.EXTRA_SUBJECT, "Subject:");
-      i.putExtra(Intent.EXTRA_TEXT, "Mail text for deal");
+      i.putExtra(Intent.EXTRA_TEXT, createMailMessage());
       startActivity(Intent.createChooser(i, "Share options"));
    }
 
+   private String createMailMessage() {
+      Item item = app.getCurrentItem();
+      StringBuffer sb = new StringBuffer();
+      sb.append("Check out this deal:\n");
+      sb.append("\nTitle:" + item.title);
+      sb.append("\nPrice:" + item.convertedCurrentPrice);
+      sb.append("\nLocation:" + item.location);
+      sb.append("\nQuantity:" + item.quantity);
+      sb.append("\nURL:" + item.dealUrl);
+      return sb.toString();
+   }
 }

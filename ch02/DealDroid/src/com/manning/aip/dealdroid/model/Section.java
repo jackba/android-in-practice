@@ -1,12 +1,11 @@
 package com.manning.aip.dealdroid.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public final class Section {
 
    public String title;
-   public List<Item> items;
+   public ArrayList<Item> items;
 
    // favor "copy constructor/getInstance" over clone, clone is tricky and error prone
    // (better yet use immutable objects, but sort of overkill for this example)
@@ -24,7 +23,7 @@ public final class Section {
 
       return copy;
    }
-   
+
    public Section() {
       this.items = new ArrayList<Item>();
    }

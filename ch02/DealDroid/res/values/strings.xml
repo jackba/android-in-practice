@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, Main!</string>
-    <string name="app_name">DealDroid</string>
-    
-    
-    
-    
-    <string name="show_deals_section">Show deals section</string>
-    
-    
-    
-    <string name="deal_details">Deal Details</string>
-    <string name="deal_details_price_prefix">$</string>
-    <string name="deal_details_mail_menu">Mail</string>
-    <string name="deal_details_browser_menu">Browser</string>
-    <string name="deal_details_share_menu">Share</string>    
-    <string name="deal_details_price_label">Buy it now:</string>
-    <string name="deal_details_msrp_label">MSRP:</string>
-    <string name="deal_details_quantity_label">Quantity:</string>
-    <string name="deal_details_location_label">Location:</string>
+	<string name="app_name">DealDroid</string>
+
+	<string name="show_deals_section">Show deals section</string>
+
+
+	<string name="deal_details">Deal Details</string>
+	<string name="deal_details_price_prefix">$</string>
+	<string name="deal_details_mail_menu">Mail</string>
+	<string name="deal_details_browser_menu">Browser</string>
+	<string name="deal_details_share_menu">Share</string>
+	<string name="deal_details_msrp_label">MSRP:</string>
+	<string name="deal_details_quantity_label">Quantity:</string>
+	<string name="deal_details_location_label">Location:</string>
+
+	<string name="deal_service_new_deal">%s new deal(s)!</string>
 </resources>

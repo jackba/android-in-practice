@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"  
-    android:background="#000044" android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <TableRow>                                                           
-        <ImageView android:id="@+id/details_icon"                    
-            android:layout_width="wrap_content" 
-            android:layout_height="wrap_content" 
-                    android:scaleType="fitStart" />
-        <TextView android:id="@+id/details_price"                    
-            android:layout_height="wrap_content" 
-                    android:layout_width="fill_parent"/>
-    </TableRow>
-    <TableRow android:layout_span="2" > 
-    <!-- Note we had colons here and it worked, such as: android:id="@+id/details_title" -->  
-    <!-- I sort of like the colons, and they work fine, but they end up as underscore, so maybe confusing -->                               
-        <TextView android:id="@+id/details_title" />
-    </TableRow>
-    <TableRow>
-        <TextView android:text="@string/deal_details_price_label"/>  
-        <TextView android:id="@+id/details_price2" />
-    </TableRow>
-    <TableRow>
-        <TextView android:text="@string/deal_details_msrp_label"/>          
-        <TextView android:id="@+id/details_msrp" />
-    </TableRow>
-    <TableRow>
-        <TextView android:text="@string/deal_details_quantity_label"/>      
-        <TextView android:id="@+id/details_quantityX" />
-    </TableRow> 
-    <TableRow>
-        <TextView android:text="@string/deal_details_location_label"/>      
-        <TextView android:id="@+id/details_location" />
-    </TableRow>     
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="#000044">
+	<TableRow>
+		<ImageView android:id="@+id/details_icon"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:scaleType="fitStart" />
+		<TextView android:id="@+id/details_price"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	</TableRow>
+	<TableRow android:layout_span="2">
+		<!--
+			Note we had colons here and it worked, such as:
+			android:id="@+id/details_title"
+		-->
+		<!--
+			I sort of like the colons, and they work fine, but they end up as
+			underscore, so maybe confusing
+		-->
+		<TextView android:id="@+id/details_title" />
+	</TableRow>
+	<TableRow>
+		<TextView android:text="@string/deal_details_msrp_label" />
+		<TextView android:id="@+id/details_msrp" />
+	</TableRow>
+	<TableRow>
+		<TextView android:text="@string/deal_details_quantity_label" />
+		<TextView android:id="@+id/details_quantity" />
+	</TableRow>
+	<TableRow>
+		<TextView android:text="@string/deal_details_location_label" />
+		<TextView android:id="@+id/details_location" />
+	</TableRow>
 </TableLayout>

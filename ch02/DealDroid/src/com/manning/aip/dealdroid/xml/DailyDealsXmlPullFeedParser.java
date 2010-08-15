@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
 
@@ -60,9 +59,9 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
       }
    }
 
-   public List<Section> parse() {
+   public ArrayList<Section> parse() {
       Log.d(Constants.LOG_TAG, "parse invoked");
-      List<Section> sections = null;
+      ArrayList<Section> sections = null;
       XmlPullParser parser = Xml.newPullParser();
       try {
          Section currentSection = null;
