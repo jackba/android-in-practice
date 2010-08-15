@@ -37,10 +37,7 @@ public class DealDetails extends Activity {
          icon.setImageBitmap(bitmap);
 
          TextView title = (TextView) findViewById(R.id.details_title);
-         title.setText(item.title);
-
-         TextView desc = (TextView) findViewById(R.id.details_desc);
-         desc.setText(item.desc);
+         title.setText(item.title);         
 
          CharSequence pricePrefix = getText(R.string.deal_details_price_prefix);
          TextView price = (TextView) findViewById(R.id.details_price);

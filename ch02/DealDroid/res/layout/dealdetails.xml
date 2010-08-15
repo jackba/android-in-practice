@@ -21,17 +21,12 @@
 		android:layout_below="@id/details_header" android:textSize="20sp"
 		android:textStyle="bold" android:gravity="center_horizontal" />
 
-	<TextView android:id="@+id/details_desc"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_below="@id/details_title" android:textSize="15sp"
-		android:gravity="center_horizontal" />
-
 	<TextView android:id="@+id/details_msrp_label"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_below="@id/details_desc" android:layout_marginRight="5dp"
+		android:layout_below="@id/details_title" android:layout_marginRight="5dp"
 		android:text="@string/deal_details_msrp_label" />
 	<TextView android:id="@+id/details_msrp" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_below="@id/details_desc"
+		android:layout_height="wrap_content" android:layout_below="@id/details_title"
 		android:layout_toRightOf="@id/details_msrp_label" />
 
 	<TextView android:id="@+id/details_quantity_label"
