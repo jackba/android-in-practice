@@ -9,14 +9,55 @@ import com.manning.aip.dealdroid.model.Section;
 
 import org.xmlpull.v1.XmlPullParser;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DailyDealsXmlPullFeedParser extends DailyDealsBaseFeedParser {
+public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
+
+   // names of the XML tags
+   static final String EBAY_DAILY_DEALS = "EbayDailyDeals";
+   static final String MORE_DEALS = "MoreDeals";
+   static final String MORE_DEALS_SECTION = "MoreDealsSection";
+   static final String SECTION_TITLE = "SectionTitle";
+
+   static final String ITEM = "Item";
+   static final String ITEM_ID = "ItemId";
+   static final String END_TIME = "EndTime";
+   static final String PICTURE_URL = "PictureURL";
+   static final String SMALL_PICTURE_URL = "SmallPictureURL";
+   static final String TITLE = "Title";
+   static final String DESCRIPTION = "Description";
+   static final String DEAL_URL = "DealURL";
+   static final String CONVERTED_CURRENT_PRICE = "ConvertedCurrentPrice";
+   static final String PRIMARY_CATEGORY_NAME = "PrimaryCategoryName";
+   static final String LOCATION = "Location";
+   static final String QUANTITY = "Quantity";
+   static final String QUANTITY_SOLD = "QuantitySold";
+   static final String MSRP = "MSRP";
+   static final String SAVINGS_RATE = "SavingsRate";
+   static final String HOT = "Hot";
+
+   final URL feedUrl;
 
    public DailyDealsXmlPullFeedParser(String feedUrl) {
-      super(feedUrl);     
+      try {
+         this.feedUrl = new URL(feedUrl);
+      } catch (MalformedURLException e) {
+         throw new RuntimeException(e);
+      }
       Log.d(Constants.LOG_TAG, "DailyDealsXmlPullFeedParser instantiated for URL:" + feedUrl);
+   }
+
+   protected InputStream getInputStream() {
+      try {
+         return feedUrl.openConnection().getInputStream();
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
    }
 
    public List<Section> parse() {
@@ -26,10 +67,10 @@ public class DailyDealsXmlPullFeedParser extends DailyDealsBaseFeedParser {
       try {
          Section currentSection = null;
          Item currentItem = null;
-         
+
          // auto-detect the encoding from the stream
          parser.setInput(this.getInputStream(), null);
-         int eventType = parser.getEventType();         
+         int eventType = parser.getEventType();
 
          while (eventType != XmlPullParser.END_DOCUMENT) {
             String name = null;
@@ -41,7 +82,7 @@ public class DailyDealsXmlPullFeedParser extends DailyDealsBaseFeedParser {
                case XmlPullParser.START_TAG:
                   name = parser.getName();
                   ///Log.d(Constants.LOG_TAG, "  start tag: " + name);                  
-                  
+
                   // establish sections
                   if (name.equalsIgnoreCase(EBAY_DAILY_DEALS)) {
                      Log.d(Constants.LOG_TAG, "   created section: Daily Deals");
@@ -54,6 +95,13 @@ public class DailyDealsXmlPullFeedParser extends DailyDealsBaseFeedParser {
                      currentSection.title = title;
                   } else if (name.equalsIgnoreCase(ITEM) && currentSection != null) {
                      currentItem = new Item();
+                  }
+
+                  // when MoreDeals starts, DailyDeals are over, more are nested (which is odd)
+                  if (name.equalsIgnoreCase(MORE_DEALS)) {
+                     Log.d(Constants.LOG_TAG, "   adding Daily Deals section to sections list");
+                     sections.add(Section.getInstance(currentSection));
+                     currentSection = null;
                   }
 
                   // establish items
@@ -100,16 +148,15 @@ public class DailyDealsXmlPullFeedParser extends DailyDealsBaseFeedParser {
                         currentItem.savingsRate = parser.nextText();
                      } else if (name.equalsIgnoreCase(HOT)) {
                         currentItem.hot = Boolean.valueOf(parser.nextText());
-                     }                     
+                     }
                   }
                   break;
                case XmlPullParser.END_TAG:
                   name = parser.getName();
                   ///Log.d(Constants.LOG_TAG, "  end tag: " + name);
                   if (name != null) {
-                     if ((name.equalsIgnoreCase(EBAY_DAILY_DEALS) || name.equalsIgnoreCase(MORE_DEALS_SECTION))
-                              && currentSection != null) {
-                        ///Log.d(Constants.LOG_TAG, "   adding section to sections list: " + currentSection.title);
+                     if (name.equalsIgnoreCase(MORE_DEALS_SECTION) && currentSection != null) {
+                        Log.d(Constants.LOG_TAG, "   adding section to sections list: " + currentSection.title);
                         sections.add(Section.getInstance(currentSection));
                         currentSection = null;
                      } else if (name.equalsIgnoreCase(ITEM) && currentItem != null) {

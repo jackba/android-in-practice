@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowDeals extends ListActivity {
+public class DealList extends ListActivity {
 
    private DealDroidApp app;
    private ArrayAdapter<Section> spinnerAdapter;
@@ -54,7 +54,7 @@ public class ShowDeals extends ListActivity {
 
       // Spinner
       spinnerAdapter =
-               new ArrayAdapter<Section>(ShowDeals.this, android.R.layout.simple_spinner_item, sectionList);
+               new ArrayAdapter<Section>(DealList.this, android.R.layout.simple_spinner_item, sectionList);
       spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
       Spinner sectionSpinner = (Spinner) findViewById(R.id.section_spinner);
@@ -159,7 +159,7 @@ public class ShowDeals extends ListActivity {
             @Override
             public void onClick(View v) {
                app.setCurrentItem(getItem(position));
-               Intent dealDetails = new Intent(ShowDeals.this, DealDetails.class);
+               Intent dealDetails = new Intent(DealList.this, DealDetails.class);
                startActivity(dealDetails);
             }
          });
@@ -177,7 +177,7 @@ public class ShowDeals extends ListActivity {
    
    // Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
    private class ParseFeedTask extends AsyncTask<Void, Void, List<Section>> {
-      private final ProgressDialog dialog = new ProgressDialog(ShowDeals.this);
+      private final ProgressDialog dialog = new ProgressDialog(DealList.this);
 
       @Override
       protected void onPreExecute() {

@@ -85,7 +85,7 @@ public class DealDetails extends Activity {
             app.setCurrentSection(feed);
             handler.sendEmptyMessage(RESULT_OK);
           } catch (Exception e) {
-            Log.e("ShowDeals","Exception parsing Deals feed", e);
+            Log.e("DealList","Exception parsing Deals feed", e);
           }
         }   
          };

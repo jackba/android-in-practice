@@ -58,7 +58,7 @@ public class DealsService extends Service {
                System.currentTimeMillis());
       NotificationManager mgr =                                            
          (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-      Intent intent = new Intent(appCtx, ShowDeals.class);                 
+      Intent intent = new Intent(appCtx, DealList.class);                 
       PendingIntent pending = 
          PendingIntent.getActivity(this, 0, intent, 0);
       int resourceId = R.string.deals_service_one;
