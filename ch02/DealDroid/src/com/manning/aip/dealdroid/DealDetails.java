@@ -29,10 +29,10 @@ public class DealDetails extends Activity {
 
       app = (DealDroidApp) getApplication();
 
-      Item item = app.getCurrentItem();
+      Item item = app.currentItem;
 
       if (item != null) {
-         Bitmap bitmap = app.getIconCache().get(item.itemId);
+         Bitmap bitmap = app.iconCache.get(item.itemId);
          ImageView icon = (ImageView) findViewById(R.id.details_icon);
          icon.setImageBitmap(bitmap);
 
@@ -94,7 +94,7 @@ public class DealDetails extends Activity {
    }
 
    private void openDealInBrowser() {
-      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(app.getCurrentItem().dealUrl));
+      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(app.currentItem.dealUrl));
       startActivity(i);
    }
 
@@ -107,7 +107,7 @@ public class DealDetails extends Activity {
    }
 
    private String createMailMessage() {
-      Item item = app.getCurrentItem();
+      Item item = app.currentItem;
       StringBuffer sb = new StringBuffer();
       sb.append("Check out this deal:\n");
       sb.append("\nTitle:" + item.title);

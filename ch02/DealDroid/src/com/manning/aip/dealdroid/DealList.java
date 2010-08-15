@@ -64,7 +64,7 @@ public class DealList extends ListActivity {
          public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             if (currentSelectedSection != position) {
                Section section = sectionList.get(position);              
-               app.setCurrentSection(section);
+               app.currentSection = section;
                dealsAdapter.setSection(section);
                dealsAdapter.notifyDataSetChanged();
                currentSelectedSection = position;
@@ -140,14 +140,14 @@ public class DealList extends ListActivity {
          
          if (item != null) {
             text.setText(section.items.get(position).title);
-            Bitmap bitmap = app.getIconCache().get(item.itemId);                    
+            Bitmap bitmap = app.iconCache.get(item.itemId);                    
             if (bitmap == null){
                try {
                   // this is the quick and dirty way to do this, HttpClient and a sep Thread/Task would be better
                   URL imageUrl = new URL(item.smallPicUrl);           
                   InputStream stream = imageUrl.openConnection().getInputStream();
                   bitmap = BitmapFactory.decodeStream(stream);
-                  app.getIconCache().put(item.itemId, bitmap);
+                  app.iconCache.put(item.itemId, bitmap);
                } catch (Exception e) {
                   Log.e(Constants.LOG_TAG, "Exception loading image", e);
                }
@@ -158,7 +158,7 @@ public class DealList extends ListActivity {
          convertView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-               app.setCurrentItem(getItem(position));
+               app.currentItem = getItem(position);
                Intent dealDetails = new Intent(DealList.this, DealDetails.class);
                startActivity(dealDetails);
             }
@@ -187,7 +187,7 @@ public class DealList extends ListActivity {
 
       @Override
       protected List<Section> doInBackground(final Void... args) {
-         return app.getFeed().parse();         
+         return app.parser.parse();         
       }
 
       @Override

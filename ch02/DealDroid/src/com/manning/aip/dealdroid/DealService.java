@@ -60,17 +60,17 @@ public class DealService extends Service {
    private int checkForNewDeals() {
       int newDeals = 0;
       try {
-         ArrayList<Section> sections = app.getFeed().parse();
+         ArrayList<Section> sections = app.parser.parse();
          ArrayList<Item> items = sections.get(0).items;
-         int currentSize = app.getDeals().size();
+         int currentSize = app.deals.size();
          for (Item item : items) {
-            if (!app.getDeals().containsKey(item.itemId) && currentSize > 0) {
+            if (!app.deals.containsKey(item.itemId) && currentSize > 0) {
                newDeals++;
             }
          }
-         app.getDeals().clear();
+         app.deals.clear();
          for (Item item : items) {
-            app.getDeals().put(item.itemId, item);
+            app.deals.put(item.itemId, item);
          }
       } catch (Exception e) {
          Log.e("DealService", "Exception from Deals feed", e);
