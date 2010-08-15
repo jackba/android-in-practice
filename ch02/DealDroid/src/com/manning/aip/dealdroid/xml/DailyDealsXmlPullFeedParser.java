@@ -60,7 +60,7 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
    }
 
    public ArrayList<Section> parse() {
-      Log.d(Constants.LOG_TAG, "parse invoked");
+      ///Log.d(Constants.LOG_TAG, "parse invoked");
       ArrayList<Section> sections = null;
       XmlPullParser parser = Xml.newPullParser();
       try {
@@ -75,7 +75,7 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
             String name = null;
             switch (eventType) {
                case XmlPullParser.START_DOCUMENT:
-                  Log.d(Constants.LOG_TAG, " start document");
+                  ///Log.d(Constants.LOG_TAG, " start document");
                   sections = new ArrayList<Section>();
                   break;
                case XmlPullParser.START_TAG:
@@ -84,12 +84,12 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
 
                   // establish sections
                   if (name.equalsIgnoreCase(EBAY_DAILY_DEALS)) {
-                     Log.d(Constants.LOG_TAG, "   created section: Daily Deals");
+                     ///Log.d(Constants.LOG_TAG, "   created section: Daily Deals");
                      currentSection = new Section();
                      currentSection.title = "Daily Deals";
                   } else if (name.equalsIgnoreCase(SECTION_TITLE)) {
                      String title = parser.nextText();
-                     Log.d(Constants.LOG_TAG, "   created more details section: " + title);
+                     ///Log.d(Constants.LOG_TAG, "   created more details section: " + title);
                      currentSection = new Section();
                      currentSection.title = title;
                   } else if (name.equalsIgnoreCase(ITEM) && currentSection != null) {
@@ -98,7 +98,7 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
 
                   // when MoreDeals starts, DailyDeals are over, more are nested (which is odd)
                   if (name.equalsIgnoreCase(MORE_DEALS)) {
-                     Log.d(Constants.LOG_TAG, "   adding Daily Deals section to sections list");
+                     ///Log.d(Constants.LOG_TAG, "   adding Daily Deals section to sections list");
                      sections.add(Section.getInstance(currentSection));
                      currentSection = null;
                   }
@@ -155,7 +155,7 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
                   ///Log.d(Constants.LOG_TAG, "  end tag: " + name);
                   if (name != null) {
                      if (name.equalsIgnoreCase(MORE_DEALS_SECTION) && currentSection != null) {
-                        Log.d(Constants.LOG_TAG, "   adding section to sections list: " + currentSection.title);
+                        ///Log.d(Constants.LOG_TAG, "   adding section to sections list: " + currentSection.title);
                         sections.add(Section.getInstance(currentSection));
                         currentSection = null;
                      } else if (name.equalsIgnoreCase(ITEM) && currentItem != null) {

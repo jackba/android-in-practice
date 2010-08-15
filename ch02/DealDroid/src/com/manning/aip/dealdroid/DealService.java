@@ -11,21 +11,12 @@ import android.util.Log;
 
 import com.manning.aip.dealdroid.model.Item;
 import com.manning.aip.dealdroid.model.Section;
-import com.manning.aip.dealdroid.xml.DailyDealsFeedParser;
-import com.manning.aip.dealdroid.xml.DailyDealsXmlPullFeedParser;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class DealService extends Service {
 
-   private NotificationManager notificationMgr;
-
-   private Timer timer;
-   private LinkedHashMap<Long, Item> deals;
-   private DailyDealsFeedParser feed;
+   private DealDroidApp app;
 
    @Override
    public IBinder onBind(Intent intent) {
@@ -34,54 +25,70 @@ public class DealService extends Service {
 
    @Override
    public void onCreate() {
-      this.notificationMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-      this.timer = new Timer();
-      this.deals = new LinkedHashMap<Long, Item>(4);
-      this.feed = new DailyDealsXmlPullFeedParser("http://deals.ebay.com/feeds/xml");
-
-      timer.scheduleAtFixedRate(new TimerTask() {
-         @Override
-         public void run() {
-            int newDeals = 0;
-            try {
-               ArrayList<Section> sections = feed.parse();
-               ArrayList<Item> items = sections.get(0).items;
-
-               int currentSize = deals.size();
-               for (Item item : items) {
-                  if (!deals.containsKey(item.itemId) && currentSize > 0) {
-                     newDeals++;
-                  }
-               }
-               deals.clear();
-               for (Item item : items) {
-                  deals.put(item.itemId, item);
-               }
-            } catch (Exception e) {
-               Log.e("DealService", "Exception from Deals feed", e);
-            }
-            if (newDeals > 0) {
-               sendNotification(newDeals);
-            }
-            Log.i(Constants.LOG_TAG, "DealService ran and found " + newDeals + " new deals");
-         }
-      }, 1000L, 5000L);
-      // NOTE - this is for example purposes, DON'T DO THIS OUTSIDE OF A DEMO
-      // services should use AlarmManager, and wake up when needed, not run constantly
-      // and certainly not poll as often as 5 seconds
    }
 
-   private void sendNotification(int newDeals) {
-      Context appCtx = getApplicationContext();
+   // See http://developer.android.com/intl/de/reference/android/app/Service.html#onStartCommand
+   // AND http://android-developers.blogspot.com/2010/02/service-api-changes-starting-with.html
+
+   // This is the old onStart method that will be called on the pre-2.0
+   // platform.  On 2.0 or later we override onStartCommand() so this
+   // method will not be called.
+   @Override
+   public void onStart(Intent intent, int startId) {
+      handleCommand(intent);
+   }
+
+   @Override
+   public int onStartCommand(Intent intent, int flags, int startId) {
+      handleCommand(intent);
+      // We want this service to continue running until it is explicitly
+      // stopped, so return sticky.
+      return START_NOT_STICKY;
+   }
+
+   private void handleCommand(Intent intent) {
+      Log.i(Constants.LOG_TAG, "DealService invoked, checking for new deals (will notify if present)");
+      this.app = (DealDroidApp) getApplication();
+      int newDeals = this.checkForNewDeals();
+      if (newDeals > 0) {
+         this.sendNotification(this, newDeals);
+      }
+      this.stopSelf();
+   }
+
+   private int checkForNewDeals() {
+      int newDeals = 0;
+      try {
+         ArrayList<Section> sections = app.getFeed().parse();
+         ArrayList<Item> items = sections.get(0).items;
+         int currentSize = app.getDeals().size();
+         for (Item item : items) {
+            if (!app.getDeals().containsKey(item.itemId) && currentSize > 0) {
+               newDeals++;
+            }
+         }
+         app.getDeals().clear();
+         for (Item item : items) {
+            app.getDeals().put(item.itemId, item);
+         }
+      } catch (Exception e) {
+         Log.e("DealService", "Exception from Deals feed", e);
+      }
+      return newDeals;
+   }
+
+   private void sendNotification(final Context context, final int newDeals) {
+
+      NotificationManager notificationMgr =
+               (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
       Notification notification =
                new Notification(android.R.drawable.ic_dialog_alert, "deals_service_ticker", System.currentTimeMillis());
 
-      Intent intent = new Intent(appCtx, DealList.class);
-      PendingIntent pending = PendingIntent.getActivity(this, 0, intent, 0);
+      PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(context, DealList.class), 0);
 
-      String detailMsg = String.format(getString(R.string.deal_service_new_deal), newDeals);
-      notification.setLatestEventInfo(appCtx, "deals service title", detailMsg, pending);
+      String detailMsg = String.format(context.getString(R.string.deal_service_new_deal), newDeals);
+      notification.setLatestEventInfo(context, "deals service title", detailMsg, pendingIntent);
       notificationMgr.notify(0, notification);
    }
 }
