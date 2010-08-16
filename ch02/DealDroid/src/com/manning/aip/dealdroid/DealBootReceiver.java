@@ -12,6 +12,7 @@ public class DealBootReceiver extends BroadcastReceiver {
 
    // In real life, use AlarmManager.INTERVALs with longer periods of time 
    // for dev you can shorten this to 10000 or such, but deals don't change often anyway
+   // (better yet, allow user to set and use PreferenceActivity)
    private static final long INTERVAL = AlarmManager.INTERVAL_HOUR;
 
    private static final long TRIGGER_AT_TIME = SystemClock.elapsedRealtime() + 15000;
