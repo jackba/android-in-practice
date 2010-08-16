@@ -83,12 +83,13 @@ public class DealService extends Service {
       NotificationManager notificationMgr =
                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
       Notification notification =
-               new Notification(android.R.drawable.ic_dialog_alert, "deals_service_ticker", System.currentTimeMillis());
+               new Notification(android.R.drawable.ic_dialog_alert, getString(R.string.deal_service_ticker), System
+                        .currentTimeMillis());
 
       PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(context, DealList.class), 0);
 
       String detailMsg = String.format(context.getString(R.string.deal_service_new_deal), newDeals);
-      notification.setLatestEventInfo(context, "deals service title", detailMsg, pendingIntent);
+      notification.setLatestEventInfo(context, getString(R.string.deal_service_title), detailMsg, pendingIntent);
       notificationMgr.notify(0, notification);
    }
 }

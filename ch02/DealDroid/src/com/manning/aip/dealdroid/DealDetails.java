@@ -106,6 +106,7 @@ public class DealDetails extends Activity {
       startActivity(Intent.createChooser(i, "Share options"));
    }
 
+   // TODO not i18n'd
    private String createMailMessage() {
       Item item = app.currentItem;
       StringBuffer sb = new StringBuffer();

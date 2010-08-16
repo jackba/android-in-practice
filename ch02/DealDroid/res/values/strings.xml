@@ -4,6 +4,7 @@
 
 	<string name="show_deals_section">Show deals section</string>
 
+<!--  TODO rest of strings -->
 
 	<string name="deal_details">Deal Details</string>
 	<string name="deal_details_price_prefix">$</string>
@@ -14,5 +15,7 @@
 	<string name="deal_details_quantity_label">Quantity:</string>
 	<string name="deal_details_location_label">Location:</string>
 
-	<string name="deal_service_new_deal">%s new deal(s)!</string>
+    <string name="deal_service_title">Deal Service</string>
+    <string name="deal_service_new_deal">%s new deal(s)!</string>
+	<string name="deal_service_ticker">New Deals</string>
 </resources>
