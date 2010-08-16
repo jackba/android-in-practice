@@ -11,8 +11,8 @@ import android.util.Log;
 public class DealBootReceiver extends BroadcastReceiver {
 
    // In real life, use AlarmManager.INTERVALs with longer periods of time 
-   // this *short* interval is ONLY FOR DEMO/EXAMPLE purposes (don't do this, battery killer, and annoying)
-   private static final long INTERVAL = 10000;
+   // for dev you can shorten this to 10000 or such, but deals don't change often anyway
+   private static final long INTERVAL = AlarmManager.INTERVAL_HOUR;
 
    private static final long TRIGGER_AT_TIME = SystemClock.elapsedRealtime() + 15000;
 
