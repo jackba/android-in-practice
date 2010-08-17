@@ -85,8 +85,8 @@ public class DealService extends IntentService {
                new Notification(android.R.drawable.star_on, getString(R.string.deal_service_ticker), System
                         .currentTimeMillis());
       notification.flags |= Notification.FLAG_AUTO_CANCEL;
-      notification.setLatestEventInfo(context, getString(R.string.deal_service_title), getString(
-               R.string.deal_service_new_deal, newDeals), contentIntent);
+      notification.setLatestEventInfo(context, getString(R.string.deal_service_title), getResources()
+               .getQuantityString(R.plurals.deal_service_new_deal, newDeals, newDeals), contentIntent);
       notificationMgr.notify(0, notification);
    }
 }
