@@ -43,7 +43,7 @@ public class DealService extends IntentService {
       if (newDeals > 0) {
          this.sendNotification(this, newDeals);
       }
-      
+
       // uncomment to debug notification
       /*
       count++;
@@ -85,8 +85,8 @@ public class DealService extends IntentService {
                new Notification(android.R.drawable.star_on, getString(R.string.deal_service_ticker), System
                         .currentTimeMillis());
       notification.flags |= Notification.FLAG_AUTO_CANCEL;
-      String detailMsg = String.format(context.getString(R.string.deal_service_new_deal), newDeals);
-      notification.setLatestEventInfo(context, getString(R.string.deal_service_title), detailMsg, contentIntent);
+      notification.setLatestEventInfo(context, getString(R.string.deal_service_title), getString(
+               R.string.deal_service_new_deal, newDeals), contentIntent);
       notificationMgr.notify(0, notification);
    }
 }
