@@ -4,8 +4,6 @@
 
 	<string name="show_deals_section">Show deals section</string>
 
-<!--  TODO rest of strings -->
-
 	<string name="deal_details">Deal Details</string>
 	<string name="deal_details_price_prefix">$</string>
 	<string name="deal_details_mail_menu">Mail</string>
