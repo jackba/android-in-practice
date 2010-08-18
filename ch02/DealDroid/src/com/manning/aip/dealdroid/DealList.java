@@ -42,7 +42,7 @@ public class DealList extends ListActivity {
    @Override
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      setContentView(R.layout.showdeals);
+      setContentView(R.layout.deallist);
 
       // Use Application object for app wide state
       app = (DealDroidApp) getApplication();
