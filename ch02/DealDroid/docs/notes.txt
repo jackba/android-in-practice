@@ -1,0 +1,3 @@
+Enhancements:
+
+1. PreferenceActivity and let user set service polling frequency. 
