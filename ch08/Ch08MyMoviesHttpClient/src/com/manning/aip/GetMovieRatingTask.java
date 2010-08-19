@@ -10,7 +10,7 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.manning.aip.xml.XmlPullMovieParser;
+import com.manning.aip.json.JsonMovieParser;
 
 public class GetMovieRatingTask extends AsyncTask<String, Void, Movie> {
 
@@ -29,13 +29,12 @@ public class GetMovieRatingTask extends AsyncTask<String, Void, Movie> {
       try {
          String imdbId = params[0];
          HttpClient httpClient = MyMovies.getHttpClient();
-         String path = "/Movie.imdbLookup/en/xml/" + API_KEY + "/" + imdbId;
+         String path = "/Movie.imdbLookup/en/json/" + API_KEY + "/" + imdbId;
          HttpGet request = new HttpGet(API_ENDPOINT + path);
 
          HttpResponse response = httpClient.execute(request);
 
-         return XmlPullMovieParser
-                  .parseMovie(response.getEntity().getContent());
+         return JsonMovieParser.parseMovie(response.getEntity().getContent());
       } catch (Exception e) {
          return null;
       }
