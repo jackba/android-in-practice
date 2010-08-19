@@ -9,20 +9,16 @@ import com.manning.aip.Movie;
 
 public class XmlPullMovieParser {
 
-   private Movie movie;
-
    private XmlPullParser xpp;
 
    public static Movie parseMovie(InputStream xml) throws Exception {
       return new XmlPullMovieParser().parse(xml);
    }
 
-   public XmlPullMovieParser() throws Exception {
-      xpp = XmlPullParserFactory.newInstance().newPullParser();
-      movie = new Movie();
-   }
-
    public Movie parse(InputStream xml) throws Exception {
+      Movie movie = new Movie();
+
+      xpp = XmlPullParserFactory.newInstance().newPullParser();
       xpp.setInput(xml, "UTF-8");
 
       skipToTag("name");
