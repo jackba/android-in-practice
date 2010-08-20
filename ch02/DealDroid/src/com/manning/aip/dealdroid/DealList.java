@@ -64,11 +64,12 @@ public class DealList extends ListActivity {
          @Override
          public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             if (currentSelectedSection != position) {
+               currentSelectedSection = position;
                Section section = sectionList.get(position);
-               app.currentSection = section;
+               app.currentSection = section;               
                dealsAdapter.setSection(section);
                dealsAdapter.notifyDataSetChanged();
-               currentSelectedSection = position;
+               
             }
          }
 
@@ -78,7 +79,8 @@ public class DealList extends ListActivity {
          }
       });
 
-      // Oversimplified AsyncTask (better to handle instance states and dismiss Progress onPause, etc.)      
+      // Oversimplified AsyncTask 
+      // (better to handle instance states and dismiss Progress onPause, etc., here just simple)      
       new ParseFeedTask().execute();
       
       sheduleAlarmReceiver();
