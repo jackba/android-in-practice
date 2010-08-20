@@ -213,6 +213,8 @@ public class DealList extends ListActivity {
       @Override
       protected void onPostExecute(final List<Section> taskSectionList) {
          if (dialog.isShowing()) {
+            // NOTE this is very easy to leak and cause errors, if Activity restarts before task is complete
+            // generally need to hold an instance of task and use onPause, here we aren't to keep things simpler
             dialog.dismiss();
          }
          sectionList.clear();
