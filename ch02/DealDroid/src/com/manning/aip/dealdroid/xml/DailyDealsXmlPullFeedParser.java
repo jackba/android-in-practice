@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
 
+   static final String FEED_URL = "http://deals.ebay.com/feeds/xml";
+   
    // names of the XML tags
    static final String EBAY_DAILY_DEALS = "EbayDailyDeals";
    static final String MORE_DEALS = "MoreDeals";
@@ -28,6 +30,7 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
    static final String END_TIME = "EndTime";
    static final String PICTURE_URL = "PictureURL";
    static final String SMALL_PICTURE_URL = "SmallPictureURL";
+   static final String PICTURE_175_URL = "Picture175URL";
    static final String TITLE = "Title";
    static final String DESCRIPTION = "Description";
    static final String DEAL_URL = "DealURL";
@@ -42,9 +45,9 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
 
    final URL feedUrl;
 
-   public DailyDealsXmlPullFeedParser(String feedUrl) {
+   public DailyDealsXmlPullFeedParser() {
       try {
-         this.feedUrl = new URL(feedUrl);
+         this.feedUrl = new URL(FEED_URL);
       } catch (MalformedURLException e) {
          throw new RuntimeException(e);
       }
@@ -121,6 +124,8 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
                         currentItem.picUrl = parser.nextText();
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.SMALL_PICTURE_URL)) {
                         currentItem.smallPicUrl = parser.nextText();
+                     } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.PICTURE_175_URL)) {
+                        currentItem.pic175Url = parser.nextText();
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.TITLE)) {
                         currentItem.title = parser.nextText();
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.DESCRIPTION)) {
@@ -140,7 +145,11 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
                            Log.e(Constants.LOG_TAG, "Error parsing quantity", e);
                         }
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.QUANTITY_SOLD)) {
-                        currentItem.picUrl = parser.nextText();
+                        try {
+                           currentItem.quantitySold = Integer.valueOf(parser.nextText());
+                        } catch (NumberFormatException e) {
+                           Log.e(Constants.LOG_TAG, "Error parsing quantitySold", e);
+                        }
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.MSRP)) {
                         currentItem.msrp = parser.nextText();
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.SAVINGS_RATE)) {

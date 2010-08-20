@@ -6,6 +6,7 @@ public final class Item {
    public long endTime;
    public String picUrl;
    public String smallPicUrl;
+   public String pic175Url;
    public String title;
    public String desc;
    public String dealUrl;
@@ -37,15 +38,16 @@ public final class Item {
       copy.savingsRate = item.savingsRate;
       copy.smallPicUrl = item.smallPicUrl;
       copy.title = item.title;
+      copy.pic175Url = item.pic175Url;
       return copy;
    }
 
    @Override
    public String toString() {
-      return "Item [covertedCurrentPrice=" + this.convertedCurrentPrice + ", dealUrl=" + this.dealUrl + ", desc="
+      return "Item [convertedCurrentPrice=" + this.convertedCurrentPrice + ", dealUrl=" + this.dealUrl + ", desc="
                + this.desc + ", endTime=" + this.endTime + ", hot=" + this.hot + ", itemId=" + this.itemId
-               + ", location=" + this.location + ", msrp=" + this.msrp + ", picUrl=" + this.picUrl
-               + ", primaryCategoryName=" + this.primaryCategoryName + ", quantity=" + this.quantity
+               + ", location=" + this.location + ", msrp=" + this.msrp + ", pic175Url=" + this.pic175Url + ", picUrl="
+               + this.picUrl + ", primaryCategoryName=" + this.primaryCategoryName + ", quantity=" + this.quantity
                + ", quantitySold=" + this.quantitySold + ", savingsRate=" + this.savingsRate + ", smallPicUrl="
                + this.smallPicUrl + ", title=" + this.title + "]";
    }
@@ -62,6 +64,7 @@ public final class Item {
       result = prime * result + (int) (this.itemId ^ (this.itemId >>> 32));
       result = prime * result + ((this.location == null) ? 0 : this.location.hashCode());
       result = prime * result + ((this.msrp == null) ? 0 : this.msrp.hashCode());
+      result = prime * result + ((this.pic175Url == null) ? 0 : this.pic175Url.hashCode());
       result = prime * result + ((this.picUrl == null) ? 0 : this.picUrl.hashCode());
       result = prime * result + ((this.primaryCategoryName == null) ? 0 : this.primaryCategoryName.hashCode());
       result = prime * result + this.quantity;
@@ -74,101 +77,78 @@ public final class Item {
 
    @Override
    public boolean equals(Object obj) {
-      if (this == obj) {
+      if (this == obj)
          return true;
-      }
-      if (obj == null) {
+      if (obj == null)
          return false;
-      }
-      if (getClass() != obj.getClass()) {
+      if (getClass() != obj.getClass())
          return false;
-      }
       Item other = (Item) obj;
       if (this.convertedCurrentPrice == null) {
-         if (other.convertedCurrentPrice != null) {
+         if (other.convertedCurrentPrice != null)
             return false;
-         }
-      } else if (!this.convertedCurrentPrice.equals(other.convertedCurrentPrice)) {
+      } else if (!this.convertedCurrentPrice.equals(other.convertedCurrentPrice))
          return false;
-      }
       if (this.dealUrl == null) {
-         if (other.dealUrl != null) {
+         if (other.dealUrl != null)
             return false;
-         }
-      } else if (!this.dealUrl.equals(other.dealUrl)) {
+      } else if (!this.dealUrl.equals(other.dealUrl))
          return false;
-      }
       if (this.desc == null) {
-         if (other.desc != null) {
+         if (other.desc != null)
             return false;
-         }
-      } else if (!this.desc.equals(other.desc)) {
+      } else if (!this.desc.equals(other.desc))
          return false;
-      }
-      if (this.endTime != other.endTime) {
+      if (this.endTime != other.endTime)
          return false;
-      }
-      if (this.hot != other.hot) {
+      if (this.hot != other.hot)
          return false;
-      }
-      if (this.itemId != other.itemId) {
+      if (this.itemId != other.itemId)
          return false;
-      }
       if (this.location == null) {
-         if (other.location != null) {
+         if (other.location != null)
             return false;
-         }
-      } else if (!this.location.equals(other.location)) {
+      } else if (!this.location.equals(other.location))
          return false;
-      }
       if (this.msrp == null) {
-         if (other.msrp != null) {
+         if (other.msrp != null)
             return false;
-         }
-      } else if (!this.msrp.equals(other.msrp)) {
+      } else if (!this.msrp.equals(other.msrp))
          return false;
-      }
+      if (this.pic175Url == null) {
+         if (other.pic175Url != null)
+            return false;
+      } else if (!this.pic175Url.equals(other.pic175Url))
+         return false;
       if (this.picUrl == null) {
-         if (other.picUrl != null) {
+         if (other.picUrl != null)
             return false;
-         }
-      } else if (!this.picUrl.equals(other.picUrl)) {
+      } else if (!this.picUrl.equals(other.picUrl))
          return false;
-      }
       if (this.primaryCategoryName == null) {
-         if (other.primaryCategoryName != null) {
+         if (other.primaryCategoryName != null)
             return false;
-         }
-      } else if (!this.primaryCategoryName.equals(other.primaryCategoryName)) {
+      } else if (!this.primaryCategoryName.equals(other.primaryCategoryName))
          return false;
-      }
-      if (this.quantity != other.quantity) {
+      if (this.quantity != other.quantity)
          return false;
-      }
-      if (this.quantitySold != other.quantitySold) {
+      if (this.quantitySold != other.quantitySold)
          return false;
-      }
       if (this.savingsRate == null) {
-         if (other.savingsRate != null) {
+         if (other.savingsRate != null)
             return false;
-         }
-      } else if (!this.savingsRate.equals(other.savingsRate)) {
+      } else if (!this.savingsRate.equals(other.savingsRate))
          return false;
-      }
       if (this.smallPicUrl == null) {
-         if (other.smallPicUrl != null) {
+         if (other.smallPicUrl != null)
             return false;
-         }
-      } else if (!this.smallPicUrl.equals(other.smallPicUrl)) {
+      } else if (!this.smallPicUrl.equals(other.smallPicUrl))
          return false;
-      }
       if (this.title == null) {
-         if (other.title != null) {
+         if (other.title != null)
             return false;
-         }
-      } else if (!this.title.equals(other.title)) {
+      } else if (!this.title.equals(other.title))
          return false;
-      }
       return true;
    }
 }

@@ -148,33 +148,25 @@ public class DealList extends ListActivity {
          }
 
          ViewHolder holder = (ViewHolder) convertView.getTag();
+         TextView text = holder.text;
+         ImageView image = holder.image;
 
          Item item = null;
          if ((section != null) && (section.items.size() >= position)) {
             item = section.items.get(position);
-         }
-
-         TextView text = holder.text;
-         ImageView image = holder.image;
+         }         
 
          if (item != null) {
-            text.setText(section.items.get(position).title);
-            Bitmap bitmap = app.iconCache.get(item.itemId);
+            text.setText(item.title);
+            Bitmap bitmap = app.imageCache.get(item.itemId);
             if (bitmap == null) {
-               try {
-                  // this is the quick and dirty way to do this, HttpClient and a sep Thread/Task would be better
-                  URL imageUrl = new URL(item.smallPicUrl);
-                  Log.d(Constants.LOG_TAG, "making HTTP trip for image:" + imageUrl);
-                  InputStream stream = imageUrl.openConnection().getInputStream();
-                  bitmap = BitmapFactory.decodeStream(stream);
-                  app.iconCache.put(item.itemId, bitmap);
-               } catch (Exception e) {
-                  Log.e(Constants.LOG_TAG, "Exception loading image", e);
-               }
+               bitmap = app.retrieveBitmap(item.smallPicUrl);
+               app.imageCache.put(item.itemId, bitmap);
             }
             image.setImageBitmap(bitmap);
          }
 
+         // also can do this with ListView.setOnItemClickListener
          convertView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,8 +185,8 @@ public class DealList extends ListActivity {
             this.section = section;
          }
       }
-   }
-
+   }   
+   
    // Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
    private class ParseFeedTask extends AsyncTask<Void, Void, List<Section>> {
       private final ProgressDialog dialog = new ProgressDialog(DealList.this);

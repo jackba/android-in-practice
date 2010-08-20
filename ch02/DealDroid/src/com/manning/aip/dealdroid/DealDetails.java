@@ -32,7 +32,8 @@ public class DealDetails extends Activity {
       Item item = app.currentItem;
 
       if (item != null) {
-         Bitmap bitmap = app.iconCache.get(item.itemId);
+         //Bitmap bitmap = app.imageCache.get(item.itemId);
+         Bitmap bitmap = app.retrieveBitmap(item.pic175Url);
          ImageView icon = (ImageView) findViewById(R.id.details_icon);
          icon.setImageBitmap(bitmap);
 
@@ -48,6 +49,9 @@ public class DealDetails extends Activity {
 
          TextView quantity = (TextView) findViewById(R.id.details_quantity);
          quantity.setText(Integer.toString(item.quantity));
+         
+         TextView quantitySold = (TextView) findViewById(R.id.details_quantity_sold);
+         quantitySold.setText(Integer.toString(item.quantitySold));
 
          TextView location = (TextView) findViewById(R.id.details_location);
          location.setText(item.location);
