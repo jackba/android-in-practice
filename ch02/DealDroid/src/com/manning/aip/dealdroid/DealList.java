@@ -26,8 +26,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import com.manning.aip.dealdroid.model.Item;
 import com.manning.aip.dealdroid.model.Section;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,10 +64,10 @@ public class DealList extends ListActivity {
             if (currentSelectedSection != position) {
                currentSelectedSection = position;
                Section section = sectionList.get(position);
-               app.currentSection = section;               
+               app.currentSection = section;
                dealsAdapter.setSection(section);
                dealsAdapter.notifyDataSetChanged();
-               
+
             }
          }
 
@@ -82,7 +80,7 @@ public class DealList extends ListActivity {
       // Oversimplified AsyncTask 
       // (better to handle instance states and dismiss Progress onPause, etc., here just simple)      
       new ParseFeedTask().execute();
-      
+
       sheduleAlarmReceiver();
    }
 
@@ -148,22 +146,24 @@ public class DealList extends ListActivity {
          }
 
          ViewHolder holder = (ViewHolder) convertView.getTag();
-         TextView text = holder.text;
-         ImageView image = holder.image;
+         final TextView text = holder.text;
+         final ImageView image = holder.image;
+         image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ddicon));         
 
-         Item item = null;
-         if ((section != null) && (section.items.size() >= position)) {
-            item = section.items.get(position);
-         }         
+         final Item item = section.items.get(position);
 
          if (item != null) {
             text.setText(item.title);
             Bitmap bitmap = app.imageCache.get(item.itemId);
-            if (bitmap == null) {
-               bitmap = app.retrieveBitmap(item.smallPicUrl);
-               app.imageCache.put(item.itemId, bitmap);
+            if (bitmap != null) {
+               image.setImageBitmap(bitmap);
+            } else {
+               // put item ID on image as TAG for use in task
+               image.setTag(item.itemId);
+               // separate thread/via task, for retrieving each image
+               // (note that this is brittle as is, should stop all threads in onPause)               
+               new RetrieveImageTask(image).execute(item.smallPicUrl);
             }
-            image.setImageBitmap(bitmap);
          }
 
          // also can do this with ListView.setOnItemClickListener
@@ -185,8 +185,8 @@ public class DealList extends ListActivity {
             this.section = section;
          }
       }
-   }   
-   
+   }
+
    // Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
    private class ParseFeedTask extends AsyncTask<Void, Void, List<Section>> {
       private final ProgressDialog dialog = new ProgressDialog(DealList.this);
@@ -207,6 +207,7 @@ public class DealList extends ListActivity {
          if (dialog.isShowing()) {
             // NOTE this is very easy to leak and cause errors, if Activity restarts before task is complete
             // generally need to hold an instance of task and use onPause, here we aren't to keep things simpler
+            // (to demonstrate this error, rotate orientation while progress message is displayed)
             dialog.dismiss();
          }
          sectionList.clear();
@@ -216,6 +217,30 @@ public class DealList extends ListActivity {
             dealsAdapter.setSection(sectionList.get(0));
             dealsAdapter.notifyDataSetChanged();
             spinnerAdapter.notifyDataSetChanged();
+         }
+      }
+   }
+
+   private class RetrieveImageTask extends AsyncTask<String, Void, Bitmap> {
+
+      private ImageView imageView;
+
+      public RetrieveImageTask(final ImageView imageView) {
+         this.imageView = imageView;
+      }
+
+      @Override
+      protected Bitmap doInBackground(final String... args) {
+         Bitmap bitmap = app.retrieveBitmap(args[0]);
+         return bitmap;
+      }
+
+      @Override
+      protected void onPostExecute(final Bitmap bitmap) {
+         if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
+            app.imageCache.put((Long) imageView.getTag(), bitmap); 
+            imageView.setTag(null);
          }
       }
    }
