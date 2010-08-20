@@ -164,6 +164,7 @@ public class DealList extends ListActivity {
                try {
                   // this is the quick and dirty way to do this, HttpClient and a sep Thread/Task would be better
                   URL imageUrl = new URL(item.smallPicUrl);
+                  Log.d(Constants.LOG_TAG, "making HTTP trip for image:" + imageUrl);
                   InputStream stream = imageUrl.openConnection().getInputStream();
                   bitmap = BitmapFactory.decodeStream(stream);
                   app.iconCache.put(item.itemId, bitmap);
