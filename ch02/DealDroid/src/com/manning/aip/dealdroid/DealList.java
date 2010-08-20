@@ -31,11 +31,11 @@ import java.util.List;
 
 public class DealList extends ListActivity {
 
-   private DealDroidApp app;
-   private ArrayAdapter<Section> spinnerAdapter;
+   private DealDroidApp app;   
    private DealsAdapter dealsAdapter;
-   private List<Section> sectionList = null;
-   private int currentSelectedSection = 0;
+   private ArrayAdapter<Section> spinnerAdapter;
+   private List<Section> sectionList;
+   private int currentSelectedSection;
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -53,10 +53,9 @@ public class DealList extends ListActivity {
       setListAdapter(dealsAdapter);
 
       // Spinner
+      Spinner sectionSpinner = (Spinner) findViewById(R.id.section_spinner);
       spinnerAdapter = new ArrayAdapter<Section>(DealList.this, android.R.layout.simple_spinner_item, sectionList);
       spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-      Spinner sectionSpinner = (Spinner) findViewById(R.id.section_spinner);
       sectionSpinner.setAdapter(spinnerAdapter);
       sectionSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
          @Override
@@ -67,7 +66,6 @@ public class DealList extends ListActivity {
                app.currentSection = section;
                dealsAdapter.setSection(section);
                dealsAdapter.notifyDataSetChanged();
-
             }
          }
 
@@ -98,12 +96,70 @@ public class DealList extends ListActivity {
                Constants.ALARM_INTERVAL, pendingIntent);
    }
 
+   // Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
+   private class ParseFeedTask extends AsyncTask<Void, Void, List<Section>> {
+      private final ProgressDialog dialog = new ProgressDialog(DealList.this);
+
+      @Override
+      protected void onPreExecute() {
+         dialog.setMessage("Getting deal data . . .");
+         dialog.show();
+      }
+
+      @Override
+      protected List<Section> doInBackground(final Void... args) {
+         return app.parser.parse();
+      }
+
+      @Override
+      protected void onPostExecute(final List<Section> taskSectionList) {
+         if (dialog.isShowing()) {
+            // NOTE this is very easy to leak and cause errors, if Activity restarts before task is complete
+            // generally need to hold an instance of task and use onPause, here we aren't to keep things simpler
+            // (to demonstrate this error, rotate orientation while progress message is displayed)
+            dialog.dismiss();
+         }
+         sectionList.clear();
+         sectionList.addAll(taskSectionList);
+         if ((sectionList != null) && !sectionList.isEmpty()) {
+            // start off the sections selection with first one, Daily Deals
+            dealsAdapter.setSection(sectionList.get(0));
+            dealsAdapter.notifyDataSetChanged();
+            spinnerAdapter.notifyDataSetChanged();
+         }
+      }
+   }
+
+   private class RetrieveImageTask extends AsyncTask<String, Void, Bitmap> {
+
+      private ImageView imageView;
+
+      public RetrieveImageTask(final ImageView imageView) {
+         this.imageView = imageView;
+      }
+
+      @Override
+      protected Bitmap doInBackground(final String... args) {
+         Bitmap bitmap = app.retrieveBitmap(args[0]);
+         return bitmap;
+      }
+
+      @Override
+      protected void onPostExecute(final Bitmap bitmap) {
+         if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
+            app.imageCache.put((Long) imageView.getTag(), bitmap); 
+            imageView.setTag(null);
+         }
+      }
+   }   
+
    // Use ViewHolder and getTag/setTag to cut down on trips to findViewById in adapters/ListViews
    private class ViewHolder {
       private TextView text;
       private ImageView image;
    }
-
+   
    // Use a custom Adapter to control the layout and views
    private class DealsAdapter extends BaseAdapter {
       private Section section;
@@ -183,64 +239,6 @@ public class DealList extends ListActivity {
          if (((section != null) && (this.section == null))
                   || ((section != null) && (this.section != null) && !this.section.equals(section))) {
             this.section = section;
-         }
-      }
-   }
-
-   // Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
-   private class ParseFeedTask extends AsyncTask<Void, Void, List<Section>> {
-      private final ProgressDialog dialog = new ProgressDialog(DealList.this);
-
-      @Override
-      protected void onPreExecute() {
-         dialog.setMessage("Getting deal data . . .");
-         dialog.show();
-      }
-
-      @Override
-      protected List<Section> doInBackground(final Void... args) {
-         return app.parser.parse();
-      }
-
-      @Override
-      protected void onPostExecute(final List<Section> taskSectionList) {
-         if (dialog.isShowing()) {
-            // NOTE this is very easy to leak and cause errors, if Activity restarts before task is complete
-            // generally need to hold an instance of task and use onPause, here we aren't to keep things simpler
-            // (to demonstrate this error, rotate orientation while progress message is displayed)
-            dialog.dismiss();
-         }
-         sectionList.clear();
-         sectionList.addAll(taskSectionList);
-         if ((sectionList != null) && !sectionList.isEmpty()) {
-            // start off the sections selection with first one, Daily Deals
-            dealsAdapter.setSection(sectionList.get(0));
-            dealsAdapter.notifyDataSetChanged();
-            spinnerAdapter.notifyDataSetChanged();
-         }
-      }
-   }
-
-   private class RetrieveImageTask extends AsyncTask<String, Void, Bitmap> {
-
-      private ImageView imageView;
-
-      public RetrieveImageTask(final ImageView imageView) {
-         this.imageView = imageView;
-      }
-
-      @Override
-      protected Bitmap doInBackground(final String... args) {
-         Bitmap bitmap = app.retrieveBitmap(args[0]);
-         return bitmap;
-      }
-
-      @Override
-      protected void onPostExecute(final Bitmap bitmap) {
-         if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);
-            app.imageCache.put((Long) imageView.getTag(), bitmap); 
-            imageView.setTag(null);
          }
       }
    }
