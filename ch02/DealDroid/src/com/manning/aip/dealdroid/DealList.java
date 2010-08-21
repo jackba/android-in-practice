@@ -14,11 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -62,9 +62,8 @@ public class DealList extends ListActivity {
          public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             if (currentSelectedSection != position) {
                currentSelectedSection = position;
-               Section section = sectionList.get(position);
-               app.currentSection = section;
-               dealsAdapter.setSection(section);
+               app.currentSection = sectionList.get(position);
+               dealsAdapter.setSection(sectionList.get(position));
                dealsAdapter.notifyDataSetChanged();
             }
          }
@@ -80,6 +79,13 @@ public class DealList extends ListActivity {
       new ParseFeedTask().execute();
 
       sheduleAlarmReceiver();
+   }
+   
+   @Override
+   protected void onListItemClick(final ListView listView, final View view, final int position, final long id) {
+      app.currentItem = sectionList.get(currentSelectedSection).items.get(position);
+      Intent dealDetails = new Intent(DealList.this, DealDetails.class);
+      startActivity(dealDetails);
    }
 
    // Schedule AlarmManager to invoke DealAlarmReceiver and cancel any existing current PendingIntent
@@ -221,17 +227,7 @@ public class DealList extends ListActivity {
                new RetrieveImageTask(image).execute(item.smallPicUrl);
             }
          }
-
-         // also can do this with ListView.setOnItemClickListener
-         convertView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               app.currentItem = getItem(position);
-               Intent dealDetails = new Intent(DealList.this, DealDetails.class);
-               startActivity(dealDetails);
-            }
-         });
-
+         
          return convertView;
       }
 
