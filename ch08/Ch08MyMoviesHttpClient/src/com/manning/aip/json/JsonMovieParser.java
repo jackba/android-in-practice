@@ -21,15 +21,10 @@ public class JsonMovieParser {
          line = reader.readLine();
       }
       reader.close();
-
       JSONArray jsonReply = new JSONArray(sb.toString());
-      JSONObject jsonMovie = jsonReply.getJSONObject(0);
-      return new JsonMovieParser().parse(jsonMovie);
-   }
 
-   public Movie parse(JSONObject jsonMovie) throws Exception {
       Movie movie = new Movie();
-
+      JSONObject jsonMovie = jsonReply.getJSONObject(0);
       movie.setTitle(jsonMovie.getString("name"));
       movie.setRating(jsonMovie.getString("rating"));
 
