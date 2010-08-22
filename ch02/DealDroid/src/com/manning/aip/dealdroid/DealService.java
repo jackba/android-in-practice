@@ -62,6 +62,7 @@ public class DealService extends IntentService {
          if (!items.isEmpty()) {
             for (Item item : items) {
                if (!app.currentDeals.contains(item)) {
+                  Log.d(Constants.LOG_TAG, "New deal found: " + item.title);
                   newDeals++;
                }
             }
