@@ -34,8 +34,8 @@ public class DealList extends ListActivity {
    private DealDroidApp app;
    private DealsAdapter dealsAdapter;
    private ArrayAdapter<Section> spinnerAdapter;
-   ///private List<Section> sectionList;
    private int currentSelectedSection;
+   private ProgressDialog progressDialog;
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +73,11 @@ public class DealList extends ListActivity {
          }
       });
 
+      this.progressDialog = new ProgressDialog(this);
+      this.progressDialog.setMax(2);
+      this.progressDialog.setCancelable(false);
+      this.progressDialog.setMessage(getString(R.string.deal_list_retrieving_data));
+
       // Oversimplified AsyncTask 
       // (better to handle instance states and dismiss Progress onPause, etc., here just simple)
       if (app.sectionList.isEmpty()) {
@@ -93,9 +98,18 @@ public class DealList extends ListActivity {
 
    @Override
    protected void onListItemClick(final ListView listView, final View view, final int position, final long id) {
+      view.setBackgroundColor(android.R.color.background_light);
       app.currentItem = app.sectionList.get(currentSelectedSection).items.get(position);
       Intent dealDetails = new Intent(DealList.this, DealDetails.class);
       startActivity(dealDetails);
+   }
+   
+   @Override 
+   public void onPause() {
+      if (progressDialog.isShowing()) {
+         progressDialog.dismiss();
+      }
+      super.onPause();
    }
 
    // Schedule AlarmManager to invoke DealAlarmReceiver and cancel any existing current PendingIntent
@@ -113,32 +127,36 @@ public class DealList extends ListActivity {
    }
 
    // Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
-   private class ParseFeedTask extends AsyncTask<Void, Void, List<Section>> {
-      private final ProgressDialog dialog = new ProgressDialog(DealList.this);
+   private class ParseFeedTask extends AsyncTask<Void, Integer, List<Section>> {
 
       @Override
       protected void onPreExecute() {
-         dialog.setMessage("Getting deal data . . .");
-         dialog.show();
+         if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+         }
       }
 
       @Override
       protected List<Section> doInBackground(final Void... args) {
-         return app.parser.parse();
+         publishProgress(1);
+         List<Section> sections = app.parser.parse();
+         publishProgress(2);
+         return sections;         
+      }
+
+      @Override
+      protected void onProgressUpdate(Integer... progress) {
+         int currentProgress = progress[0];
+         if (currentProgress == 1 && !progressDialog.isShowing()) {
+            progressDialog.show();
+         } else if (currentProgress == 2 && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+         }
+         progressDialog.setProgress(progress[0]);
       }
 
       @Override
       protected void onPostExecute(final List<Section> taskSectionList) {
-         if (dialog.isShowing()) {
-            // TODO cleanup progress
-            // NOTE this is very easy to leak and cause errors, if Activity restarts before task is complete
-            // generally need to hold an instance of task and use onPause, or use publishProgress/onProgressUpdate
-            // and make ProgressDialog not a member of AsyncTask but of Activity
-            // here we are skipping these steps to keep things simpler
-            // (to demonstrate this error, rotate orientation while progress message is displayed)
-            dialog.dismiss();
-         }
-
          if (!taskSectionList.isEmpty()) {
             app.sectionList.clear();
             app.sectionList.addAll(taskSectionList);

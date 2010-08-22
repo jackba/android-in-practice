@@ -3,6 +3,7 @@
 	<string name="app_name">DealDroid</string>
 
     <string name="deal_list_missing_data">No data to display, please try again later.</string>
+    <string name="deal_list_retrieving_data">Getting deal data  . . .</string>
 
 	<string name="show_deals_section">Show deals section</string>
 
