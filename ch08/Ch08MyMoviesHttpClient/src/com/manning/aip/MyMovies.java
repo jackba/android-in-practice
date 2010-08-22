@@ -22,7 +22,9 @@ import org.apache.http.protocol.HttpContext;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.content.DialogInterface.OnClickListener;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Handler.Callback;
@@ -106,6 +108,9 @@ public class MyMovies extends ListActivity implements Callback,
       this.adapter = new MovieAdapter(this);
       listView.setAdapter(this.adapter);
       listView.setItemsCanFocus(false);
+
+      registerReceiver(new ConnectionChangedBroadcastReceiver(),
+               new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
       //new UpdateNoticeTask(new Handler(this)).execute();
    }
