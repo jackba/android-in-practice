@@ -21,20 +21,20 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.manning.aip.dealdroid.model.Item;
 import com.manning.aip.dealdroid.model.Section;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DealList extends ListActivity {
 
-   private DealDroidApp app;   
+   private DealDroidApp app;
    private DealsAdapter dealsAdapter;
    private ArrayAdapter<Section> spinnerAdapter;
-   private List<Section> sectionList;
+   ///private List<Section> sectionList;
    private int currentSelectedSection;
 
    @Override
@@ -45,8 +45,7 @@ public class DealList extends ListActivity {
       // Use Application object for app wide state
       app = (DealDroidApp) getApplication();
 
-      // Adapter for deals, with empty list of data to start
-      sectionList = new ArrayList<Section>();
+      // Adapter for deals
       dealsAdapter = new DealsAdapter();
 
       // ListView (start with first section at index 0);
@@ -54,7 +53,7 @@ public class DealList extends ListActivity {
 
       // Spinner
       Spinner sectionSpinner = (Spinner) findViewById(R.id.section_spinner);
-      spinnerAdapter = new ArrayAdapter<Section>(DealList.this, android.R.layout.simple_spinner_item, sectionList);
+      spinnerAdapter = new ArrayAdapter<Section>(DealList.this, android.R.layout.simple_spinner_item, app.sectionList);
       spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
       sectionSpinner.setAdapter(spinnerAdapter);
       sectionSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -62,8 +61,8 @@ public class DealList extends ListActivity {
          public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             if (currentSelectedSection != position) {
                currentSelectedSection = position;
-               app.currentSection = sectionList.get(position);
-               dealsAdapter.setSection(sectionList.get(position));
+               app.currentSection = app.sectionList.get(position);
+               dealsAdapter.setSection(app.sectionList.get(position));
                dealsAdapter.notifyDataSetChanged();
             }
          }
@@ -75,15 +74,26 @@ public class DealList extends ListActivity {
       });
 
       // Oversimplified AsyncTask 
-      // (better to handle instance states and dismiss Progress onPause, etc., here just simple)      
-      new ParseFeedTask().execute();
+      // (better to handle instance states and dismiss Progress onPause, etc., here just simple)
+      if (app.sectionList.isEmpty()) {
+         new ParseFeedTask().execute();
+      } else {
+         if (!app.sectionList.isEmpty()) {
+            // start off the sections selection with first one, Daily Deals
+            dealsAdapter.setSection(app.sectionList.get(0));
+            dealsAdapter.notifyDataSetChanged();
+            spinnerAdapter.notifyDataSetChanged();
+         } else {
+            Toast.makeText(this, getString(R.string.deal_list_missing_data), Toast.LENGTH_LONG).show();
+         }
+      }
 
       sheduleAlarmReceiver();
    }
-   
+
    @Override
    protected void onListItemClick(final ListView listView, final View view, final int position, final long id) {
-      app.currentItem = sectionList.get(currentSelectedSection).items.get(position);
+      app.currentItem = app.sectionList.get(currentSelectedSection).items.get(position);
       Intent dealDetails = new Intent(DealList.this, DealDetails.class);
       startActivity(dealDetails);
    }
@@ -120,24 +130,30 @@ public class DealList extends ListActivity {
       @Override
       protected void onPostExecute(final List<Section> taskSectionList) {
          if (dialog.isShowing()) {
+            // TODO cleanup progress
             // NOTE this is very easy to leak and cause errors, if Activity restarts before task is complete
-            // generally need to hold an instance of task and use onPause, here we aren't to keep things simpler
+            // generally need to hold an instance of task and use onPause, or use publishProgress/onProgressUpdate
+            // and make ProgressDialog not a member of AsyncTask but of Activity
+            // here we are skipping these steps to keep things simpler
             // (to demonstrate this error, rotate orientation while progress message is displayed)
             dialog.dismiss();
          }
-         sectionList.clear();
-         sectionList.addAll(taskSectionList);
-         if ((sectionList != null) && !sectionList.isEmpty()) {
+
+         if (!taskSectionList.isEmpty()) {
+            app.sectionList.clear();
+            app.sectionList.addAll(taskSectionList);
+
             // start off the sections selection with first one, Daily Deals
-            dealsAdapter.setSection(sectionList.get(0));
+            dealsAdapter.setSection(app.sectionList.get(0));
             dealsAdapter.notifyDataSetChanged();
             spinnerAdapter.notifyDataSetChanged();
+         } else {
+            Toast.makeText(DealList.this, getString(R.string.deal_list_missing_data), Toast.LENGTH_LONG).show();
          }
       }
    }
 
    private class RetrieveImageTask extends AsyncTask<String, Void, Bitmap> {
-
       private ImageView imageView;
 
       public RetrieveImageTask(final ImageView imageView) {
@@ -154,18 +170,18 @@ public class DealList extends ListActivity {
       protected void onPostExecute(final Bitmap bitmap) {
          if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
-            app.imageCache.put((Long) imageView.getTag(), bitmap); 
+            app.imageCache.put((Long) imageView.getTag(), bitmap);
             imageView.setTag(null);
          }
       }
-   }   
+   }
 
    // Use ViewHolder and getTag/setTag to cut down on trips to findViewById in adapters/ListViews
    private class ViewHolder {
       private TextView text;
       private ImageView image;
    }
-   
+
    // Use a custom Adapter to control the layout and views
    private class DealsAdapter extends BaseAdapter {
       private Section section;
@@ -210,7 +226,7 @@ public class DealList extends ListActivity {
          ViewHolder holder = (ViewHolder) convertView.getTag();
          final TextView text = holder.text;
          final ImageView image = holder.image;
-         image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ddicon));         
+         image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ddicon));
 
          final Item item = section.items.get(position);
 
@@ -227,7 +243,7 @@ public class DealList extends ListActivity {
                new RetrieveImageTask(image).execute(item.smallPicUrl);
             }
          }
-         
+
          return convertView;
       }
 

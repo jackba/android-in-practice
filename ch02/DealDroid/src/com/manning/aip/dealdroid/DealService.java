@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.manning.aip.dealdroid.model.Item;
-import com.manning.aip.dealdroid.model.Section;
 
 import java.util.ArrayList;
 
@@ -39,38 +38,37 @@ public class DealService extends IntentService {
    public void onHandleIntent(Intent intent) {
       Log.i(Constants.LOG_TAG, "DealService invoked, checking for new deals (will notify if present)");
       this.app = (DealDroidApp) getApplication();
+      app.sectionList = app.parser.parse();
       int newDeals = this.checkForNewDeals();
       if (newDeals > 0) {
          this.sendNotification(this, newDeals);
       }
 
-      // uncomment to debug notification
+      // uncomment to force notification, new deals or not
       /*
       count++;
       if (count == 1) {
          SystemClock.sleep(5000);
          this.sendNotification(this, 1);
       }
-      */
+      */     
    }
 
    private int checkForNewDeals() {
       int newDeals = 0;
-      try {
-         ArrayList<Section> sections = app.parser.parse();
-         ArrayList<Item> items = sections.get(0).items;
-         int currentSize = app.deals.size();
-         for (Item item : items) {
-            if (!app.deals.containsKey(item.itemId) && (currentSize > 0)) {
-               newDeals++;
+      if (!app.sectionList.isEmpty()) {
+         // "deals" are only for Daily Deals section, which is first, at index 0
+         ArrayList<Item> items = app.sectionList.get(0).items;
+         if (!items.isEmpty()) {
+            for (Item item : items) {
+               if (!app.currentDeals.contains(item)) {
+                  newDeals++;
+               }
             }
+            // reset the currentDeals (which are used to know if present deals are different, or not)
+            app.currentDeals.clear();
+            app.currentDeals.addAll(items);
          }
-         app.deals.clear();
-         for (Item item : items) {
-            app.deals.put(item.itemId, item);
-         }
-      } catch (Exception e) {
-         Log.e("DealService", "Exception from Deals feed", e);
       }
       return newDeals;
    }

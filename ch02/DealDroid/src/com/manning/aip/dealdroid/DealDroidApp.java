@@ -14,21 +14,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DealDroidApp extends Application {
 
-   public DailyDealsFeedParser parser;
-   public LinkedHashMap<Long, Item> deals;
+   public DailyDealsFeedParser parser;   
+   public List<Section> sectionList;
    public Map<Long, Bitmap> imageCache;
+   public List<Item> currentDeals;
    public Section currentSection;
    public Item currentItem;
 
    public DealDroidApp() {
       this.parser = new DailyDealsXmlPullFeedParser();
-      this.deals = new LinkedHashMap<Long, Item>(4);
+      this.currentDeals = new ArrayList<Item>(4);
+      this.sectionList = new ArrayList<Section>(6);
       this.imageCache = new HashMap<Long, Bitmap>();
    }
 
