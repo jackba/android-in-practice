@@ -1,17 +1,23 @@
 package com.manning.aip;
 
+import java.io.IOException;
+
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.params.ConnPerRouteBean;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HttpContext;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -20,6 +26,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Handler.Callback;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,11 +34,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-
 public class MyMovies extends ListActivity implements Callback,
          OnItemLongClickListener {
 
-   private static final HttpClient httpClient;
+   private static final AbstractHttpClient httpClient;
+
+   private static final HttpRequestRetryHandler retryHandler;
 
    static {
       SchemeRegistry schemeRegistry = new SchemeRegistry();
@@ -53,6 +61,25 @@ public class MyMovies extends ListActivity implements Callback,
       HttpConnectionParams.setConnectionTimeout(clientParams, 15 * 1000);
       HttpConnectionParams.setSoTimeout(clientParams, 15 * 1000);
       httpClient = new DefaultHttpClient(cm, clientParams);
+
+      retryHandler = new DefaultHttpRequestRetryHandler(5, false) {
+
+         public boolean retryRequest(IOException exception, int executionCount,
+                  HttpContext context) {
+            if (!super.retryRequest(exception, executionCount, context)) {
+               Log.d("HTTP retry-handler", "Won't retry");
+               return false;
+            }
+            try {
+               Thread.sleep(2000);
+            } catch (InterruptedException e) {
+            }
+            Log.d("HTTP retry-handler", "Retrying request...");
+            return true;
+         }
+      };
+
+      httpClient.setHttpRequestRetryHandler(retryHandler);
    }
 
    public static HttpClient getHttpClient() {

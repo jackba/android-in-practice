@@ -44,6 +44,7 @@ public class GetMovieRatingTask extends AsyncTask<String, Void, Movie> {
    protected void onPostExecute(Movie movie) {
       if (movie == null) {
          Toast.makeText(activity, "Error!", Toast.LENGTH_SHORT).show();
+         return;
       }
       Dialog dialog = new Dialog(activity);
       dialog.setContentView(R.layout.movie_dialog);
