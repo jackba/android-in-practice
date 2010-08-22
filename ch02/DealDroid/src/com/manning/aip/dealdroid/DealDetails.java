@@ -32,7 +32,6 @@ public class DealDetails extends Activity {
       Item item = app.currentItem;
 
       if (item != null) {
-         //Bitmap bitmap = app.imageCache.get(item.itemId);
          Bitmap bitmap = app.retrieveBitmap(item.pic175Url);
          ImageView icon = (ImageView) findViewById(R.id.details_icon);
          icon.setImageBitmap(bitmap);
