@@ -59,16 +59,16 @@ public final class Item {
       result = prime * result + ((this.convertedCurrentPrice == null) ? 0 : this.convertedCurrentPrice.hashCode());
       result = prime * result + ((this.dealUrl == null) ? 0 : this.dealUrl.hashCode());
       result = prime * result + ((this.desc == null) ? 0 : this.desc.hashCode());
-      result = prime * result + (int) (this.endTime ^ (this.endTime >>> 32));
-      result = prime * result + (this.hot ? 1231 : 1237);
+      ///result = prime * result + (int) (this.endTime ^ (this.endTime >>> 32));
+      ///result = prime * result + (this.hot ? 1231 : 1237);
       result = prime * result + (int) (this.itemId ^ (this.itemId >>> 32));
       result = prime * result + ((this.location == null) ? 0 : this.location.hashCode());
       result = prime * result + ((this.msrp == null) ? 0 : this.msrp.hashCode());
       result = prime * result + ((this.pic175Url == null) ? 0 : this.pic175Url.hashCode());
       result = prime * result + ((this.picUrl == null) ? 0 : this.picUrl.hashCode());
       result = prime * result + ((this.primaryCategoryName == null) ? 0 : this.primaryCategoryName.hashCode());
-      result = prime * result + this.quantity;
-      result = prime * result + this.quantitySold;
+      ///result = prime * result + this.quantity;
+      ///result = prime * result + this.quantitySold;
       result = prime * result + ((this.savingsRate == null) ? 0 : this.savingsRate.hashCode());
       result = prime * result + ((this.smallPicUrl == null) ? 0 : this.smallPicUrl.hashCode());
       result = prime * result + ((this.title == null) ? 0 : this.title.hashCode());
@@ -99,10 +99,10 @@ public final class Item {
             return false;
       } else if (!this.desc.equals(other.desc))
          return false;
-      if (this.endTime != other.endTime)
-         return false;
-      if (this.hot != other.hot)
-         return false;
+      //if (this.endTime != other.endTime)
+      //   return false;
+      //if (this.hot != other.hot)
+      //   return false;
       if (this.itemId != other.itemId)
          return false;
       if (this.location == null) {
@@ -130,10 +130,10 @@ public final class Item {
             return false;
       } else if (!this.primaryCategoryName.equals(other.primaryCategoryName))
          return false;
-      if (this.quantity != other.quantity)
-         return false;
-      if (this.quantitySold != other.quantitySold)
-         return false;
+      //if (this.quantity != other.quantity)
+      //   return false;
+      //if (this.quantitySold != other.quantitySold)
+      //   return false;
       if (this.savingsRate == null) {
          if (other.savingsRate != null)
             return false;

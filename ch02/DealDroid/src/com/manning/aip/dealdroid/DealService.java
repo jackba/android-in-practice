@@ -37,9 +37,9 @@ public class DealService extends IntentService {
    public void onHandleIntent(Intent intent) {
       Log.i(Constants.LOG_TAG, "DealService invoked, checking for new deals (will notify if present)");
       this.app = (DealDroidApp) getApplication();
-      List<Item> currentDeals = app.sectionList.get(0).items;
+      List<Item> previousDeals = app.sectionList.get(0).items;
       app.sectionList = app.parser.parse();
-      List<Item> newDealsList = this.checkForNewDeals(currentDeals);
+      List<Item> newDealsList = this.checkForNewDeals(previousDeals, app.sectionList.get(0).items);
       if (!newDealsList.isEmpty()) {
          this.sendNotification(this, newDealsList);
       }
@@ -54,18 +54,12 @@ public class DealService extends IntentService {
       */
    }
 
-   private List<Item> checkForNewDeals(final List<Item> currentDeals) {
+   private List<Item> checkForNewDeals(final List<Item> previousDeals, final List<Item> currentDeals) {
       List<Item> newDealsList = new ArrayList<Item>();
-      if (!app.sectionList.isEmpty()) {
-         // "deals" are only for Daily Deals section, which is first, at index 0
-         ArrayList<Item> items = app.sectionList.get(0).items;
-         if (!items.isEmpty()) {
-            for (Item item : items) {               
-               if (!currentDeals.contains(item)) {
-                  Log.d(Constants.LOG_TAG, "New deal found: " + item.title);
-                  newDealsList.add(item);
-               }
-            }                 
+      for (Item item : currentDeals) {
+         if (!previousDeals.contains(item)) {
+            Log.d(Constants.LOG_TAG, "New deal found: " + item.title);
+            newDealsList.add(item);
          }
       }
       return newDealsList;
@@ -94,7 +88,7 @@ public class DealService extends IntentService {
          sb.append(i + "." + item.title);
          if (i != newDealsList.size()) {
             sb.append(" ");
-         } 
+         }
       }
       return sb.toString();
    }
