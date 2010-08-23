@@ -34,6 +34,7 @@ public class DealDetails extends Activity {
 
       if (item != null) {         
          ImageView icon = (ImageView) findViewById(R.id.details_icon);
+         // TODO loading gif sucks, can't animate on android, need a better small loading indicator
          icon.setBackgroundResource(R.drawable.loading);
          new RetrieveImageTask(icon).execute(item.pic175Url);
 
