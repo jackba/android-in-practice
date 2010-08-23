@@ -84,16 +84,16 @@ public class DealService extends IntentService {
                new Notification(android.R.drawable.star_on, getString(R.string.deal_service_ticker), System
                         .currentTimeMillis());
       notification.flags |= Notification.FLAG_AUTO_CANCEL;
-      notification.setLatestEventInfo(context, getResources().getQuantityString(R.plurals.deal_service_new_deal,
-               newDealsList.size(), newDealsList.size()), getNewDealsString(newDealsList), contentIntent);
+      notification.setLatestEventInfo(context, getResources().getString(R.string.deal_service_ticker) + " "
+               + getNewDealsString(newDealsList), getResources().getQuantityString(R.plurals.deal_service_new_deal,
+               newDealsList.size(), newDealsList.size()), contentIntent);
       notificationMgr.notify(0, notification);
    }
 
    private String getNewDealsString(final List<Item> newDealsList) {
-      StringBuilder sb = new StringBuilder();
-      sb.append("\n");
+      StringBuilder sb = new StringBuilder();      
       for (Item item : newDealsList) {
-         sb.append(item.title + "\n");
+         sb.append("\"" + item.title + "\" ");
       }
       return sb.toString();
    }
