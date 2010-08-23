@@ -7,9 +7,11 @@
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:layout_margin="5dp" android:orientation="horizontal"
 		android:gravity="center_horizontal">
+		<ProgressBar android:id="@+id/progress" android:layout_width="125dp"
+			android:layout_height="125dp" />
 		<ImageView android:id="@+id/details_icon"
 			android:layout_width="125dp" android:layout_height="125dp"
-			android:scaleType="fitStart" />
+			android:scaleType="fitStart" android:visibility="gone"/>
 		<TextView android:id="@+id/details_price"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:layout_marginLeft="10dp" android:layout_marginTop="15dp"

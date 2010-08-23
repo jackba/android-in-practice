@@ -8,7 +8,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ public class DealDetails extends Activity {
    private static final int SHARE = 3;
 
    private DealDroidApp app;
+   private ProgressBar progressBar;
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -29,13 +32,14 @@ public class DealDetails extends Activity {
       setContentView(R.layout.dealdetails);
 
       app = (DealDroidApp) getApplication();
-
+      
+      progressBar = (ProgressBar) findViewById(R.id.progress);
+      progressBar.setIndeterminate(true);
+      
       Item item = app.currentItem;
 
       if (item != null) {         
          ImageView icon = (ImageView) findViewById(R.id.details_icon);
-         // TODO loading gif sucks, can't animate on android, need a better small loading indicator
-         icon.setBackgroundResource(R.drawable.loading);
          new RetrieveImageTask(icon).execute(item.pic175Url);
 
          TextView title = (TextView) findViewById(R.id.details_title);
@@ -139,8 +143,10 @@ public class DealDetails extends Activity {
 
       @Override
       protected void onPostExecute(final Bitmap bitmap) {
+         progressBar.setVisibility(View.GONE);
          if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);            
+            imageView.setImageBitmap(bitmap);
+            imageView.setVisibility(View.VISIBLE);
          }
       }
    }
