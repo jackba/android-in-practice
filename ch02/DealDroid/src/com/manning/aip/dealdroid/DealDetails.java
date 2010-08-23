@@ -89,6 +89,8 @@ public class DealDetails extends Activity {
       }
       return false;
    }
+   
+   // TODO onSaveInstanceState/onRestoreInstanceState - icon?
 
    private void mailDeal() {
       Intent i = new Intent(Intent.ACTION_SEND);
