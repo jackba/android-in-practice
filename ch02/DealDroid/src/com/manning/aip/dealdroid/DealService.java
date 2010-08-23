@@ -11,6 +11,7 @@ import android.util.Log;
 import com.manning.aip.dealdroid.model.Item;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // Use IntentService which will queue each call to startService(Intent) through onHandleIntent and then shutdown
 //
@@ -20,8 +21,6 @@ import java.util.ArrayList;
 // (this can be mitigated but for this example this complication is not needed)
 // (it's not critical if user doesn't see new deals until phone is awake and notification is sent, both)
 public class DealService extends IntentService {
-
-   //private static int count;
 
    private DealDroidApp app;
 
@@ -39,9 +38,9 @@ public class DealService extends IntentService {
       Log.i(Constants.LOG_TAG, "DealService invoked, checking for new deals (will notify if present)");
       this.app = (DealDroidApp) getApplication();
       app.sectionList = app.parser.parse();
-      int newDeals = this.checkForNewDeals();
-      if (newDeals > 0) {
-         this.sendNotification(this, newDeals);
+      List<Item> newDealsList = this.checkForNewDeals();
+      if (!newDealsList.isEmpty()) {
+         this.sendNotification(this, newDealsList);
       }
 
       // uncomment to force notification, new deals or not
@@ -51,11 +50,11 @@ public class DealService extends IntentService {
          SystemClock.sleep(5000);
          this.sendNotification(this, 1);
       }
-      */     
+      */
    }
 
-   private int checkForNewDeals() {
-      int newDeals = 0;
+   private List<Item> checkForNewDeals() {
+      List<Item> newDealsList = new ArrayList<Item>();
       if (!app.sectionList.isEmpty()) {
          // "deals" are only for Daily Deals section, which is first, at index 0
          ArrayList<Item> items = app.sectionList.get(0).items;
@@ -63,7 +62,7 @@ public class DealService extends IntentService {
             for (Item item : items) {
                if (!app.currentDeals.contains(item)) {
                   Log.d(Constants.LOG_TAG, "New deal found: " + item.title);
-                  newDeals++;
+                  newDealsList.add(item);
                }
             }
             // reset the currentDeals (which are used to know if present deals are different, or not)
@@ -71,10 +70,11 @@ public class DealService extends IntentService {
             app.currentDeals.addAll(items);
          }
       }
-      return newDeals;
+      return newDealsList;
    }
 
-   private void sendNotification(final Context context, final int newDeals) {
+   // TODO notifications seem to stack up rather than replace existing with same pending intent?
+   private void sendNotification(final Context context, final List<Item> newDealsList) {
       Intent notificationIntent = new Intent(context, DealList.class);
       PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
@@ -84,8 +84,17 @@ public class DealService extends IntentService {
                new Notification(android.R.drawable.star_on, getString(R.string.deal_service_ticker), System
                         .currentTimeMillis());
       notification.flags |= Notification.FLAG_AUTO_CANCEL;
-      notification.setLatestEventInfo(context, getString(R.string.deal_service_title), getResources()
-               .getQuantityString(R.plurals.deal_service_new_deal, newDeals, newDeals), contentIntent);
+      notification.setLatestEventInfo(context, getResources().getQuantityString(R.plurals.deal_service_new_deal,
+               newDealsList.size(), newDealsList.size()), getNewDealsString(newDealsList), contentIntent);
       notificationMgr.notify(0, notification);
+   }
+
+   private String getNewDealsString(final List<Item> newDealsList) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("\n");
+      for (Item item : newDealsList) {
+         sb.append(item.title + "\n");
+      }
+      return sb.toString();
    }
 }

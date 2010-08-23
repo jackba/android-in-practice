@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,10 +32,10 @@ public class DealDetails extends Activity {
 
       Item item = app.currentItem;
 
-      if (item != null) {
-         Bitmap bitmap = app.retrieveBitmap(item.pic175Url);
+      if (item != null) {         
          ImageView icon = (ImageView) findViewById(R.id.details_icon);
-         icon.setImageBitmap(bitmap);
+         icon.setBackgroundResource(R.drawable.loading);
+         new RetrieveImageTask(icon).execute(item.pic175Url);
 
          TextView title = (TextView) findViewById(R.id.details_title);
          title.setText(item.title);         
@@ -120,5 +121,26 @@ public class DealDetails extends Activity {
       sb.append("\nQuantity:" + item.quantity);
       sb.append("\nURL:" + item.dealUrl);
       return sb.toString();
+   }
+   
+   private class RetrieveImageTask extends AsyncTask<String, Void, Bitmap> {
+      private ImageView imageView;
+
+      public RetrieveImageTask(final ImageView imageView) {
+         this.imageView = imageView;
+      }
+
+      @Override
+      protected Bitmap doInBackground(final String... args) {
+         Bitmap bitmap = app.retrieveBitmap(args[0]);
+         return bitmap;
+      }
+
+      @Override
+      protected void onPostExecute(final Bitmap bitmap) {
+         if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);            
+         }
+      }
    }
 }
