@@ -24,13 +24,11 @@ public class DealDroidApp extends Application {
    public DailyDealsFeedParser parser;   
    public List<Section> sectionList;
    public Map<Long, Bitmap> imageCache;
-   public List<Item> currentDeals;
    public Section currentSection;
    public Item currentItem;
 
    public DealDroidApp() {
       this.parser = new DailyDealsXmlPullFeedParser();
-      this.currentDeals = new ArrayList<Item>(4);
       this.sectionList = new ArrayList<Section>(6);
       this.imageCache = new HashMap<Long, Bitmap>();
    }

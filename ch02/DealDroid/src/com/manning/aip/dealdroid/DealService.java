@@ -37,8 +37,9 @@ public class DealService extends IntentService {
    public void onHandleIntent(Intent intent) {
       Log.i(Constants.LOG_TAG, "DealService invoked, checking for new deals (will notify if present)");
       this.app = (DealDroidApp) getApplication();
+      List<Item> currentDeals = app.sectionList.get(0).items;
       app.sectionList = app.parser.parse();
-      List<Item> newDealsList = this.checkForNewDeals();
+      List<Item> newDealsList = this.checkForNewDeals(currentDeals);
       if (!newDealsList.isEmpty()) {
          this.sendNotification(this, newDealsList);
       }
@@ -53,27 +54,23 @@ public class DealService extends IntentService {
       */
    }
 
-   private List<Item> checkForNewDeals() {
+   private List<Item> checkForNewDeals(final List<Item> currentDeals) {
       List<Item> newDealsList = new ArrayList<Item>();
       if (!app.sectionList.isEmpty()) {
          // "deals" are only for Daily Deals section, which is first, at index 0
          ArrayList<Item> items = app.sectionList.get(0).items;
          if (!items.isEmpty()) {
-            for (Item item : items) {
-               if (!app.currentDeals.contains(item)) {
+            for (Item item : items) {               
+               if (!currentDeals.contains(item)) {
                   Log.d(Constants.LOG_TAG, "New deal found: " + item.title);
                   newDealsList.add(item);
                }
-            }
-            // reset the currentDeals (which are used to know if present deals are different, or not)
-            app.currentDeals.clear();
-            app.currentDeals.addAll(items);
+            }                 
          }
       }
       return newDealsList;
    }
 
-   // TODO notifications seem to stack up rather than replace existing with same pending intent?
    private void sendNotification(final Context context, final List<Item> newDealsList) {
       Intent notificationIntent = new Intent(context, DealList.class);
       PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
@@ -81,19 +78,23 @@ public class DealService extends IntentService {
       NotificationManager notificationMgr =
                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
       Notification notification =
-               new Notification(android.R.drawable.star_on, getString(R.string.deal_service_ticker), System
-                        .currentTimeMillis());
+               new Notification(android.R.drawable.star_on, getString(R.string.deal_service_ticker) + " "
+                        + getNewDealsString(newDealsList), System.currentTimeMillis());
       notification.flags |= Notification.FLAG_AUTO_CANCEL;
-      notification.setLatestEventInfo(context, getResources().getString(R.string.deal_service_ticker) + " "
-               + getNewDealsString(newDealsList), getResources().getQuantityString(R.plurals.deal_service_new_deal,
-               newDealsList.size(), newDealsList.size()), contentIntent);
+      notification.setLatestEventInfo(context, getResources().getString(R.string.deal_service_title), getResources()
+               .getQuantityString(R.plurals.deal_service_new_deal, newDealsList.size(), newDealsList.size()),
+               contentIntent);
       notificationMgr.notify(0, notification);
    }
 
    private String getNewDealsString(final List<Item> newDealsList) {
-      StringBuilder sb = new StringBuilder();      
-      for (Item item : newDealsList) {
-         sb.append("\"" + item.title + "\" ");
+      StringBuilder sb = new StringBuilder();
+      for (int i = 1; i <= newDealsList.size(); i++) {
+         Item item = newDealsList.get(i - 1);
+         sb.append(i + "." + item.title);
+         if (i != newDealsList.size()) {
+            sb.append(" ");
+         } 
       }
       return sb.toString();
    }
