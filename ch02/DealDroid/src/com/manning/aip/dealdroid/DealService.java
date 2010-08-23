@@ -37,11 +37,15 @@ public class DealService extends IntentService {
    public void onHandleIntent(Intent intent) {
       Log.i(Constants.LOG_TAG, "DealService invoked, checking for new deals (will notify if present)");
       this.app = (DealDroidApp) getApplication();
-      List<Item> previousDeals = app.sectionList.get(0).items;
-      app.sectionList = app.parser.parse();
-      List<Item> newDealsList = this.checkForNewDeals(previousDeals, app.sectionList.get(0).items);
-      if (!newDealsList.isEmpty()) {
-         this.sendNotification(this, newDealsList);
+      if (app.sectionList != null && !app.sectionList.isEmpty()) {
+         List<Item> previousDeals = app.sectionList.get(0).items;
+         app.sectionList = app.parser.parse();
+         List<Item> newDealsList = this.checkForNewDeals(previousDeals, app.sectionList.get(0).items);
+         if (!newDealsList.isEmpty()) {
+            this.sendNotification(this, newDealsList);
+         }
+      } else {
+         Log.w(Constants.LOG_TAG, "DealDroidApp setionList null or empty, parsing may have failed");
       }
 
       // uncomment to force notification, new deals or not
