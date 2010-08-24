@@ -32,18 +32,18 @@ public class DealDetails extends Activity {
       setContentView(R.layout.dealdetails);
 
       app = (DealDroidApp) getApplication();
-      
+
       progressBar = (ProgressBar) findViewById(R.id.progress);
       progressBar.setIndeterminate(true);
-      
+
       Item item = app.currentItem;
 
-      if (item != null) {         
+      if (item != null) {
          ImageView icon = (ImageView) findViewById(R.id.details_icon);
          new RetrieveImageTask(icon).execute(item.pic175Url);
 
          TextView title = (TextView) findViewById(R.id.details_title);
-         title.setText(item.title);         
+         title.setText(item.title);
 
          CharSequence pricePrefix = getText(R.string.deal_details_price_prefix);
          TextView price = (TextView) findViewById(R.id.details_price);
@@ -54,7 +54,7 @@ public class DealDetails extends Activity {
 
          TextView quantity = (TextView) findViewById(R.id.details_quantity);
          quantity.setText(Integer.toString(item.quantity));
-         
+
          TextView quantitySold = (TextView) findViewById(R.id.details_quantity_sold);
          quantitySold.setText(Integer.toString(item.quantitySold));
 
@@ -89,7 +89,7 @@ public class DealDetails extends Activity {
       }
       return false;
    }
-   
+
    // TODO onSaveInstanceState/onRestoreInstanceState - icon?
 
    private void mailDeal() {
@@ -129,7 +129,7 @@ public class DealDetails extends Activity {
       sb.append("\nURL:" + item.dealUrl);
       return sb.toString();
    }
-   
+
    private class RetrieveImageTask extends AsyncTask<String, Void, Bitmap> {
       private ImageView imageView;
 

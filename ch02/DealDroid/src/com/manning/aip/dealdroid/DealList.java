@@ -81,7 +81,11 @@ public class DealList extends ListActivity {
       // Oversimplified AsyncTask 
       // (better to handle instance states and dismiss Progress onPause, etc., here just simple)
       if (app.sectionList.isEmpty()) {
-         new ParseFeedTask().execute();
+         if (app.connectionPresent()) {
+            new ParseFeedTask().execute();
+         } else {
+            Toast.makeText(this, getString(R.string.deal_list_network_unavailable), Toast.LENGTH_LONG).show();
+         }
       } else {
          if (!app.sectionList.isEmpty()) {
             // start off the sections selection with first one, Daily Deals
@@ -103,8 +107,8 @@ public class DealList extends ListActivity {
       Intent dealDetails = new Intent(DealList.this, DealDetails.class);
       startActivity(dealDetails);
    }
-   
-   @Override 
+
+   @Override
    public void onPause() {
       if (progressDialog.isShowing()) {
          progressDialog.dismiss();
@@ -141,15 +145,15 @@ public class DealList extends ListActivity {
          publishProgress(1);
          List<Section> sections = app.parser.parse();
          publishProgress(2);
-         return sections;         
+         return sections;
       }
 
       @Override
       protected void onProgressUpdate(Integer... progress) {
          int currentProgress = progress[0];
-         if (currentProgress == 1 && !progressDialog.isShowing()) {
+         if ((currentProgress == 1) && !progressDialog.isShowing()) {
             progressDialog.show();
-         } else if (currentProgress == 2 && progressDialog.isShowing()) {
+         } else if ((currentProgress == 2) && progressDialog.isShowing()) {
             progressDialog.dismiss();
          }
          progressDialog.setProgress(progress[0]);
@@ -160,6 +164,11 @@ public class DealList extends ListActivity {
          if (!taskSectionList.isEmpty()) {
             app.sectionList.clear();
             app.sectionList.addAll(taskSectionList);
+
+            // also make sure to update the "previous" deal ids with the current set 
+            // so that when service checking for new deals runs it has correct data to compare to
+            List<Long> currentDealIds = app.parseItemsIntoDealIds(app.sectionList.get(0).items);
+            app.setPreviousDealIdsToPrefs(currentDealIds);
 
             // start off the sections selection with first one, Daily Deals
             dealsAdapter.setSection(app.sectionList.get(0));

@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.manning.aip.dealdroid.model.Item;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +19,8 @@ import java.util.List;
 // (this can be mitigated but for this example this complication is not needed)
 // (it's not critical if user doesn't see new deals until phone is awake and notification is sent, both)
 public class DealService extends IntentService {
+
+   //private static int count;
 
    private DealDroidApp app;
 
@@ -37,63 +37,63 @@ public class DealService extends IntentService {
    public void onHandleIntent(Intent intent) {
       Log.i(Constants.LOG_TAG, "DealService invoked, checking for new deals (will notify if present)");
       this.app = (DealDroidApp) getApplication();
-      if (app.sectionList != null && !app.sectionList.isEmpty()) {
-         List<Item> previousDeals = app.sectionList.get(0).items;
+      if (app.connectionPresent()) {
+         // parse the feed
          app.sectionList = app.parser.parse();
-         List<Item> newDealsList = this.checkForNewDeals(previousDeals, app.sectionList.get(0).items);
-         if (!newDealsList.isEmpty()) {
-            this.sendNotification(this, newDealsList);
-         }
-      } else {
-         Log.w(Constants.LOG_TAG, "DealDroidApp setionList null or empty, parsing may have failed");
-      }
 
-      // uncomment to force notification, new deals or not
-      /*
-      count++;
-      if (count == 1) {
-         SystemClock.sleep(5000);
-         this.sendNotification(this, 1);
+         // get list of currentDealIds from first section (Daily Deals, always 4 items)
+         List<Long> currentDealIds = app.parseItemsIntoDealIds(app.sectionList.get(0).items);         
+
+         // previous deals - stored as prefs because it's easier than files for simple data
+         // and we need something persistent when service wakes up (previous app memory may not still be around)
+         List<Long> previousDealIds = app.getPreviousDealIdsFromPrefs();
+
+         // store currentDealIds as PREVIOUS so we're up to date next time around
+         app.setPreviousDealIdsToPrefs(currentDealIds);
+
+         // do we have any NEW ids?
+         List<Long> newDealIdsList = this.checkForNewDeals(previousDealIds, currentDealIds);
+         if (!newDealIdsList.isEmpty()) {
+            this.sendNotification(this, newDealIdsList.size());
+         }
+
+         // uncomment to force notification, new deals or not
+         /*
+         count++;
+         if (count == 1) {
+            SystemClock.sleep(5000);
+            this.sendNotification(this, 1);
+         }
+         */
+      } else {
+         Log.w(Constants.LOG_TAG, "Network connection not available, not checking for new deals");
       }
-      */
    }
 
-   private List<Item> checkForNewDeals(final List<Item> previousDeals, final List<Item> currentDeals) {
-      List<Item> newDealsList = new ArrayList<Item>();
-      for (Item item : currentDeals) {
-         if (!previousDeals.contains(item)) {
-            Log.d(Constants.LOG_TAG, "New deal found: " + item.title);
-            newDealsList.add(item);
+   // instead of using entire Item, use itemId, it's unique enough to know what's new         
+   private List<Long> checkForNewDeals(final List<Long> previousDealIds, final List<Long> currentDealIds) {
+      List<Long> newDealsList = new ArrayList<Long>();
+      for (Long id : currentDealIds) {
+         if ((id != 0) && !previousDealIds.contains(id)) {
+            Log.d(Constants.LOG_TAG, "New deal found: " + id);
+            newDealsList.add(id);
          }
       }
       return newDealsList;
    }
 
-   private void sendNotification(final Context context, final List<Item> newDealsList) {
+   private void sendNotification(final Context context, final int numNewDeals) {
       Intent notificationIntent = new Intent(context, DealList.class);
       PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
       NotificationManager notificationMgr =
                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
       Notification notification =
-               new Notification(android.R.drawable.star_on, getString(R.string.deal_service_ticker) + " "
-                        + getNewDealsString(newDealsList), System.currentTimeMillis());
+               new Notification(android.R.drawable.star_on, getString(R.string.deal_service_ticker), System
+                        .currentTimeMillis());
       notification.flags |= Notification.FLAG_AUTO_CANCEL;
       notification.setLatestEventInfo(context, getResources().getString(R.string.deal_service_title), getResources()
-               .getQuantityString(R.plurals.deal_service_new_deal, newDealsList.size(), newDealsList.size()),
-               contentIntent);
+               .getQuantityString(R.plurals.deal_service_new_deal, numNewDeals, numNewDeals), contentIntent);
       notificationMgr.notify(0, notification);
-   }
-
-   private String getNewDealsString(final List<Item> newDealsList) {
-      StringBuilder sb = new StringBuilder();
-      for (int i = 1; i <= newDealsList.size(); i++) {
-         Item item = newDealsList.get(i - 1);
-         sb.append(i + "." + item.title);
-         if (i != newDealsList.size()) {
-            sb.append(" ");
-         }
-      }
-      return sb.toString();
    }
 }

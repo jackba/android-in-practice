@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
 
    static final String FEED_URL = "http://deals.ebay.com/feeds/xml";
-   
+
    // names of the XML tags
    static final String EBAY_DAILY_DEALS = "EbayDailyDeals";
    static final String MORE_DEALS = "MoreDeals";
@@ -47,7 +47,7 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
 
    public DailyDealsXmlPullFeedParser() {
       try {
-         this.feedUrl = new URL(FEED_URL);
+         this.feedUrl = new URL(DailyDealsXmlPullFeedParser.FEED_URL);
       } catch (MalformedURLException e) {
          throw new RuntimeException(e);
       }
