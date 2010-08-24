@@ -78,8 +78,6 @@ public class DealList extends ListActivity {
       this.progressDialog.setCancelable(false);
       this.progressDialog.setMessage(getString(R.string.deal_list_retrieving_data));
 
-      // Oversimplified AsyncTask 
-      // (better to handle instance states and dismiss Progress onPause, etc., here just simple)
       if (app.sectionList.isEmpty()) {
          if (app.connectionPresent()) {
             new ParseFeedTask().execute();
