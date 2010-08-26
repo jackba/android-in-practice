@@ -95,7 +95,7 @@ public class DealList extends ListActivity {
          }
       }
 
-      sheduleAlarmReceiver();
+      scheduleAlarmReceiver();
    }
 
    @Override
@@ -117,7 +117,7 @@ public class DealList extends ListActivity {
    // Schedule AlarmManager to invoke DealAlarmReceiver and cancel any existing current PendingIntent
    // we do this because we *also* invoke the receiver from a BOOT_COMPLETED receiver
    // so that we make sure the service runs either when app is installed/started, or when device boots
-   private void sheduleAlarmReceiver() {
+   private void scheduleAlarmReceiver() {
       AlarmManager alarmMgr = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
       PendingIntent pendingIntent =
                PendingIntent.getBroadcast(this, 0, new Intent(this, DealAlarmReceiver.class),
