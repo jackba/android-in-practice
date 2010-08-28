@@ -78,13 +78,13 @@ public class DealDetails extends Activity {
    public boolean onOptionsItemSelected(MenuItem item) {
       switch (item.getItemId()) {
          case MAIL:
-            mailDeal();
+            shareDealUsingChooser("text/html");
             break;
          case BROWSE:
             openDealInBrowser();
             break;
          case SHARE:
-            shareDeal();
+            shareDealUsingChooser("text/*");
             break;
       }
       return false;
@@ -92,15 +92,16 @@ public class DealDetails extends Activity {
 
    // TODO onSaveInstanceState/onRestoreInstanceState - icon?
 
-   private void mailDeal() {
+   private void shareDealUsingChooser(final String type) {
       Intent i = new Intent(Intent.ACTION_SEND);
-      i.setType("text/html");
+      i.setType(type);
       i.putExtra(Intent.EXTRA_SUBJECT, "Subject:");
-      i.putExtra(Intent.EXTRA_TEXT, createMailMessage());
+      i.putExtra(Intent.EXTRA_TEXT, createDealMessage());
       try {
-         startActivity(Intent.createChooser(i, "Send mail..."));
+         startActivity(Intent.createChooser(i, "Share deal ..."));
       } catch (android.content.ActivityNotFoundException ex) {
-         Toast.makeText(DealDetails.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+         Toast.makeText(DealDetails.this, "There are no chooser options installed for the " + type + " + type.",
+                  Toast.LENGTH_SHORT).show();
       }
    }
 
@@ -109,16 +110,8 @@ public class DealDetails extends Activity {
       startActivity(i);
    }
 
-   private void shareDeal() {
-      Intent i = new Intent(Intent.ACTION_SEND);
-      i.setType("text/*");
-      i.putExtra(Intent.EXTRA_SUBJECT, "Subject:");
-      i.putExtra(Intent.EXTRA_TEXT, createMailMessage());
-      startActivity(Intent.createChooser(i, "Share options"));
-   }
-
    // TODO not i18n'd
-   private String createMailMessage() {
+   private String createDealMessage() {
       Item item = app.currentItem;
       StringBuffer sb = new StringBuffer();
       sb.append("Check out this deal:\n");
