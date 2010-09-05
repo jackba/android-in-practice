@@ -6,8 +6,6 @@
 	<string name="deal_list_retrieving_data">Getting deal data . . .</string>
 	<string name="deal_list_network_unavailable">No network connection, cannot retrieve data.</string>
 
-	<string name="show_deals_section">Show deals section</string>
-
 	<string name="deal_details">Deal Details</string>
 	<string name="deal_details_price_prefix">$</string>
 	<string name="deal_details_mail_menu">Mail</string>
