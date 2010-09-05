@@ -17,7 +17,4 @@
 	<string name="deal_details_quantity_label">Quantity:</string>
 	<string name="deal_details_quantity_sold_label">Quantity Sold:</string>
 	<string name="deal_details_location_label">Location:</string>
-
-	<string name="deal_service_title">DealDroid</string>
-	<string name="deal_service_ticker">New Deals: </string>
 </resources>

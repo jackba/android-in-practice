@@ -90,8 +90,6 @@ public class DealDetails extends Activity {
       return false;
    }
 
-   // TODO onSaveInstanceState/onRestoreInstanceState - icon?
-
    private void shareDealUsingChooser(final String type) {
       Intent i = new Intent(Intent.ACTION_SEND);
       i.setType(type);

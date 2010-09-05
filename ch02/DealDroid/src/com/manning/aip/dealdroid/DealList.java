@@ -1,8 +1,6 @@
 package com.manning.aip.dealdroid;
 
-import android.app.AlarmManager;
 import android.app.ListActivity;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -94,8 +92,6 @@ public class DealList extends ListActivity {
             Toast.makeText(this, getString(R.string.deal_list_missing_data), Toast.LENGTH_LONG).show();
          }
       }
-
-      scheduleAlarmReceiver();
    }
 
    @Override
@@ -112,20 +108,6 @@ public class DealList extends ListActivity {
          progressDialog.dismiss();
       }
       super.onPause();
-   }
-
-   // Schedule AlarmManager to invoke DealAlarmReceiver and cancel any existing current PendingIntent
-   // we do this because we *also* invoke the receiver from a BOOT_COMPLETED receiver
-   // so that we make sure the service runs either when app is installed/started, or when device boots
-   private void scheduleAlarmReceiver() {
-      AlarmManager alarmMgr = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-      PendingIntent pendingIntent =
-               PendingIntent.getBroadcast(this, 0, new Intent(this, DealAlarmReceiver.class),
-                        PendingIntent.FLAG_CANCEL_CURRENT);
-
-      // Use inexact repeating which is easier on battery (system can phase events and not wake at exact times)
-      alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, Constants.ALARM_TRIGGER_AT_TIME,
-               Constants.ALARM_INTERVAL, pendingIntent);
    }
 
    // Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
