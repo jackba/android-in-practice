@@ -1,7 +1,5 @@
 package com.manning.aip.dealdroid;
 
-import android.app.AlarmManager;
-import android.os.SystemClock;
 
 public class Constants {
 
