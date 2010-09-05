@@ -10,6 +10,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,6 +30,8 @@ import com.manning.aip.dealdroid.model.Section;
 import java.util.List;
 
 public class DealList extends ListActivity {
+
+   private static final int MENU_REPARSE = 0;
 
    private DealDroidApp app;
    private DealsAdapter dealsAdapter;
@@ -108,6 +112,26 @@ public class DealList extends ListActivity {
          progressDialog.dismiss();
       }
       super.onPause();
+   }
+
+   @Override
+   public boolean onCreateOptionsMenu(Menu menu) {
+      menu.add(0, DealList.MENU_REPARSE, 0, R.string.deal_list_reparse_menu);
+      return true;
+   }
+
+   @Override
+   public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+         case MENU_REPARSE:
+            if (app.connectionPresent()) {
+               new ParseFeedTask().execute();
+            } else {
+               Toast.makeText(this, getString(R.string.deal_list_network_unavailable), Toast.LENGTH_LONG).show();
+            }
+            break;
+      }
+      return false;
    }
 
    // Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread

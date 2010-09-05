@@ -18,10 +18,9 @@ import com.manning.aip.dealdroid.model.Item;
 
 public class DealDetails extends Activity {
 
-   private static final int NONE = 0;
-   private static final int MAIL = 1;
-   private static final int BROWSE = 2;
-   private static final int SHARE = 3;
+   private static final int MENU_MAIL = 1;
+   private static final int MENU_BROWSE = 2;
+   private static final int MENU_SHARE = 3;
 
    private DealDroidApp app;
    private ProgressBar progressBar;
@@ -68,22 +67,22 @@ public class DealDetails extends Activity {
 
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
-      menu.add(DealDetails.NONE, DealDetails.MAIL, DealDetails.NONE, R.string.deal_details_mail_menu);
-      menu.add(DealDetails.NONE, DealDetails.BROWSE, DealDetails.NONE, R.string.deal_details_browser_menu);
-      menu.add(DealDetails.NONE, DealDetails.SHARE, DealDetails.NONE, R.string.deal_details_share_menu);
+      menu.add(0, DealDetails.MENU_MAIL, 0, R.string.deal_details_mail_menu);
+      menu.add(0, DealDetails.MENU_BROWSE, 1, R.string.deal_details_browser_menu);
+      menu.add(0, DealDetails.MENU_SHARE, 2, R.string.deal_details_share_menu);
       return true;
    }
 
    @Override
    public boolean onOptionsItemSelected(MenuItem item) {
       switch (item.getItemId()) {
-         case MAIL:
+         case MENU_MAIL:
             shareDealUsingChooser("text/html");
             break;
-         case BROWSE:
+         case MENU_BROWSE:
             openDealInBrowser();
             break;
-         case SHARE:
+         case MENU_SHARE:
             shareDealUsingChooser("text/*");
             break;
       }

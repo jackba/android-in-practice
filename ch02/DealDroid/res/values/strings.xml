@@ -5,6 +5,7 @@
 	<string name="deal_list_missing_data">No data to display, please try again later.</string>
 	<string name="deal_list_retrieving_data">Getting deal data . . .</string>
 	<string name="deal_list_network_unavailable">No network connection, cannot retrieve data.</string>
+	<string name="deal_list_reparse_menu">Re-parse Feed</string>
 
 	<string name="show_deals_section">Show deals section</string>
 
