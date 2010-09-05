@@ -99,6 +99,19 @@ public class DealList extends ListActivity {
    }
 
    @Override
+   public void onStart() {
+      super.onStart();
+      boolean forceReload = this.getIntent().getBooleanExtra(Constants.FORCE_RELOAD, false);
+      if (forceReload) {
+         if (app.connectionPresent()) {
+            new ParseFeedTask().execute();
+         } else {
+            Toast.makeText(this, getString(R.string.deal_list_network_unavailable), Toast.LENGTH_LONG).show();
+         }
+      }
+   }
+   
+   @Override
    protected void onListItemClick(final ListView listView, final View view, final int position, final long id) {
       view.setBackgroundColor(android.R.color.background_light);
       app.currentItem = app.sectionList.get(currentSelectedSection).items.get(position);
