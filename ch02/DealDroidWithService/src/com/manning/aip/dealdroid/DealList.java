@@ -102,6 +102,7 @@ public class DealList extends ListActivity {
    public void onStart() {
       super.onStart();
       boolean forceReload = this.getIntent().getBooleanExtra(Constants.FORCE_RELOAD, false);
+      this.getIntent().removeExtra(Constants.FORCE_RELOAD);
       if (forceReload) {
          if (app.connectionPresent()) {
             new ParseFeedTask().execute();
