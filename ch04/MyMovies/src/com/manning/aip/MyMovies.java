@@ -10,6 +10,7 @@ public class MyMovies extends ListActivity {
 
    private MovieAdapter adapter;
 
+   @Override
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
 
@@ -29,12 +30,13 @@ public class MyMovies extends ListActivity {
       listView.setItemsCanFocus(false);
    }
 
-   public void backToTop(View view) {
-      getListView().setSelection(0);
-   }
-
+   @Override
    protected void onListItemClick(ListView l, View v, int position, long id) {
       this.adapter.toggleMovie(position);
       this.adapter.notifyDataSetChanged();
+   }
+
+   public void backToTop(View view) {
+      getListView().setSelection(0);
    }
 }
