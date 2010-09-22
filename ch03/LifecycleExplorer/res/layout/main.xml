@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" style="android:style/textAppearance.Large"
-		android:text="@string/app_name" />
+	android:layout_height="fill_parent" android:layout_margin="10dp"
+	android:gravity="center">
 
 	<TextView android:id="@+id/currentPhase" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+		android:layout_height="wrap_content" android:layout_marginTop="10dp"
+		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:text="phase" />
 
 	<TextView android:id="@+id/currentTask" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+		android:layout_height="wrap_content" android:layout_marginTop="10dp"
+		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:text="task" />
 
 	<Chronometer android:id="@+id/chronometer"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_marginTop="10dp" android:gravity="center"
 		android:textAppearance="?android:attr/textAppearanceLarge" />
-
 
 </LinearLayout>

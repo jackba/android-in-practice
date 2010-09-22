@@ -3,6 +3,7 @@ package com.manning.aip.lifecycle;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Chronometer;
 import android.widget.TextView;
@@ -54,20 +55,25 @@ public class Main extends Activity {
    // screenOrientation
    // taskAffinity
    
+   // also include adb shell dumpsys activity
+   
+   private void sleeper() {
+      SystemClock.sleep(2000);
+   }
    
    //
    // the life cycle "onX" methods
    //
    @Override
    public void onCreate(Bundle savedInstanceState) {
+      Log.d(LOG_TAG, " *** onCreate");
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
 
       phase = (TextView) findViewById(R.id.currentPhase);
       task = (TextView) findViewById(R.id.currentTask);
-      chrono = (Chronometer) findViewById(R.id.chronometer);
-      
-      chrono.start();
+      chrono = (Chronometer) findViewById(R.id.chronometer);      
+      chrono.start();      
    }
  
    @Override
@@ -75,20 +81,26 @@ public class Main extends Activity {
       Log.d(LOG_TAG, " *** onStart");
       super.onStart();
       phase.setText("onStart");
+      phase.setTextColor(getResources().getColor(R.color.green));
+      sleeper();
    }
 
    @Override
    protected void onRestart() {
       Log.d(LOG_TAG, " *** onRestart");
       super.onRestart();
-      phase.setText("onReStart");
+      phase.setText("onRestart");
+      phase.setTextColor(getResources().getColor(R.color.dark_green));
+      sleeper();
    }
    
    @Override
    protected void onResume() {
       Log.d(LOG_TAG, " *** onResume");
       super.onResume();
-      phase.setText("onResume");
+      phase.setText("onResume");  
+      phase.setTextColor(getResources().getColor(R.color.bright_green));
+      sleeper();
    }
 
    @Override
@@ -97,6 +109,8 @@ public class Main extends Activity {
       super.onPause();
       chrono.stop();
       phase.setText("onPause");
+      phase.setTextColor(getResources().getColor(R.color.blue));
+      sleeper();
    }
    
    @Override
@@ -104,12 +118,16 @@ public class Main extends Activity {
       Log.d(LOG_TAG, " *** onStop");
       super.onStop();
       phase.setText("onStop");
+      phase.setTextColor(getResources().getColor(R.color.red));
+      sleeper();
    }
 
    @Override
    protected void onDestroy() {
       Log.d(LOG_TAG, " *** onDestroy");
       super.onDestroy();
+      phase.setText("onDestroy");
+      sleeper();
    }
 
    // also onPostCreate and onPostResume, but usually don't need to muck with those
