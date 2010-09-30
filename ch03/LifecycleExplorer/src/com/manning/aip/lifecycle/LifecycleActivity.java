@@ -52,43 +52,43 @@ public class LifecycleActivity extends Activity {
    @Override
    public void onCreate(Bundle savedInstanceState) {
       Log.d(LOG_TAG, " *** onCreate");
-      super.onCreate(savedInstanceState);
       Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();      
+      super.onCreate(savedInstanceState);      
    }
 
    @Override
    protected void onStart() {
       Log.d(LOG_TAG, " *** onStart");
-      super.onStart();
       Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();      
+      super.onStart();      
    }
 
    @Override
    protected void onResume() {
       Log.d(LOG_TAG, " *** onResume");
-      super.onResume();
       Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+      super.onResume();      
    }
       
    @Override
    protected void onPause() {
       Log.d(LOG_TAG, " *** onPause");
-      super.onPause();
       Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+      super.onPause();      
    }
 
    @Override
    protected void onStop() {
       Log.d(LOG_TAG, " *** onStop");
-      super.onStop();
       Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
+      super.onStop();      
    }
 
    @Override
    protected void onDestroy() {
       Log.d(LOG_TAG, " *** onDestroy");
-      super.onDestroy();
       Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
+      super.onDestroy();      
    }
 
    //
@@ -121,19 +121,21 @@ public class LifecycleActivity extends Activity {
    @Override
    public void onConfigurationChanged(Configuration newConfig) {
       Log.d(LOG_TAG, " *** onConfigurationChanged");
-      super.onConfigurationChanged(newConfig);
       Toast.makeText(this, "onConfigurationChanged", Toast.LENGTH_SHORT).show();
+      super.onConfigurationChanged(newConfig);      
    }
 
    @Override
    public Object onRetainNonConfigurationInstance() {
       Log.d(LOG_TAG, " *** onRetainNonConfigurationInstance");
+      Toast.makeText(this, "onRetainNonConfigurationInstance", Toast.LENGTH_SHORT).show();
       return super.onRetainNonConfigurationInstance();
    }
 
    @Override
    public Object getLastNonConfigurationInstance() {
       Log.d(LOG_TAG, " *** getLastNonConfigurationInstance");
+      Toast.makeText(this, "getLastNonConfigurationInstance", Toast.LENGTH_SHORT).show();
       return super.getLastNonConfigurationInstance();
    }
 

@@ -1,10 +1,12 @@
 package com.manning.aip.lifecycle;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.Toast;
 
 public class Main extends LifecycleActivity {
 
@@ -31,4 +33,10 @@ public class Main extends LifecycleActivity {
       super.onStart();
       chrono.start();
    }  
+   
+   @Override
+   protected void onPause() {
+      chrono.stop();
+      super.onPause();      
+   }
 }
