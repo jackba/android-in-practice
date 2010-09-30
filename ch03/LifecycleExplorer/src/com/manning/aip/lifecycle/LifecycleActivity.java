@@ -1,13 +1,20 @@
 package com.manning.aip.lifecycle;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 // logcat filterspec
 // adb -e logcat "*:s LifecycleExplorer:v"
+
+// also include adb shell dumpsys activity
 
 /**
  * The lifecycle and task affinity of an Activity should be well understood when
@@ -30,64 +37,52 @@ import android.widget.Toast;
  * @author ccollins
  *
  */
-public class LifecycleActivity extends Activity {
+public abstract class LifecycleActivity extends Activity {
 
    private static final String LOG_TAG = "LifecycleExplorer";
 
-   // http://developer.android.com/intl/de/guide/topics/manifest/activity-element.html
-   // manifest entries that can affect lifecycle/task (TODO cover with sep activities)
-   // allowTaskReparenting
-   // alwaysRetainTaskState
-   // clearTaskOnLaunch
-   // configChanges
-   // finishOnTaskLaunch
-   // launchMode
-   // multiprocess
-   // process
-   // screenOrientation
-   // taskAffinity
-
-   // also include adb shell dumpsys activity
-
+   private NotificationManager notifyMgr; 
+   
    @Override
    public void onCreate(Bundle savedInstanceState) {
-      Log.d(LOG_TAG, " *** onCreate");
-      Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();      
+      Log.d(LOG_TAG, " *** onCreate");      
       super.onCreate(savedInstanceState);      
-   }
+      notifyMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);      
+      notify(0, "onCreate", R.color.yellow, android.R.drawable.btn_star);      
+   }   
 
    @Override
    protected void onStart() {
       Log.d(LOG_TAG, " *** onStart");
-      Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();      
-      super.onStart();      
+      notify(1, "onStart", R.color.green, android.R.drawable.btn_star);          
+      super.onStart();       
    }
 
    @Override
    protected void onResume() {
       Log.d(LOG_TAG, " *** onResume");
-      Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+      notify(2, "onResume", R.color.dark_green, android.R.drawable.btn_star);      
       super.onResume();      
    }
       
    @Override
    protected void onPause() {
       Log.d(LOG_TAG, " *** onPause");
-      Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+      notify(3, "onPause", R.color.yellow, android.R.drawable.btn_star);         
       super.onPause();      
    }
 
    @Override
    protected void onStop() {
       Log.d(LOG_TAG, " *** onStop");
-      Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
+      notify(4, "onStop", R.color.red, android.R.drawable.btn_star);         
       super.onStop();      
    }
 
    @Override
    protected void onDestroy() {
       Log.d(LOG_TAG, " *** onDestroy");
-      Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
+      notify(5, "onDestroy", R.color.grey, android.R.drawable.btn_star);         
       super.onDestroy();      
    }
 
@@ -96,8 +91,7 @@ public class LifecycleActivity extends Activity {
    //
    @Override
    public boolean isFinishing() {
-      Log.d(LOG_TAG, " *** isFinishing");
-      Toast.makeText(this, "isFinishing", Toast.LENGTH_SHORT).show();
+      Log.d(LOG_TAG, " *** isFinishing");      
       return super.isFinishing();
    }
 
@@ -121,21 +115,21 @@ public class LifecycleActivity extends Activity {
    @Override
    public void onConfigurationChanged(Configuration newConfig) {
       Log.d(LOG_TAG, " *** onConfigurationChanged");
-      Toast.makeText(this, "onConfigurationChanged", Toast.LENGTH_SHORT).show();
+      notify(9, "onConfigurationChanged", R.color.black, android.R.drawable.btn_star);         
       super.onConfigurationChanged(newConfig);      
    }
 
    @Override
    public Object onRetainNonConfigurationInstance() {
       Log.d(LOG_TAG, " *** onRetainNonConfigurationInstance");
-      Toast.makeText(this, "onRetainNonConfigurationInstance", Toast.LENGTH_SHORT).show();
+      notify(10, "onRetainNonConfigurationInstance", R.color.black, android.R.drawable.btn_star);         
       return super.onRetainNonConfigurationInstance();
    }
 
    @Override
    public Object getLastNonConfigurationInstance() {
       Log.d(LOG_TAG, " *** getLastNonConfigurationInstance");
-      Toast.makeText(this, "getLastNonConfigurationInstance", Toast.LENGTH_SHORT).show();
+      notify(11, "getLastNonConfigurationInstance", R.color.black, android.R.drawable.btn_star);         
       return super.getLastNonConfigurationInstance();
    }
 
@@ -145,14 +139,32 @@ public class LifecycleActivity extends Activity {
    @Override
    protected void onRestoreInstanceState(Bundle savedInstanceState) {
       Log.d(LOG_TAG, " *** onRestoreInstanceState");
-      Toast.makeText(this, "onRestoreInstanceState", Toast.LENGTH_SHORT).show();
+      notify(12, "onRestoreInstanceState", R.color.black, android.R.drawable.btn_star);         
       super.onRestoreInstanceState(savedInstanceState);
    }
 
    @Override
    protected void onSaveInstanceState(Bundle outState) {
       Log.d(LOG_TAG, " *** onSaveInstanceState");
-      Toast.makeText(this, "onSaveInstanceState", Toast.LENGTH_SHORT).show();
+      notify(13, "onSaveInstanceState", R.color.black, android.R.drawable.btn_star);         
       super.onSaveInstanceState(outState);
-   }  
+   } 
+   
+   //
+   // notify helper
+   //
+   private void notify(final int id, final String method, final int methodColor, final int drawable) {      
+      Notification notification = new Notification(android.R.drawable.star_big_on, "Lifeycle Event", 0L);      
+      RemoteViews notificationContentView = new RemoteViews(getPackageName(), R.layout.custom_notification_layout);
+      notification.contentView = notificationContentView;
+      notification.contentIntent = PendingIntent.getActivity(this, 0, null, 0);
+      notification.flags |= Notification.FLAG_AUTO_CANCEL;
+      
+      notificationContentView.setImageViewResource(R.id.image, drawable);      
+      notificationContentView.setTextViewText(R.id.lifecycle_class,  getClass().getName());
+      notificationContentView.setTextViewText(R.id.lifecycle_method,  method);
+      notificationContentView.setTextColor(R.id.lifecycle_method,  methodColor);
+      notificationContentView.setTextViewText(R.id.lifecycle_timestamp,  Long.toString(System.currentTimeMillis()));      
+      this.notifyMgr.notify(id, notification);
+   }
 }
