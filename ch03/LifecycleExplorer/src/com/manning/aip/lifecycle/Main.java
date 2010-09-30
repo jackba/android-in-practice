@@ -1,12 +1,11 @@
 package com.manning.aip.lifecycle;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.Toast;
 
 public class Main extends LifecycleActivity {
 
@@ -31,6 +30,7 @@ public class Main extends LifecycleActivity {
    @Override
    protected void onStart() {     
       super.onStart();
+      chrono.setBase(SystemClock.elapsedRealtime());
       chrono.start();
    }  
    

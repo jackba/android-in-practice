@@ -4,15 +4,14 @@
 	android:layout_height="fill_parent" android:layout_margin="10dp"
 	android:gravity="center">
 
-	<TextView android:id="@+id/currentPhase" android:layout_width="fill_parent"
+	<TextView android:id="@+id/blurb" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_marginTop="10dp"
 		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
-		android:text="phase" />
+		android:text="lifecycle" />
 
-	<Button android:id="@+id/finishButton" android:layout_width="fill_parent"
+	<Button android:id="@+id/finishButton" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginTop="10dp"
-		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
-		android:text="finish" />
+		android:gravity="center" android:text="finish" />
 
 	<Chronometer android:id="@+id/chronometer"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
