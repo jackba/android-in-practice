@@ -9,10 +9,10 @@
 		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
 		android:text="phase" />
 
-	<TextView android:id="@+id/currentTask" android:layout_width="fill_parent"
+	<Button android:id="@+id/finishButton" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_marginTop="10dp"
 		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
-		android:text="task" />
+		android:text="finish" />
 
 	<Chronometer android:id="@+id/chronometer"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
