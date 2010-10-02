@@ -33,6 +33,11 @@ import android.widget.Toast;
  * VISIBLE LIFETIME - onStart to onStop
  * FOREGROUND LIFETIME - onResume to onPause
  * 
+ * Three key methods (though there are also many more):
+ * onCreate
+ * onResume
+ * onPause
+ * 
  * http://developer.android.com/intl/de/reference/android/app/Activity.html
  * 
  * @author ccollins
