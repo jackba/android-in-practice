@@ -17,4 +17,9 @@
 		android:layout_marginTop="10dp" android:gravity="center"
 		android:textAppearance="?android:attr/textAppearanceLarge" />
 
+	<EditText android:id="@+id/stateText" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_marginTop="10dp"
+		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:text="state text here" />
+
 </LinearLayout>

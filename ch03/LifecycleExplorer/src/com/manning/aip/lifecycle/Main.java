@@ -6,37 +6,68 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.Date;
 
 public class Main extends LifecycleActivity {
 
+   private static final String STATE_TEXT_KEY = "stateTextKey";
+
    private Button finish;
    private Chronometer chrono;
-   
+   private EditText stateText;
+
    @Override
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
-
-      chrono = (Chronometer) findViewById(R.id.chronometer);     
-      
       finish = (Button) findViewById(R.id.finishButton);
       finish.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
             finish();
          }
       });
+      chrono = (Chronometer) findViewById(R.id.chronometer);
+      stateText = (EditText) findViewById(R.id.stateText);
    }
 
    @Override
-   protected void onStart() {     
+   protected void onResume() {
       super.onStart();
       chrono.setBase(SystemClock.elapsedRealtime());
       chrono.start();
-   }  
-   
+
+      // if the last non configuration object is present, show it
+      Date date = (Date) this.getLastNonConfigurationInstance();
+      if (date != null) {
+         Toast.makeText(this, "\"LastNonConfiguration\" object present: " + date, Toast.LENGTH_LONG).show();
+      }
+   }
+
    @Override
    protected void onPause() {
       chrono.stop();
-      super.onPause();      
+      super.onPause();
+   }
+
+   @Override
+   protected void onRestoreInstanceState(Bundle savedInstanceState) {
+      super.onRestoreInstanceState(savedInstanceState);
+      if (savedInstanceState != null && savedInstanceState.containsKey(STATE_TEXT_KEY)) {
+         stateText.setText(savedInstanceState.getString(STATE_TEXT_KEY));
+      }
+   }
+
+   @Override
+   protected void onSaveInstanceState(Bundle outState) {
+      outState.putString(STATE_TEXT_KEY, stateText.getText().toString());
+      super.onSaveInstanceState(outState);
+   }
+
+   @Override
+   public Object onRetainNonConfigurationInstance() {
+      return new Date();
    }
 }

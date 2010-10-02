@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -41,64 +42,97 @@ public abstract class LifecycleActivity extends Activity {
 
    private static final String LOG_TAG = "LifecycleExplorer";
 
-   private NotificationManager notifyMgr; 
-   
+   private NotificationManager notifyMgr;
+
    @Override
    public void onCreate(Bundle savedInstanceState) {
-      Log.d(LOG_TAG, " *** onCreate");      
-      super.onCreate(savedInstanceState);      
-      notifyMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);      
-      notify(0, "onCreate", R.color.yellow, android.R.drawable.btn_star);      
-   }   
+      Log.d(LOG_TAG, " *** onCreate");
+      super.onCreate(savedInstanceState);
+      notifyMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+      notify("onCreate", R.color.yellow, android.R.drawable.btn_star);
+   }
 
    @Override
    protected void onStart() {
       Log.d(LOG_TAG, " *** onStart");
-      notify(1, "onStart", R.color.green, android.R.drawable.btn_star);          
-      super.onStart();       
+      notify("onStart", R.color.green, android.R.drawable.btn_star);
+      super.onStart();
    }
 
    @Override
    protected void onResume() {
       Log.d(LOG_TAG, " *** onResume");
-      notify(2, "onResume", R.color.dark_green, android.R.drawable.btn_star);      
-      super.onResume();      
+      notify("onResume", R.color.dark_green, android.R.drawable.btn_star);
+      super.onResume();
    }
-      
+
    @Override
    protected void onPause() {
       Log.d(LOG_TAG, " *** onPause");
-      notify(3, "onPause", R.color.yellow, android.R.drawable.btn_star);         
-      super.onPause();      
+      notify("onPause", R.color.yellow, android.R.drawable.btn_star);
+      super.onPause();
    }
 
    @Override
    protected void onStop() {
       Log.d(LOG_TAG, " *** onStop");
-      notify(4, "onStop", R.color.red, android.R.drawable.btn_star);         
-      super.onStop();      
+      notify("onStop", R.color.red, android.R.drawable.btn_star);
+      super.onStop();
    }
 
    @Override
    protected void onDestroy() {
       Log.d(LOG_TAG, " *** onDestroy");
-      notify(5, "onDestroy", R.color.grey, android.R.drawable.btn_star);         
-      super.onDestroy();      
+      notify("onDestroy", R.color.grey, android.R.drawable.btn_star);
+      super.onDestroy();
+   }
+  
+   //
+   // state related
+   //
+   @Override
+   protected void onRestoreInstanceState(Bundle savedInstanceState) {
+      Log.d(LOG_TAG, " *** onRestoreInstanceState");
+      notify("onRestoreInstanceState", R.color.black, android.R.drawable.btn_star);
+      super.onRestoreInstanceState(savedInstanceState);
    }
 
+   @Override
+   protected void onSaveInstanceState(Bundle outState) {
+      Log.d(LOG_TAG, " *** onSaveInstanceState");
+      notify("onSaveInstanceState", R.color.black, android.R.drawable.btn_star);
+      super.onSaveInstanceState(outState);
+   }
+   
    //
-   // other life cycle/task related methods
+   // configuration related 
+   //
+   @Override
+   public void onConfigurationChanged(Configuration newConfig) {
+      Log.d(LOG_TAG, " *** onConfigurationChanged");
+      notify("onConfigurationChanged", R.color.black, android.R.drawable.btn_star);
+      super.onConfigurationChanged(newConfig);
+   }
+   
+   @Override
+   public Object onRetainNonConfigurationInstance() {
+      Log.d(LOG_TAG, " *** onRetainNonConfigurationInstance");
+      notify("onRetainNonConfigurationInstance", R.color.black, android.R.drawable.btn_star);
+      return super.onRetainNonConfigurationInstance();
+   }
+   
+   //
+   // other handy Activity methods
    //
    @Override
    public boolean isFinishing() {
-      Log.d(LOG_TAG, " *** isFinishing");      
+      Log.d(LOG_TAG, " *** isFinishing");
       return super.isFinishing();
    }
 
    @Override
    public void finish() {
-      Log.d(LOG_TAG, " *** finish");
-      Toast.makeText(this, "finish", Toast.LENGTH_SHORT).show();
+      Log.d(LOG_TAG, " *** finish");      
       super.finish();
    }
 
@@ -110,61 +144,20 @@ public abstract class LifecycleActivity extends Activity {
    }
 
    //
-   // configuration related
-   //
-   @Override
-   public void onConfigurationChanged(Configuration newConfig) {
-      Log.d(LOG_TAG, " *** onConfigurationChanged");
-      notify(9, "onConfigurationChanged", R.color.black, android.R.drawable.btn_star);         
-      super.onConfigurationChanged(newConfig);      
-   }
-
-   @Override
-   public Object onRetainNonConfigurationInstance() {
-      Log.d(LOG_TAG, " *** onRetainNonConfigurationInstance");
-      notify(10, "onRetainNonConfigurationInstance", R.color.black, android.R.drawable.btn_star);         
-      return super.onRetainNonConfigurationInstance();
-   }
-
-   @Override
-   public Object getLastNonConfigurationInstance() {
-      Log.d(LOG_TAG, " *** getLastNonConfigurationInstance");
-      notify(11, "getLastNonConfigurationInstance", R.color.black, android.R.drawable.btn_star);         
-      return super.getLastNonConfigurationInstance();
-   }
-
-   //
-   // state related
-   //
-   @Override
-   protected void onRestoreInstanceState(Bundle savedInstanceState) {
-      Log.d(LOG_TAG, " *** onRestoreInstanceState");
-      notify(12, "onRestoreInstanceState", R.color.black, android.R.drawable.btn_star);         
-      super.onRestoreInstanceState(savedInstanceState);
-   }
-
-   @Override
-   protected void onSaveInstanceState(Bundle outState) {
-      Log.d(LOG_TAG, " *** onSaveInstanceState");
-      notify(13, "onSaveInstanceState", R.color.black, android.R.drawable.btn_star);         
-      super.onSaveInstanceState(outState);
-   } 
-   
-   //
    // notify helper
    //
-   private void notify(final int id, final String method, final int methodColor, final int drawable) {      
-      Notification notification = new Notification(android.R.drawable.star_big_on, "Lifeycle Event", 0L);      
+   private void notify(final String method, final int methodColor, final int drawable) {
+      Notification notification = new Notification(android.R.drawable.star_big_on, "Lifeycle Event: " + method, 0L);
       RemoteViews notificationContentView = new RemoteViews(getPackageName(), R.layout.custom_notification_layout);
       notification.contentView = notificationContentView;
       notification.contentIntent = PendingIntent.getActivity(this, 0, null, 0);
       notification.flags |= Notification.FLAG_AUTO_CANCEL;
-      
-      notificationContentView.setImageViewResource(R.id.image, drawable);      
-      notificationContentView.setTextViewText(R.id.lifecycle_class,  getClass().getName());
-      notificationContentView.setTextViewText(R.id.lifecycle_method,  method);
-      notificationContentView.setTextColor(R.id.lifecycle_method,  methodColor);
-      notificationContentView.setTextViewText(R.id.lifecycle_timestamp,  Long.toString(System.currentTimeMillis()));      
-      this.notifyMgr.notify(id, notification);
+
+      notificationContentView.setImageViewResource(R.id.image, drawable);
+      notificationContentView.setTextViewText(R.id.lifecycle_class, getClass().getName());
+      notificationContentView.setTextViewText(R.id.lifecycle_method, method);
+      notificationContentView.setTextColor(R.id.lifecycle_method, methodColor);
+      notificationContentView.setTextViewText(R.id.lifecycle_timestamp, Long.toString(System.currentTimeMillis()));
+      this.notifyMgr.notify((int)SystemClock.elapsedRealtime(), notification);
    }
 }
