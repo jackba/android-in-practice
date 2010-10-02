@@ -35,7 +35,7 @@ public class Main extends LifecycleActivity {
 
    @Override
    protected void onResume() {
-      super.onStart();
+      super.onResume();
       chrono.setBase(SystemClock.elapsedRealtime());
       chrono.start();
 
