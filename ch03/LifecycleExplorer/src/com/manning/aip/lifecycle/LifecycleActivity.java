@@ -162,7 +162,7 @@ public abstract class LifecycleActivity extends Activity {
       notificationContentView.setTextViewText(R.id.lifecycle_class, getClass().getName());
       notificationContentView.setTextViewText(R.id.lifecycle_method, method);
       notificationContentView.setTextColor(R.id.lifecycle_method, methodColor);
-      notificationContentView.setTextViewText(R.id.lifecycle_timestamp, Long.toString(System.currentTimeMillis()));
-      this.notifyMgr.notify((int)SystemClock.elapsedRealtime(), notification);
+      notificationContentView.setTextViewText(R.id.lifecycle_timestamp, Long.toString(System.currentTimeMillis()));      
+      this.notifyMgr.notify((int)System.currentTimeMillis(), notification);     
    }
 }

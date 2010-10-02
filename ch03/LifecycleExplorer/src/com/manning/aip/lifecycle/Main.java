@@ -68,6 +68,7 @@ public class Main extends LifecycleActivity {
 
    @Override
    public Object onRetainNonConfigurationInstance() {
+      // don't call super here intentionally, we want to return date
       return new Date();
    }
 }
