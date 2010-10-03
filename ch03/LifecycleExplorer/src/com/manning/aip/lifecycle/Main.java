@@ -1,5 +1,6 @@
 package com.manning.aip.lifecycle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -16,6 +17,7 @@ public class Main extends LifecycleActivity {
    private static final String STATE_TEXT_KEY = "stateTextKey";
 
    private Button finish;
+   private Button activity2;
    private Chronometer chrono;
    private EditText stateText;
 
@@ -27,6 +29,12 @@ public class Main extends LifecycleActivity {
       finish.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
             finish();
+         }
+      });
+      activity2 = (Button) findViewById(R.id.activity2Button);
+      activity2.setOnClickListener(new OnClickListener() {
+         public void onClick(View v) {
+            startActivity(new Intent(Main.this, Activity2.class));
          }
       });
       chrono = (Chronometer) findViewById(R.id.chronometer);
