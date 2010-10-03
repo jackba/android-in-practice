@@ -6,10 +6,16 @@
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_marginTop="10dp"
 		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
-		android:text="Activity2" />
+		android:text="Activity3" />
 
-	<Button android:id="@+id/activity3Button" android:layout_width="wrap_content"
+	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_marginTop="10dp"
-		android:gravity="center" android:text="Go to Activity3" />
+		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:text="Number of resumes:" />
+
+	<TextView android:id="@+id/numResumes" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_marginTop="10dp"
+		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:text="0" />
 
 </LinearLayout>
