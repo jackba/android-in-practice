@@ -52,7 +52,7 @@ public abstract class LifecycleActivity extends Activity {
    private static final String LOG_TAG = "LifecycleExplorer";
 
    private NotificationManager notifyMgr;
-   private boolean enableNotifications;
+   private boolean enableNotifications = true;
 
    public LifecycleActivity() {
       super();
@@ -115,7 +115,6 @@ public abstract class LifecycleActivity extends Activity {
       super.onSaveInstanceState(outState);
    }
 
-   /*
    //
    // configuration related 
    //
@@ -130,7 +129,6 @@ public abstract class LifecycleActivity extends Activity {
       debugEvent("onRetainNonConfigurationInstance");
       return super.onRetainNonConfigurationInstance();
    }
-   */
 
    //
    // other handy Activity methods

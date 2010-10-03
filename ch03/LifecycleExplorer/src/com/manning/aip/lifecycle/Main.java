@@ -13,7 +13,7 @@ public class Main extends LifecycleActivity {
    private Button finish;
    private Button activity2;
    private Chronometer chrono;   
-
+   
    @Override
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
