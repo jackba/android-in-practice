@@ -19,6 +19,13 @@ public class Activity3 extends LifecycleActivity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity3);
       numResumes = (TextView) findViewById(R.id.numResumes);
+      
+      // if the last non configuration object is present, show it
+      // (can use this in onCreate and onStart)
+      Date date = (Date) this.getLastNonConfigurationInstance();
+      if (date != null) {
+         Toast.makeText(this, "\"LastNonConfiguration\" object present: " + date, Toast.LENGTH_LONG).show();
+      }   
    }
 
    @Override
@@ -26,13 +33,7 @@ public class Activity3 extends LifecycleActivity {
       super.onResume();
 
       numResumes.setText(String.valueOf(count));
-      count++;
-
-      // if the last non configuration object is present, show it
-      Date date = (Date) this.getLastNonConfigurationInstance();
-      if (date != null) {
-         Toast.makeText(this, "\"LastNonConfiguration\" object present: " + date, Toast.LENGTH_LONG).show();
-      }   
+      count++;      
    }
 
    @Override

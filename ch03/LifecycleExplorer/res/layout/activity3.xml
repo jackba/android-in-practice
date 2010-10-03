@@ -6,7 +6,12 @@
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_marginTop="10dp"
 		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
-		android:text="Activity3" />
+		android:text="Activity3 - instance and nonConfiguration state" />
+
+	<EditText android:id="@+id/stateText" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_marginTop="10dp"
+		android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:text="Edit me, automatic state text" />
 
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_marginTop="10dp"

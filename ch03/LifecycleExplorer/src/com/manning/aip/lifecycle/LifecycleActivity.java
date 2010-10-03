@@ -52,6 +52,8 @@ public abstract class LifecycleActivity extends Activity {
    private static final String LOG_TAG = "LifecycleExplorer";
 
    private NotificationManager notifyMgr;
+   // default this to true, or use the ctor, to send notifications
+   // with many events notifications can be slow, but useful to "see" what's happening
    private boolean enableNotifications = true;
 
    public LifecycleActivity() {
