@@ -115,6 +115,7 @@ public abstract class LifecycleActivity extends Activity {
       super.onSaveInstanceState(outState);
    }
 
+   /*
    //
    // configuration related 
    //
@@ -129,6 +130,7 @@ public abstract class LifecycleActivity extends Activity {
       debugEvent("onRetainNonConfigurationInstance");
       return super.onRetainNonConfigurationInstance();
    }
+   */
 
    //
    // other handy Activity methods

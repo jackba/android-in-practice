@@ -34,6 +34,7 @@ public class Activity3 extends LifecycleActivity {
       */
    }
 
+   /*
    @Override
    protected void onRestoreInstanceState(Bundle savedInstanceState) {
       if ((savedInstanceState != null) && savedInstanceState.containsKey(COUNT_KEY)) {
@@ -47,6 +48,7 @@ public class Activity3 extends LifecycleActivity {
       outState.putInt(COUNT_KEY, count);
       super.onSaveInstanceState(outState);
    }
+   */
 
    /*
    @Override
