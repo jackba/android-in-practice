@@ -11,7 +11,6 @@ public class Activity3 extends LifecycleActivity {
    private static final String COUNT_KEY = "cKey";
 
    private TextView numResumes;
-
    private int count;
 
    @Override
