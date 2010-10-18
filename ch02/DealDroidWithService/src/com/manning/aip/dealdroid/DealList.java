@@ -267,7 +267,7 @@ public class DealList extends ListActivity {
          final ImageView image = holder.image;
          image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ddicon));
 
-         final Item item = section.items.get(position);
+         final Item item = getItem(position);
 
          if (item != null) {
             text.setText(item.title);
