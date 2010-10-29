@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <LinearLayout android:orientation="horizontal" 
+    	android:layout_width="fill_parent" android:layout_height="wrap_content">
+    	<EditText android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" android:hint="@string/hintSymbol"
+    		android:id="@+id/inputSymbol"
+    	/>
+    	<EditText android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" android:hint="@string/hintMin"
+    		android:id="@+id/inputMin"
+    	/>
+    	<EditText android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" android:hint="@string/hintMax"
+    		android:id="@+id/inputMax"
+    	/>    	
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" 
+    	android:layout_width="fill_parent" android:layout_height="wrap_content">
+    	<EditText android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" android:hint="@string/hintPrice"
+    		android:id="@+id/inputPrice"
+    	/>    	
+    	<EditText android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" android:hint="@string/hintQuant"
+    		android:id="@+id/inputQuant"
+    	/>    	    	    	
+    	<Button android:layout_width="wrap_content" 
+    		android:layout_height="wrap_content" android:text="@string/btnLbl"
+    		android:id="@+id/btn"
+    	/>    	
+    </LinearLayout>
+    <ListView android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content" android:id="@android:id/list"
+    />
+</LinearLayout>
