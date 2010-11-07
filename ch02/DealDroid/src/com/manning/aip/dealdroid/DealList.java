@@ -172,7 +172,7 @@ public class DealList extends ListActivity {
       }
    }
    
-// Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
+   // Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
    private class ParseFeedTask extends AsyncTask<Void, Integer, List<Section>> {
 
       @Override
