@@ -113,8 +113,6 @@ public class DealList extends ListActivity {
       super.onPause();
    }
    
-   // TODO also apply changes to "withService" version
-
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
       menu.add(0, DealList.MENU_REPARSE, 0, R.string.deal_list_reparse_menu);
