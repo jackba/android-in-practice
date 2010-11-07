@@ -6,5 +6,5 @@
 		android:layout_height="fill_parent" android:layout_weight="1" />
 	<Spinner android:id="@+id/section_spinner"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_margin="5dip" />
+		android:layout_margin="5dp" />
 </LinearLayout>
