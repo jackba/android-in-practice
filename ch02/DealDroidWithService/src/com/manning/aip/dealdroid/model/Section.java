@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public final class Section {
 
-   public String title;
-   public ArrayList<Item> items;
+   private String title;
+   private ArrayList<Item> items;
 
    // favor "copy constructor/getInstance" over clone, clone is tricky and error prone
    // (better yet use immutable objects, but sort of overkill for this example)
@@ -26,6 +26,22 @@ public final class Section {
 
    public Section() {
       this.items = new ArrayList<Item>();
+   }
+
+   public String getTitle() {
+      return this.title;
+   }
+
+   public void setTitle(String title) {
+      this.title = title;
+   }
+
+   public ArrayList<Item> getItems() {
+      return this.items;
+   }
+
+   public void setItems(ArrayList<Item> items) {
+      this.items = items;
    }
 
    @Override

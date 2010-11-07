@@ -39,17 +39,17 @@ public class DealService extends IntentService {
       this.app = (DealDroidApp) getApplication();
       if (app.connectionPresent()) {
          // parse the feed
-         app.sectionList = app.parser.parse();
+         app.setSectionList(app.getParser().parse());
 
          // get list of currentDealIds from first section (Daily Deals, always 4 items)
-         List<Long> currentDealIds = app.parseItemsIntoDealIds(app.sectionList.get(0).items);         
+         List<Long> currentDealIds = app.parseItemsIntoDealIds(app.getSectionList().get(0).getItems());         
 
          // previous deals - stored as prefs because it's easier than files for simple data
          // and we need something persistent when service wakes up (previous app memory may not still be around)
-         List<Long> previousDealIds = app.getPreviousDealIdsFromPrefs();
+         List<Long> previousDealIds = app.getPreviousDealIds();
 
          // store currentDealIds as PREVIOUS so we're up to date next time around
-         app.setPreviousDealIdsToPrefs(currentDealIds);
+         app.setPreviousDealIds(currentDealIds);
 
          // do we have any NEW ids?
          List<Long> newDealIdsList = this.checkForNewDeals(previousDealIds, currentDealIds);

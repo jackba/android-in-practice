@@ -27,13 +27,55 @@ import java.util.Map;
 
 public class DealDroidApp extends Application {
 
-   public DailyDealsFeedParser parser;
-   public List<Section> sectionList;
-   public Map<Long, Bitmap> imageCache;
-   public Section currentSection;
-   public Item currentItem;
-   public SharedPreferences prefs;
+   private DailyDealsFeedParser parser;
+   private List<Section> sectionList;
+   private Map<Long, Bitmap> imageCache;
+   private Section currentSection;
+   private Item currentItem;
+   private SharedPreferences prefs;
+   
+   //
+   // getters/setters
+   //
+   public DailyDealsFeedParser getParser() {
+      return this.parser;
+   }
 
+   public List<Section> getSectionList() {
+      return this.sectionList;
+   }
+   
+   public void setSectionList(List<Section> sectionList) {
+      this.sectionList = sectionList;
+   }
+
+   public Map<Long, Bitmap> getImageCache() {
+      return this.imageCache;
+   }
+
+   public Section getCurrentSection() {
+      return this.currentSection;
+   }
+
+   public void setCurrentSection(Section currentSection) {
+      this.currentSection = currentSection;
+   }
+
+   public Item getCurrentItem() {
+      return this.currentItem;
+   }
+
+   public void setCurrentItem(Item currentItem) {
+      this.currentItem = currentItem;
+   }
+
+   public SharedPreferences getPrefs() {
+      return this.prefs;
+   }
+
+   //
+   // lifecycle
+   //
    @Override
    public void onCreate() {
       super.onCreate();
@@ -49,6 +91,9 @@ public class DealDroidApp extends Application {
       super.onTerminate();
    }
    
+   //
+   // helper methods (used by more than one other activity, so placed here)
+   //
    public Bitmap retrieveBitmap(final String urlString) {
       Log.d(Constants.LOG_TAG, "making HTTP trip for image:" + urlString);
       Bitmap bitmap = null;
@@ -73,7 +118,7 @@ public class DealDroidApp extends Application {
       return bitmap;
    }
 
-   public List<Long> getPreviousDealIdsFromPrefs() {
+   public List<Long> getPreviousDealIds() {
       List<Long> previousDealIds = new ArrayList<Long>();
       previousDealIds.add(prefs.getLong(Constants.DEAL1, 0));
       previousDealIds.add(prefs.getLong(Constants.DEAL2, 0));
@@ -82,7 +127,7 @@ public class DealDroidApp extends Application {
       return previousDealIds;
    }
 
-   public void setPreviousDealIdsToPrefs(final List<Long> previousDealIds) {
+   public void setPreviousDealIds(final List<Long> previousDealIds) {
       // should never get this error, but it's a good idea to fail fast in case
       if ((previousDealIds == null) || (previousDealIds.size() != 4)) {
          throw new IllegalArgumentException("Error, previousDealIds size must be 4");
@@ -99,7 +144,7 @@ public class DealDroidApp extends Application {
       List<Long> idList = new ArrayList<Long>();
       if ((items != null) && !items.isEmpty()) {
          for (Item item : items) {
-            idList.add(item.itemId);
+            idList.add(item.getItemId());
          }
       }
       return idList;
