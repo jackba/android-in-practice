@@ -42,7 +42,7 @@ public class DealService extends IntentService {
          app.setSectionList(app.getParser().parse());
 
          // get list of currentDealIds from first section (Daily Deals, always 4 items)
-         List<Long> currentDealIds = app.parseItemsIntoDealIds(app.getSectionList().get(0).getItems());         
+         List<Long> currentDealIds = app.parseItemsIntoDealIds(app.getSectionList().get(0).getItems());
 
          // previous deals - stored as prefs because it's easier than files for simple data
          // and we need something persistent when service wakes up (previous app memory may not still be around)
