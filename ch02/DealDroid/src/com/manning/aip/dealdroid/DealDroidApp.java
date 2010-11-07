@@ -3,7 +3,6 @@ package com.manning.aip.dealdroid;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -113,38 +112,6 @@ public class DealDroidApp extends Application {
          }
       }
       return bitmap;
-   }
-
-   public List<Long> getPreviousDealIds() {
-      List<Long> previousDealIds = new ArrayList<Long>();
-      previousDealIds.add(prefs.getLong(Constants.DEAL1, 0));
-      previousDealIds.add(prefs.getLong(Constants.DEAL2, 0));
-      previousDealIds.add(prefs.getLong(Constants.DEAL3, 0));
-      previousDealIds.add(prefs.getLong(Constants.DEAL4, 0));
-      return previousDealIds;
-   }
-
-   public void setPreviousDealIds(final List<Long> previousDealIds) {
-      // should never get this error, but it's a good idea to fail fast in case
-      if ((previousDealIds == null) || (previousDealIds.size() != 4)) {
-         throw new IllegalArgumentException("Error, previousDealIds size must be 4");
-      }
-      Editor editor = prefs.edit();
-      editor.putLong(Constants.DEAL1, previousDealIds.get(0));
-      editor.putLong(Constants.DEAL2, previousDealIds.get(1));
-      editor.putLong(Constants.DEAL3, previousDealIds.get(2));
-      editor.putLong(Constants.DEAL4, previousDealIds.get(3));
-      editor.commit();
-   }
-
-   public List<Long> parseItemsIntoDealIds(final List<Item> items) {
-      List<Long> idList = new ArrayList<Long>();
-      if ((items != null) && !items.isEmpty()) {
-         for (Item item : items) {
-            idList.add(item.getItemId());
-         }
-      }
-      return idList;
    }
 
    public boolean connectionPresent() {

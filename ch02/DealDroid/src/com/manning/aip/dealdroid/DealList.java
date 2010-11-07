@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -27,6 +25,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import com.manning.aip.dealdroid.model.Item;
 import com.manning.aip.dealdroid.model.Section;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DealList extends ListActivity {
@@ -43,17 +42,33 @@ public class DealList extends ListActivity {
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.deallist);
+      
+      progressDialog = new ProgressDialog(this);
+      progressDialog.setMax(2);
+      progressDialog.setCancelable(false);
+      progressDialog.setMessage(getString(R.string.deal_list_retrieving_data));
 
       // Use Application object for app wide state
       app = (DealDroidApp) getApplication();
 
-      // Adapter for deals
+      // construct Adapter with no data elements to start
       dealsAdapter = new DealsAdapter();
-
-      // ListView (start with first section at index 0);
+      
+      // ListView adapter (this class extends ListActivity)
       setListAdapter(dealsAdapter);
+      
+      // get Sections list from application (parsing feed if necessary)
+      if (app.getSectionList().isEmpty()) {
+         if (app.connectionPresent()) {
+            new ParseFeedTask().execute();
+         } else {
+            Toast.makeText(this, getString(R.string.deal_list_network_unavailable), Toast.LENGTH_LONG).show();
+         }
+      } else {
+         resetListAdapter(app.getCurrentSection().getItems());
+      }      
 
-      // Spinner
+      // Spinner for choosing a Section
       Spinner sectionSpinner = (Spinner) findViewById(R.id.section_spinner);
       spinnerAdapter =
                new ArrayAdapter<Section>(DealList.this, android.R.layout.simple_spinner_item, app.getSectionList());
@@ -64,34 +79,22 @@ public class DealList extends ListActivity {
          public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             if (currentSelectedSection != position) {
                currentSelectedSection = position;
-               app.setCurrentSection(app.getSectionList().get(position));
-               dealsAdapter.setSection(app.getSectionList().get(position));
-               dealsAdapter.notifyDataSetChanged();
+               app.setCurrentSection(app.getSectionList().get(position));               
+               resetListAdapter(app.getCurrentSection().getItems());
             }
          }
 
          @Override
          public void onNothingSelected(AdapterView<?> parentView) {
-            Log.d(Constants.LOG_TAG, "Nothing to see here");
+            // do nothing
          }
-      });
-
-      this.progressDialog = new ProgressDialog(this);
-      this.progressDialog.setMax(2);
-      this.progressDialog.setCancelable(false);
-      this.progressDialog.setMessage(getString(R.string.deal_list_retrieving_data));
-
-      if (app.getSectionList().isEmpty()) {
-         if (app.connectionPresent()) {
-            new ParseFeedTask().execute();
-         } else {
-            Toast.makeText(this, getString(R.string.deal_list_network_unavailable), Toast.LENGTH_LONG).show();
-         }
-      } else {
-         // start off the sections selection with first one, Daily Deals
-         dealsAdapter.setSection(app.getSectionList().get(0));
-         dealsAdapter.notifyDataSetChanged();
-         spinnerAdapter.notifyDataSetChanged();
+      });      
+   }
+   
+   private void resetListAdapter(List<Item> items) {
+      dealsAdapter.clear();
+      for (Item i : items) {
+         dealsAdapter.add(i);
       }
    }
 
@@ -110,6 +113,8 @@ public class DealList extends ListActivity {
       }
       super.onPause();
    }
+   
+   // TODO also apply changes to "withService" version
 
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,9 +134,48 @@ public class DealList extends ListActivity {
             break;
       }
       return false;
-   }
+   }   
 
-   // Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
+   // Use a custom Adapter to control the layout and views
+   private class DealsAdapter extends ArrayAdapter<Item> {      
+
+      public DealsAdapter() {
+         super(DealList.this, R.layout.list_item, new ArrayList<Item>());
+      }
+
+      @Override
+      public View getView(final int position, View convertView, ViewGroup parent) {
+
+         if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_item, parent, false);
+         }
+
+         final TextView text = (TextView) convertView.findViewById(R.id.deal_title);
+         final ImageView image = (ImageView) convertView.findViewById(R.id.deal_img);
+         image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ddicon));
+
+         final Item item = getItem(position);
+
+         if (item != null) {
+            text.setText(item.getTitle());
+            Bitmap bitmap = app.getImageCache().get(item.getItemId());
+            if (bitmap != null) {
+               image.setImageBitmap(bitmap);
+            } else {
+               // put item ID on image as TAG for use in task
+               image.setTag(item.getItemId());
+               // separate thread/via task, for retrieving each image
+               // (note that this is brittle as is, should stop all threads in onPause)               
+               new RetrieveImageTask(image).execute(item.getSmallPicUrl());
+            }
+         }
+
+         return convertView;
+      }
+   }
+   
+// Use an AsyncTask<Params, Progress, Result> to easily perform tasks off of the UI Thread
    private class ParseFeedTask extends AsyncTask<Void, Integer, List<Section>> {
 
       @Override
@@ -165,16 +209,9 @@ public class DealList extends ListActivity {
          if (!taskSectionList.isEmpty()) {
             app.getSectionList().clear();
             app.getSectionList().addAll(taskSectionList);
-
-            // also make sure to update the "previous" deal ids with the current set 
-            // so that when service checking for new deals runs it has correct data to compare to
-            List<Long> currentDealIds = app.parseItemsIntoDealIds(app.getSectionList().get(0).getItems());
-            app.setPreviousDealIds(currentDealIds);
-
-            // start off the sections selection with first one, Daily Deals
-            dealsAdapter.setSection(app.getSectionList().get(0));
-            dealsAdapter.notifyDataSetChanged();
-            spinnerAdapter.notifyDataSetChanged();
+            spinnerAdapter.notifyDataSetChanged();            
+            
+            resetListAdapter(app.getSectionList().get(0).getItems());
          } else {
             Toast.makeText(DealList.this, getString(R.string.deal_list_missing_data), Toast.LENGTH_LONG).show();
          }
@@ -200,74 +237,6 @@ public class DealList extends ListActivity {
             imageView.setImageBitmap(bitmap);
             app.getImageCache().put((Long) imageView.getTag(), bitmap);
             imageView.setTag(null);
-         }
-      }
-   }
-
-   // Use a custom Adapter to control the layout and views
-   private class DealsAdapter extends BaseAdapter {
-      private Section section;
-
-      public DealsAdapter() {
-         this.section = null;
-      }
-
-      @Override
-      public int getCount() {
-         if (section != null) {
-            return section.getItems().size();
-         }
-         return 0;
-      }
-
-      @Override
-      public Item getItem(int position) {
-         if (section != null) {
-            return section.getItems().get(position);
-         }
-         return null;
-      }
-
-      @Override
-      public long getItemId(int position) {
-         return (getItem(position)).getItemId();
-      }
-
-      @Override
-      public View getView(final int position, View convertView, ViewGroup parent) {
-
-         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_item, parent, false);
-         }
-
-         final TextView text = (TextView) convertView.findViewById(R.id.deal_title);
-         final ImageView image = (ImageView) convertView.findViewById(R.id.deal_img);
-         image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ddicon));
-
-         final Item item = getItem(position);
-
-         if (item != null) {
-            text.setText(item.getTitle());
-            Bitmap bitmap = app.getImageCache().get(item.getItemId());
-            if (bitmap != null) {
-               image.setImageBitmap(bitmap);
-            } else {
-               // put item ID on image as TAG for use in task
-               image.setTag(item.getItemId());
-               // separate thread/via task, for retrieving each image
-               // (note that this is brittle as is, should stop all threads in onPause)               
-               new RetrieveImageTask(image).execute(item.getSmallPicUrl());
-            }
-         }
-
-         return convertView;
-      }
-
-      public synchronized void setSection(Section section) {
-         if (((section != null) && (this.section == null))
-                  || ((section != null) && (this.section != null) && !this.section.equals(section))) {
-            this.section = section;
          }
       }
    }
