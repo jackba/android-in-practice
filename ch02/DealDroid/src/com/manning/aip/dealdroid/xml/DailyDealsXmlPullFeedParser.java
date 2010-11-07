@@ -89,12 +89,12 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
                   if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.EBAY_DAILY_DEALS)) {
                      ///Log.d(Constants.LOG_TAG, "   created section: Daily Deals");
                      currentSection = new Section();
-                     currentSection.title = "Daily Deals";
+                     currentSection.setTitle("Daily Deals");
                   } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.SECTION_TITLE)) {
                      String title = parser.nextText();
                      ///Log.d(Constants.LOG_TAG, "   created more details section: " + title);
                      currentSection = new Section();
-                     currentSection.title = title;
+                     currentSection.setTitle(title);
                   } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.ITEM) && (currentSection != null)) {
                      currentItem = new Item();
                   }
@@ -110,52 +110,52 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
                   if ((currentSection != null) && (currentItem != null)) {
                      if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.ITEM_ID)) {
                         try {
-                           currentItem.itemId = Long.valueOf(parser.nextText());
+                           currentItem.setItemId(Long.valueOf(parser.nextText()));
                         } catch (NumberFormatException e) {
                            Log.e(Constants.LOG_TAG, "Error parsing itemId", e);
                         }
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.END_TIME)) {
                         try {
-                           currentItem.endTime = Long.valueOf(parser.nextText());
+                           currentItem.setEndTime(Long.valueOf(parser.nextText()));
                         } catch (NumberFormatException e) {
                            Log.e(Constants.LOG_TAG, "Error parsing endTime", e);
                         }
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.PICTURE_URL)) {
-                        currentItem.picUrl = parser.nextText();
+                        currentItem.setPicUrl(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.SMALL_PICTURE_URL)) {
-                        currentItem.smallPicUrl = parser.nextText();
+                        currentItem.setSmallPicUrl(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.PICTURE_175_URL)) {
-                        currentItem.pic175Url = parser.nextText();
+                        currentItem.setPic175Url(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.TITLE)) {
-                        currentItem.title = parser.nextText();
+                        currentItem.setTitle(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.DESCRIPTION)) {
-                        currentItem.desc = parser.nextText();
+                        currentItem.setDesc(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.DEAL_URL)) {
-                        currentItem.dealUrl = parser.nextText();
+                        currentItem.setDealUrl(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.CONVERTED_CURRENT_PRICE)) {
-                        currentItem.convertedCurrentPrice = parser.nextText();
+                        currentItem.setConvertedCurrentPrice(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.PRIMARY_CATEGORY_NAME)) {
-                        currentItem.primaryCategoryName = parser.nextText();
+                        currentItem.setPrimaryCategoryName(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.LOCATION)) {
-                        currentItem.location = parser.nextText();
+                        currentItem.setLocation(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.QUANTITY)) {
                         try {
-                           currentItem.quantity = Integer.valueOf(parser.nextText());
+                           currentItem.setQuantity(Integer.valueOf(parser.nextText()));
                         } catch (NumberFormatException e) {
                            Log.e(Constants.LOG_TAG, "Error parsing quantity", e);
                         }
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.QUANTITY_SOLD)) {
                         try {
-                           currentItem.quantitySold = Integer.valueOf(parser.nextText());
+                           currentItem.setQuantitySold(Integer.valueOf(parser.nextText()));
                         } catch (NumberFormatException e) {
                            Log.e(Constants.LOG_TAG, "Error parsing quantitySold", e);
                         }
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.MSRP)) {
-                        currentItem.msrp = parser.nextText();
+                        currentItem.setMsrp(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.SAVINGS_RATE)) {
-                        currentItem.savingsRate = parser.nextText();
+                        currentItem.setSavingsRate(parser.nextText());
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.HOT)) {
-                        currentItem.hot = Boolean.valueOf(parser.nextText());
+                        currentItem.setHot(Boolean.valueOf(parser.nextText()));
                      }
                   }
                   break;
@@ -170,7 +170,7 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
                         currentSection = null;
                      } else if (name.equalsIgnoreCase(DailyDealsXmlPullFeedParser.ITEM) && (currentItem != null)) {
                         ///Log.d(Constants.LOG_TAG, "   adding item " + currentItem.title + " to current section");
-                        currentSection.items.add(Item.getInstance(currentItem));
+                        currentSection.getItems().add(Item.getInstance(currentItem));
                         currentItem = null;
                      }
                   }

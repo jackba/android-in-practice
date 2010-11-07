@@ -39,26 +39,26 @@ public class DealDetails extends Activity {
 
       if (item != null) {
          ImageView icon = (ImageView) findViewById(R.id.details_icon);
-         new RetrieveImageTask(icon).execute(item.pic175Url);
+         new RetrieveImageTask(icon).execute(item.getPic175Url());
 
          TextView title = (TextView) findViewById(R.id.details_title);
-         title.setText(item.title);
+         title.setText(item.getTitle());
 
          CharSequence pricePrefix = getText(R.string.deal_details_price_prefix);
          TextView price = (TextView) findViewById(R.id.details_price);
-         price.setText(pricePrefix + item.convertedCurrentPrice);
+         price.setText(pricePrefix + item.getConvertedCurrentPrice());
 
          TextView msrp = (TextView) findViewById(R.id.details_msrp);
-         msrp.setText(item.msrp);
+         msrp.setText(item.getMsrp());
 
          TextView quantity = (TextView) findViewById(R.id.details_quantity);
-         quantity.setText(Integer.toString(item.quantity));
+         quantity.setText(Integer.toString(item.getQuantity()));
 
          TextView quantitySold = (TextView) findViewById(R.id.details_quantity_sold);
-         quantitySold.setText(Integer.toString(item.quantitySold));
+         quantitySold.setText(Integer.toString(item.getQuantitySold()));
 
          TextView location = (TextView) findViewById(R.id.details_location);
-         location.setText(item.location);
+         location.setText(item.getLocation());
 
       } else {
          Toast.makeText(this, "Error, no current item selected, nothing to see here", Toast.LENGTH_LONG).show();
@@ -103,7 +103,7 @@ public class DealDetails extends Activity {
    }
 
    private void openDealInBrowser() {
-      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(app.getCurrentItem().dealUrl));
+      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(app.getCurrentItem().getDealUrl()));
       startActivity(i);
    }
 
@@ -112,11 +112,11 @@ public class DealDetails extends Activity {
       Item item = app.getCurrentItem();
       StringBuffer sb = new StringBuffer();
       sb.append("Check out this deal:\n");
-      sb.append("\nTitle:" + item.title);
-      sb.append("\nPrice:" + item.convertedCurrentPrice);
-      sb.append("\nLocation:" + item.location);
-      sb.append("\nQuantity:" + item.quantity);
-      sb.append("\nURL:" + item.dealUrl);
+      sb.append("\nTitle:" + item.getTitle());
+      sb.append("\nPrice:" + item.getConvertedCurrentPrice());
+      sb.append("\nLocation:" + item.getLocation());
+      sb.append("\nQuantity:" + item.getQuantity());
+      sb.append("\nURL:" + item.getDealUrl());
       return sb.toString();
    }
 

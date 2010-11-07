@@ -98,7 +98,7 @@ public class DealList extends ListActivity {
    @Override
    protected void onListItemClick(final ListView listView, final View view, final int position, final long id) {
       view.setBackgroundColor(android.R.color.background_light);
-      app.setCurrentItem(app.getSectionList().get(currentSelectedSection).items.get(position));
+      app.setCurrentItem(app.getSectionList().get(currentSelectedSection).getItems().get(position));
       Intent dealDetails = new Intent(DealList.this, DealDetails.class);
       startActivity(dealDetails);
    }
@@ -168,7 +168,7 @@ public class DealList extends ListActivity {
 
             // also make sure to update the "previous" deal ids with the current set 
             // so that when service checking for new deals runs it has correct data to compare to
-            List<Long> currentDealIds = app.parseItemsIntoDealIds(app.getSectionList().get(0).items);
+            List<Long> currentDealIds = app.parseItemsIntoDealIds(app.getSectionList().get(0).getItems());
             app.setPreviousDealIds(currentDealIds);
 
             // start off the sections selection with first one, Daily Deals
@@ -215,7 +215,7 @@ public class DealList extends ListActivity {
       @Override
       public int getCount() {
          if (section != null) {
-            return section.items.size();
+            return section.getItems().size();
          }
          return 0;
       }
@@ -223,14 +223,14 @@ public class DealList extends ListActivity {
       @Override
       public Item getItem(int position) {
          if (section != null) {
-            return section.items.get(position);
+            return section.getItems().get(position);
          }
          return null;
       }
 
       @Override
       public long getItemId(int position) {
-         return (getItem(position)).itemId;
+         return (getItem(position)).getItemId();
       }
 
       @Override
@@ -240,7 +240,7 @@ public class DealList extends ListActivity {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item, parent, false);
          }
-         
+
          final TextView text = (TextView) convertView.findViewById(R.id.deal_title);
          final ImageView image = (ImageView) convertView.findViewById(R.id.deal_img);
          image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ddicon));
@@ -248,16 +248,16 @@ public class DealList extends ListActivity {
          final Item item = getItem(position);
 
          if (item != null) {
-            text.setText(item.title);
-            Bitmap bitmap = app.getImageCache().get(item.itemId);
+            text.setText(item.getTitle());
+            Bitmap bitmap = app.getImageCache().get(item.getItemId());
             if (bitmap != null) {
                image.setImageBitmap(bitmap);
             } else {
                // put item ID on image as TAG for use in task
-               image.setTag(item.itemId);
+               image.setTag(item.getItemId());
                // separate thread/via task, for retrieving each image
                // (note that this is brittle as is, should stop all threads in onPause)               
-               new RetrieveImageTask(image).execute(item.smallPicUrl);
+               new RetrieveImageTask(image).execute(item.getSmallPicUrl());
             }
          }
 

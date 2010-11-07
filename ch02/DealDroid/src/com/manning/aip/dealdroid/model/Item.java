@@ -2,22 +2,22 @@ package com.manning.aip.dealdroid.model;
 
 public final class Item {
 
-   public long itemId;
-   public long endTime;
-   public String picUrl;
-   public String smallPicUrl;
-   public String pic175Url;
-   public String title;
-   public String desc;
-   public String dealUrl;
-   public String convertedCurrentPrice;
-   public String primaryCategoryName;
-   public String location;
-   public int quantity;
-   public int quantitySold;
-   public String msrp;
-   public String savingsRate;
-   public boolean hot;
+   private long itemId;
+   private long endTime;
+   private String picUrl;
+   private String smallPicUrl;
+   private String pic175Url;
+   private String title;
+   private String desc;
+   private String dealUrl;
+   private String convertedCurrentPrice;
+   private String primaryCategoryName;
+   private String location;
+   private int quantity;
+   private int quantitySold;
+   private String msrp;
+   private String savingsRate;
+   private boolean hot;
 
    // favor "copy constructor/getInstance" over clone, clone is tricky and error prone
    // (better yet use immutable objects, but sort of overkill for this example)
@@ -40,6 +40,134 @@ public final class Item {
       copy.title = item.title;
       copy.pic175Url = item.pic175Url;
       return copy;
+   }
+
+   public long getItemId() {
+      return this.itemId;
+   }
+
+   public void setItemId(long itemId) {
+      this.itemId = itemId;
+   }
+
+   public long getEndTime() {
+      return this.endTime;
+   }
+
+   public void setEndTime(long endTime) {
+      this.endTime = endTime;
+   }
+
+   public String getPicUrl() {
+      return this.picUrl;
+   }
+
+   public void setPicUrl(String picUrl) {
+      this.picUrl = picUrl;
+   }
+
+   public String getSmallPicUrl() {
+      return this.smallPicUrl;
+   }
+
+   public void setSmallPicUrl(String smallPicUrl) {
+      this.smallPicUrl = smallPicUrl;
+   }
+
+   public String getPic175Url() {
+      return this.pic175Url;
+   }
+
+   public void setPic175Url(String pic175Url) {
+      this.pic175Url = pic175Url;
+   }
+
+   public String getTitle() {
+      return this.title;
+   }
+
+   public void setTitle(String title) {
+      this.title = title;
+   }
+
+   public String getDesc() {
+      return this.desc;
+   }
+
+   public void setDesc(String desc) {
+      this.desc = desc;
+   }
+
+   public String getDealUrl() {
+      return this.dealUrl;
+   }
+
+   public void setDealUrl(String dealUrl) {
+      this.dealUrl = dealUrl;
+   }
+
+   public String getConvertedCurrentPrice() {
+      return this.convertedCurrentPrice;
+   }
+
+   public void setConvertedCurrentPrice(String convertedCurrentPrice) {
+      this.convertedCurrentPrice = convertedCurrentPrice;
+   }
+
+   public String getPrimaryCategoryName() {
+      return this.primaryCategoryName;
+   }
+
+   public void setPrimaryCategoryName(String primaryCategoryName) {
+      this.primaryCategoryName = primaryCategoryName;
+   }
+
+   public String getLocation() {
+      return this.location;
+   }
+
+   public void setLocation(String location) {
+      this.location = location;
+   }
+
+   public int getQuantity() {
+      return this.quantity;
+   }
+
+   public void setQuantity(int quantity) {
+      this.quantity = quantity;
+   }
+
+   public int getQuantitySold() {
+      return this.quantitySold;
+   }
+
+   public void setQuantitySold(int quantitySold) {
+      this.quantitySold = quantitySold;
+   }
+
+   public String getMsrp() {
+      return this.msrp;
+   }
+
+   public void setMsrp(String msrp) {
+      this.msrp = msrp;
+   }
+
+   public String getSavingsRate() {
+      return this.savingsRate;
+   }
+
+   public void setSavingsRate(String savingsRate) {
+      this.savingsRate = savingsRate;
+   }
+
+   public boolean isHot() {
+      return this.hot;
+   }
+
+   public void setHot(boolean hot) {
+      this.hot = hot;
    }
 
    @Override

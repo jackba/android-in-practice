@@ -1,6 +1,7 @@
 package com.manning.aip.dealdroid;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
@@ -33,7 +34,7 @@ public class DealDroidApp extends Application {
    private Section currentSection;
    private Item currentItem;
    private SharedPreferences prefs;
-   
+
    //
    // getters/setters
    //
@@ -83,10 +84,10 @@ public class DealDroidApp extends Application {
 
    @Override
    public void onTerminate() {
-     // not guaranteed to be called
+      // not guaranteed to be called
       super.onTerminate();
    }
-   
+
    //
    // helper methods (used by more than one other activity, so placed here)
    //
@@ -140,17 +141,17 @@ public class DealDroidApp extends Application {
       List<Long> idList = new ArrayList<Long>();
       if ((items != null) && !items.isEmpty()) {
          for (Item item : items) {
-            idList.add(item.itemId);
+            idList.add(item.getItemId());
          }
       }
       return idList;
    }
 
    public boolean connectionPresent() {
-      ConnectivityManager cMgr = (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
+      ConnectivityManager cMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
       if (cMgr != null) {
          NetworkInfo netInfo = cMgr.getActiveNetworkInfo();
-         if (netInfo != null && netInfo.getState() != null) {
+         if ((netInfo != null) && (netInfo.getState() != null)) {
             return netInfo.getState().equals(State.CONNECTED);
          } else {
             return false;
