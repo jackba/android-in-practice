@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">DealDroid</string>
+	<string name="app_name">DealDroidWithService</string>
 
 	<string name="deal_list_missing_data">No data to display, please try again later.</string>
 	<string name="deal_list_retrieving_data">Getting deal data . . .</string>
