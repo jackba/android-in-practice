@@ -35,7 +35,7 @@ public class DealDetails extends Activity {
       progressBar = (ProgressBar) findViewById(R.id.progress);
       progressBar.setIndeterminate(true);
 
-      Item item = app.currentItem;
+      Item item = app.getCurrentItem();
 
       if (item != null) {
          ImageView icon = (ImageView) findViewById(R.id.details_icon);
@@ -103,13 +103,13 @@ public class DealDetails extends Activity {
    }
 
    private void openDealInBrowser() {
-      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(app.currentItem.dealUrl));
+      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(app.getCurrentItem().dealUrl));
       startActivity(i);
    }
 
    // TODO not i18n'd
    private String createDealMessage() {
-      Item item = app.currentItem;
+      Item item = app.getCurrentItem();
       StringBuffer sb = new StringBuffer();
       sb.append("Check out this deal:\n");
       sb.append("\nTitle:" + item.title);

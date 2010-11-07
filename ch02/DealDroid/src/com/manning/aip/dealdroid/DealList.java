@@ -55,7 +55,8 @@ public class DealList extends ListActivity {
 
       // Spinner
       Spinner sectionSpinner = (Spinner) findViewById(R.id.section_spinner);
-      spinnerAdapter = new ArrayAdapter<Section>(DealList.this, android.R.layout.simple_spinner_item, app.sectionList);
+      spinnerAdapter =
+               new ArrayAdapter<Section>(DealList.this, android.R.layout.simple_spinner_item, app.getSectionList());
       spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
       sectionSpinner.setAdapter(spinnerAdapter);
       sectionSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -63,8 +64,8 @@ public class DealList extends ListActivity {
          public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             if (currentSelectedSection != position) {
                currentSelectedSection = position;
-               app.currentSection = app.sectionList.get(position);
-               dealsAdapter.setSection(app.sectionList.get(position));
+               app.setCurrentSection(app.getSectionList().get(position));
+               dealsAdapter.setSection(app.getSectionList().get(position));
                dealsAdapter.notifyDataSetChanged();
             }
          }
@@ -80,28 +81,24 @@ public class DealList extends ListActivity {
       this.progressDialog.setCancelable(false);
       this.progressDialog.setMessage(getString(R.string.deal_list_retrieving_data));
 
-      if (app.sectionList.isEmpty()) {
+      if (app.getSectionList().isEmpty()) {
          if (app.connectionPresent()) {
             new ParseFeedTask().execute();
          } else {
             Toast.makeText(this, getString(R.string.deal_list_network_unavailable), Toast.LENGTH_LONG).show();
          }
       } else {
-         if (!app.sectionList.isEmpty()) {
-            // start off the sections selection with first one, Daily Deals
-            dealsAdapter.setSection(app.sectionList.get(0));
-            dealsAdapter.notifyDataSetChanged();
-            spinnerAdapter.notifyDataSetChanged();
-         } else {
-            Toast.makeText(this, getString(R.string.deal_list_missing_data), Toast.LENGTH_LONG).show();
-         }
+         // start off the sections selection with first one, Daily Deals
+         dealsAdapter.setSection(app.getSectionList().get(0));
+         dealsAdapter.notifyDataSetChanged();
+         spinnerAdapter.notifyDataSetChanged();
       }
    }
 
    @Override
    protected void onListItemClick(final ListView listView, final View view, final int position, final long id) {
       view.setBackgroundColor(android.R.color.background_light);
-      app.currentItem = app.sectionList.get(currentSelectedSection).items.get(position);
+      app.setCurrentItem(app.getSectionList().get(currentSelectedSection).items.get(position));
       Intent dealDetails = new Intent(DealList.this, DealDetails.class);
       startActivity(dealDetails);
    }
@@ -147,7 +144,7 @@ public class DealList extends ListActivity {
       @Override
       protected List<Section> doInBackground(final Void... args) {
          publishProgress(1);
-         List<Section> sections = app.parser.parse();
+         List<Section> sections = app.getParser().parse();
          publishProgress(2);
          return sections;
       }
@@ -166,16 +163,16 @@ public class DealList extends ListActivity {
       @Override
       protected void onPostExecute(final List<Section> taskSectionList) {
          if (!taskSectionList.isEmpty()) {
-            app.sectionList.clear();
-            app.sectionList.addAll(taskSectionList);
+            app.getSectionList().clear();
+            app.getSectionList().addAll(taskSectionList);
 
             // also make sure to update the "previous" deal ids with the current set 
             // so that when service checking for new deals runs it has correct data to compare to
-            List<Long> currentDealIds = app.parseItemsIntoDealIds(app.sectionList.get(0).items);
-            app.setPreviousDealIdsToPrefs(currentDealIds);
+            List<Long> currentDealIds = app.parseItemsIntoDealIds(app.getSectionList().get(0).items);
+            app.setPreviousDealIds(currentDealIds);
 
             // start off the sections selection with first one, Daily Deals
-            dealsAdapter.setSection(app.sectionList.get(0));
+            dealsAdapter.setSection(app.getSectionList().get(0));
             dealsAdapter.notifyDataSetChanged();
             spinnerAdapter.notifyDataSetChanged();
          } else {
@@ -201,16 +198,10 @@ public class DealList extends ListActivity {
       protected void onPostExecute(final Bitmap bitmap) {
          if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
-            app.imageCache.put((Long) imageView.getTag(), bitmap);
+            app.getImageCache().put((Long) imageView.getTag(), bitmap);
             imageView.setTag(null);
          }
       }
-   }
-
-   // Use ViewHolder and getTag/setTag to cut down on trips to findViewById in adapters/ListViews
-   private class ViewHolder {
-      private TextView text;
-      private ImageView image;
    }
 
    // Use a custom Adapter to control the layout and views
@@ -248,22 +239,17 @@ public class DealList extends ListActivity {
          if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item, parent, false);
-            ViewHolder holder = new ViewHolder();
-            holder.text = (TextView) convertView.findViewById(R.id.deal_title);
-            holder.image = (ImageView) convertView.findViewById(R.id.deal_img);
-            convertView.setTag(holder);
          }
-
-         ViewHolder holder = (ViewHolder) convertView.getTag();
-         final TextView text = holder.text;
-         final ImageView image = holder.image;
+         
+         final TextView text = (TextView) convertView.findViewById(R.id.deal_title);
+         final ImageView image = (ImageView) convertView.findViewById(R.id.deal_img);
          image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ddicon));
 
          final Item item = getItem(position);
 
          if (item != null) {
             text.setText(item.title);
-            Bitmap bitmap = app.imageCache.get(item.itemId);
+            Bitmap bitmap = app.getImageCache().get(item.itemId);
             if (bitmap != null) {
                image.setImageBitmap(bitmap);
             } else {
