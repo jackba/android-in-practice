@@ -98,7 +98,7 @@ public class DealList extends ListActivity {
    }
 
    @Override
-   protected void onListItemClick(final ListView listView, final View view, final int position, final long id) {
+   protected void onListItemClick(ListView listView, View view, int position, long id) {
       view.setBackgroundColor(android.R.color.background_light);
       app.setCurrentItem(app.getSectionList().get(currentSelectedSection).getItems().get(position));
       Intent dealDetails = new Intent(DealList.this, DealDetails.class);
@@ -143,18 +143,18 @@ public class DealList extends ListActivity {
       }
 
       @Override
-      public View getView(final int position, View convertView, ViewGroup parent) {
+      public View getView(int position, View convertView, ViewGroup parent) {
 
          if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item, parent, false);
          }
 
-         final TextView text = (TextView) convertView.findViewById(R.id.deal_title);
-         final ImageView image = (ImageView) convertView.findViewById(R.id.deal_img);
+         TextView text = (TextView) convertView.findViewById(R.id.deal_title);
+         ImageView image = (ImageView) convertView.findViewById(R.id.deal_img);
          image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ddicon));
 
-         final Item item = getItem(position);
+         Item item = getItem(position);
 
          if (item != null) {
             text.setText(item.getTitle());
@@ -185,7 +185,7 @@ public class DealList extends ListActivity {
       }
 
       @Override
-      protected List<Section> doInBackground(final Void... args) {
+      protected List<Section> doInBackground(Void... args) {
          publishProgress(1);
          List<Section> sections = app.getParser().parse();
          publishProgress(2);
@@ -204,7 +204,7 @@ public class DealList extends ListActivity {
       }
 
       @Override
-      protected void onPostExecute(final List<Section> taskSectionList) {
+      protected void onPostExecute(List<Section> taskSectionList) {
          if (!taskSectionList.isEmpty()) {
             app.getSectionList().clear();
             app.getSectionList().addAll(taskSectionList);
@@ -220,18 +220,18 @@ public class DealList extends ListActivity {
    private class RetrieveImageTask extends AsyncTask<String, Void, Bitmap> {
       private ImageView imageView;
 
-      public RetrieveImageTask(final ImageView imageView) {
+      public RetrieveImageTask(ImageView imageView) {
          this.imageView = imageView;
       }
 
       @Override
-      protected Bitmap doInBackground(final String... args) {
+      protected Bitmap doInBackground(String... args) {
          Bitmap bitmap = app.retrieveBitmap(args[0]);
          return bitmap;
       }
 
       @Override
-      protected void onPostExecute(final Bitmap bitmap) {
+      protected void onPostExecute(Bitmap bitmap) {
          if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
             app.getImageCache().put((Long) imageView.getTag(), bitmap);

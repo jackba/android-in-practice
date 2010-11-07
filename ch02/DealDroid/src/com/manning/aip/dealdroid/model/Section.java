@@ -9,7 +9,7 @@ public final class Section {
 
    // favor "copy constructor/getInstance" over clone, clone is tricky and error prone
    // (better yet use immutable objects, but sort of overkill for this example)
-   public static Section getInstance(final Section section) {
+   public static Section getInstance(Section section) {
       Section copy = new Section();
       copy.title = section.title;
       if ((section.items != null) && !section.items.isEmpty()) {

@@ -21,7 +21,7 @@ public final class Item {
 
    // favor "copy constructor/getInstance" over clone, clone is tricky and error prone
    // (better yet use immutable objects, but sort of overkill for this example)
-   public static Item getInstance(final Item item) {
+   public static Item getInstance(Item item) {
       Item copy = new Item();
       copy.convertedCurrentPrice = item.convertedCurrentPrice;
       copy.dealUrl = item.dealUrl;

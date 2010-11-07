@@ -78,11 +78,10 @@ public class DealDroidApp extends Application {
       super.onTerminate();
    }
 
-   // TODO move these outside of "app" class? 
    //
-   // helper methods (used by more than one other activity, so placed here)
+   // helper methods (used by more than one other activity, so placed here, could be util class too)
    //
-   public Bitmap retrieveBitmap(final String urlString) {
+   public Bitmap retrieveBitmap(String urlString) {
       Log.d(Constants.LOG_TAG, "making HTTP trip for image:" + urlString);
       Bitmap bitmap = null;
       InputStream stream = null;
