@@ -187,16 +187,14 @@ public final class Item {
       result = prime * result + ((this.convertedCurrentPrice == null) ? 0 : this.convertedCurrentPrice.hashCode());
       result = prime * result + ((this.dealUrl == null) ? 0 : this.dealUrl.hashCode());
       result = prime * result + ((this.desc == null) ? 0 : this.desc.hashCode());
-      ///result = prime * result + (int) (this.endTime ^ (this.endTime >>> 32));
-      ///result = prime * result + (this.hot ? 1231 : 1237);
+      // end time and hot not part of hashCode
       result = prime * result + (int) (this.itemId ^ (this.itemId >>> 32));
       result = prime * result + ((this.location == null) ? 0 : this.location.hashCode());
       result = prime * result + ((this.msrp == null) ? 0 : this.msrp.hashCode());
       result = prime * result + ((this.pic175Url == null) ? 0 : this.pic175Url.hashCode());
       result = prime * result + ((this.picUrl == null) ? 0 : this.picUrl.hashCode());
       result = prime * result + ((this.primaryCategoryName == null) ? 0 : this.primaryCategoryName.hashCode());
-      ///result = prime * result + this.quantity;
-      ///result = prime * result + this.quantitySold;
+      // quantity sold and quantity not part of hashCode
       result = prime * result + ((this.savingsRate == null) ? 0 : this.savingsRate.hashCode());
       result = prime * result + ((this.smallPicUrl == null) ? 0 : this.smallPicUrl.hashCode());
       result = prime * result + ((this.title == null) ? 0 : this.title.hashCode());
@@ -236,10 +234,7 @@ public final class Item {
       } else if (!this.desc.equals(other.desc)) {
          return false;
       }
-      //if (this.endTime != other.endTime)
-      //   return false;
-      //if (this.hot != other.hot)
-      //   return false;
+      // end time and hot not part of equals
       if (this.itemId != other.itemId) {
          return false;
       }
@@ -278,10 +273,7 @@ public final class Item {
       } else if (!this.primaryCategoryName.equals(other.primaryCategoryName)) {
          return false;
       }
-      //if (this.quantity != other.quantity)
-      //   return false;
-      //if (this.quantitySold != other.quantitySold)
-      //   return false;
+      // quanity sold and quanity not part of equals
       if (this.savingsRate == null) {
          if (other.savingsRate != null) {
             return false;
