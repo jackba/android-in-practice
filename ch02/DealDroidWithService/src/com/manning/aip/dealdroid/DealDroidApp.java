@@ -31,7 +31,6 @@ public class DealDroidApp extends Application {
    private DailyDealsFeedParser parser;
    private List<Section> sectionList;
    private Map<Long, Bitmap> imageCache;
-   private Section currentSection;
    private Item currentItem;
    private SharedPreferences prefs;
 
@@ -52,14 +51,6 @@ public class DealDroidApp extends Application {
 
    public Map<Long, Bitmap> getImageCache() {
       return this.imageCache;
-   }
-
-   public Section getCurrentSection() {
-      return this.currentSection;
-   }
-
-   public void setCurrentSection(Section currentSection) {
-      this.currentSection = currentSection;
    }
 
    public Item getCurrentItem() {
@@ -93,9 +84,44 @@ public class DealDroidApp extends Application {
    }
 
    //
+   // previous deal state (used by service)
+   //
+   public List<Long> getPreviousDealIds() {
+      List<Long> previousDealIds = new ArrayList<Long>();
+      previousDealIds.add(prefs.getLong(Constants.DEAL1, 0));
+      previousDealIds.add(prefs.getLong(Constants.DEAL2, 0));
+      previousDealIds.add(prefs.getLong(Constants.DEAL3, 0));
+      previousDealIds.add(prefs.getLong(Constants.DEAL4, 0));
+      return previousDealIds;
+   }
+
+   public void setPreviousDealIds(List<Long> previousDealIds) {
+      // should never get this error, but it's a good idea to fail fast in case
+      if ((previousDealIds == null) || (previousDealIds.size() != 4)) {
+         throw new IllegalArgumentException("Error, previousDealIds size must be 4");
+      }
+      Editor editor = prefs.edit();
+      editor.putLong(Constants.DEAL1, previousDealIds.get(0));
+      editor.putLong(Constants.DEAL2, previousDealIds.get(1));
+      editor.putLong(Constants.DEAL3, previousDealIds.get(2));
+      editor.putLong(Constants.DEAL4, previousDealIds.get(3));
+      editor.commit();
+   }
+
+   public List<Long> parseItemsIntoDealIds(List<Item> items) {
+      List<Long> idList = new ArrayList<Long>();
+      if ((items != null) && !items.isEmpty()) {
+         for (Item item : items) {
+            idList.add(item.getItemId());
+         }
+      }
+      return idList;
+   }
+   
+   //
    // helper methods (used by more than one other activity, so placed here)
    //
-   public Bitmap retrieveBitmap(final String urlString) {
+   public Bitmap retrieveBitmap(String urlString) {
       Log.d(Constants.LOG_TAG, "making HTTP trip for image:" + urlString);
       Bitmap bitmap = null;
       InputStream stream = null;
@@ -117,39 +143,7 @@ public class DealDroidApp extends Application {
          }
       }
       return bitmap;
-   }
-
-   public List<Long> getPreviousDealIds() {
-      List<Long> previousDealIds = new ArrayList<Long>();
-      previousDealIds.add(prefs.getLong(Constants.DEAL1, 0));
-      previousDealIds.add(prefs.getLong(Constants.DEAL2, 0));
-      previousDealIds.add(prefs.getLong(Constants.DEAL3, 0));
-      previousDealIds.add(prefs.getLong(Constants.DEAL4, 0));
-      return previousDealIds;
-   }
-
-   public void setPreviousDealIds(final List<Long> previousDealIds) {
-      // should never get this error, but it's a good idea to fail fast in case
-      if ((previousDealIds == null) || (previousDealIds.size() != 4)) {
-         throw new IllegalArgumentException("Error, previousDealIds size must be 4");
-      }
-      Editor editor = prefs.edit();
-      editor.putLong(Constants.DEAL1, previousDealIds.get(0));
-      editor.putLong(Constants.DEAL2, previousDealIds.get(1));
-      editor.putLong(Constants.DEAL3, previousDealIds.get(2));
-      editor.putLong(Constants.DEAL4, previousDealIds.get(3));
-      editor.commit();
-   }
-
-   public List<Long> parseItemsIntoDealIds(final List<Item> items) {
-      List<Long> idList = new ArrayList<Long>();
-      if ((items != null) && !items.isEmpty()) {
-         for (Item item : items) {
-            idList.add(item.getItemId());
-         }
-      }
-      return idList;
-   }
+   }   
 
    public boolean connectionPresent() {
       ConnectivityManager cMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);

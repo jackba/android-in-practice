@@ -71,7 +71,7 @@ public class DealService extends IntentService {
    }
 
    // instead of using entire Item, use itemId, it's unique enough to know what's new         
-   private List<Long> checkForNewDeals(final List<Long> previousDealIds, final List<Long> currentDealIds) {
+   private List<Long> checkForNewDeals(List<Long> previousDealIds, List<Long> currentDealIds) {
       List<Long> newDealsList = new ArrayList<Long>();
       for (Long id : currentDealIds) {
          if ((id != 0) && !previousDealIds.contains(id)) {
@@ -82,7 +82,7 @@ public class DealService extends IntentService {
       return newDealsList;
    }
 
-   private void sendNotification(final Context context, final int numNewDeals) {
+   private void sendNotification(Context context, int numNewDeals) {
       Intent notificationIntent = new Intent(context, DealList.class);
       notificationIntent.putExtra(Constants.FORCE_RELOAD, true);
       PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);

@@ -92,7 +92,7 @@ public class DealDetails extends Activity {
 
    // TODO onSaveInstanceState/onRestoreInstanceState - icon?
 
-   private void shareDealUsingChooser(final String type) {
+   private void shareDealUsingChooser(String type) {
       Intent i = new Intent(Intent.ACTION_SEND);
       i.setType(type);
       i.putExtra(Intent.EXTRA_SUBJECT, "Subject:");
@@ -126,18 +126,18 @@ public class DealDetails extends Activity {
    private class RetrieveImageTask extends AsyncTask<String, Void, Bitmap> {
       private ImageView imageView;
 
-      public RetrieveImageTask(final ImageView imageView) {
+      public RetrieveImageTask(ImageView imageView) {
          this.imageView = imageView;
       }
 
       @Override
-      protected Bitmap doInBackground(final String... args) {
+      protected Bitmap doInBackground(String... args) {
          Bitmap bitmap = app.retrieveBitmap(args[0]);
          return bitmap;
       }
 
       @Override
-      protected void onPostExecute(final Bitmap bitmap) {
+      protected void onPostExecute(Bitmap bitmap) {
          progressBar.setVisibility(View.GONE);
          if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
