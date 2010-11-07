@@ -30,7 +30,6 @@ public class DealDroidApp extends Application {
    private DailyDealsFeedParser parser;
    private List<Section> sectionList;
    private Map<Long, Bitmap> imageCache;
-   private Section currentSection;
    private Item currentItem;
    private SharedPreferences prefs;
 
@@ -47,14 +46,6 @@ public class DealDroidApp extends Application {
 
    public Map<Long, Bitmap> getImageCache() {
       return this.imageCache;
-   }
-
-   public Section getCurrentSection() {
-      return this.currentSection;
-   }
-
-   public void setCurrentSection(Section currentSection) {
-      this.currentSection = currentSection;
    }
 
    public Item getCurrentItem() {
@@ -87,6 +78,7 @@ public class DealDroidApp extends Application {
       super.onTerminate();
    }
 
+   // TODO move these outside of "app" class? 
    //
    // helper methods (used by more than one other activity, so placed here)
    //

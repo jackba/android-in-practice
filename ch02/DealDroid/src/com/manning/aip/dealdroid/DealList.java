@@ -65,7 +65,7 @@ public class DealList extends ListActivity {
             Toast.makeText(this, getString(R.string.deal_list_network_unavailable), Toast.LENGTH_LONG).show();
          }
       } else {
-         resetListAdapter(app.getCurrentSection().getItems());
+         resetListAdapter(app.getSectionList().get(0).getItems());
       }      
 
       // Spinner for choosing a Section
@@ -79,8 +79,7 @@ public class DealList extends ListActivity {
          public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             if (currentSelectedSection != position) {
                currentSelectedSection = position;
-               app.setCurrentSection(app.getSectionList().get(position));               
-               resetListAdapter(app.getCurrentSection().getItems());
+               resetListAdapter(app.getSectionList().get(position).getItems());
             }
          }
 
