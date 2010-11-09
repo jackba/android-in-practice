@@ -31,6 +31,7 @@ import java.util.List;
 public class DealList extends ListActivity {
 
    private DealDroidApp app;
+   private List<Item> items;  
    private DealsAdapter dealsAdapter;
    private ArrayAdapter<Section> spinnerAdapter;
    private int currentSelectedSection;
@@ -49,8 +50,9 @@ public class DealList extends ListActivity {
       // Use Application object for app wide state
       app = (DealDroidApp) getApplication();
 
-      // Adapter for deals
-      dealsAdapter = new DealsAdapter();
+      // construct Adapter with empty items collection to start
+      items = new ArrayList<Item>();
+      dealsAdapter = new DealsAdapter(items);
 
       // ListView (start with first section at index 0);
       setListAdapter(dealsAdapter);
@@ -63,7 +65,7 @@ public class DealList extends ListActivity {
             Toast.makeText(this, getString(R.string.deal_list_network_unavailable), Toast.LENGTH_LONG).show();
          }
       } else {
-         resetListAdapter(app.getSectionList().get(0).getItems());
+         resetListItems(app.getSectionList().get(0).getItems());
       }  
 
       // Spinner
@@ -77,7 +79,7 @@ public class DealList extends ListActivity {
          public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             if (currentSelectedSection != position) {
                currentSelectedSection = position;
-               resetListAdapter(app.getSectionList().get(position).getItems());
+               resetListItems(app.getSectionList().get(position).getItems());
             }
          }
 
@@ -90,11 +92,10 @@ public class DealList extends ListActivity {
       scheduleAlarmReceiver();
    }
    
-   private void resetListAdapter(List<Item> items) {
-      dealsAdapter.clear();
-      for (Item i : items) {
-         dealsAdapter.add(i);
-      }
+   private void resetListItems(List<Item> newItems) {
+      items.clear();
+      items.addAll(newItems);
+      dealsAdapter.notifyDataSetChanged();
    }
 
    @Override
@@ -146,8 +147,8 @@ public class DealList extends ListActivity {
    // Use a custom Adapter to control the layout and views
    private class DealsAdapter extends ArrayAdapter<Item> {      
 
-      public DealsAdapter() {
-         super(DealList.this, R.layout.list_item, new ArrayList<Item>());
+      public DealsAdapter(List<Item> items) {
+         super(DealList.this, R.layout.list_item, items);
       }
 
       @Override
@@ -218,7 +219,7 @@ public class DealList extends ListActivity {
             app.getSectionList().addAll(taskSectionList);
             spinnerAdapter.notifyDataSetChanged();            
             
-            resetListAdapter(app.getSectionList().get(0).getItems());
+            resetListItems(app.getSectionList().get(0).getItems());
          } else {
             Toast.makeText(DealList.this, getString(R.string.deal_list_missing_data), Toast.LENGTH_LONG).show();
          }

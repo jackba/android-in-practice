@@ -21,4 +21,5 @@ public class Constants {
    public static final String DEAL2 = "deal2";
    public static final String DEAL3 = "deal3";
    public static final String DEAL4 = "deal4";
+   public static final String DEAL5 = "deal5"; // there usually isn't a deal 5, but an extra in case
 }

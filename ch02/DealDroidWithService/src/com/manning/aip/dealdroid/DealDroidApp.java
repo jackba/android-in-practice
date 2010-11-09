@@ -92,19 +92,21 @@ public class DealDroidApp extends Application {
       previousDealIds.add(prefs.getLong(Constants.DEAL2, 0));
       previousDealIds.add(prefs.getLong(Constants.DEAL3, 0));
       previousDealIds.add(prefs.getLong(Constants.DEAL4, 0));
+      previousDealIds.add(prefs.getLong(Constants.DEAL5, 0));
       return previousDealIds;
    }
 
    public void setPreviousDealIds(List<Long> previousDealIds) {
       // should never get this error, but it's a good idea to fail fast in case
-      if ((previousDealIds == null) || (previousDealIds.size() != 4)) {
-         throw new IllegalArgumentException("Error, previousDealIds size must be 4");
+      if ((previousDealIds == null) || previousDealIds.isEmpty() || previousDealIds.size() > 5) {
+         throw new IllegalArgumentException("Error, previousDealIds null, or empty, or more than 5");
       }
       Editor editor = prefs.edit();
       editor.putLong(Constants.DEAL1, previousDealIds.get(0));
       editor.putLong(Constants.DEAL2, previousDealIds.get(1));
       editor.putLong(Constants.DEAL3, previousDealIds.get(2));
       editor.putLong(Constants.DEAL4, previousDealIds.get(3));
+      editor.putLong(Constants.DEAL5, previousDealIds.get(5));
       editor.commit();
    }
 
