@@ -1,12 +1,12 @@
-package com.manning.aip;
-
-import java.util.HashMap;
+package com.manning.aip.mymovies;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
+
+import java.util.HashMap;
 
 public class MovieAdapter extends ArrayAdapter<String> {
 

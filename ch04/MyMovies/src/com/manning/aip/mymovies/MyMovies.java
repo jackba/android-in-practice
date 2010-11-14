@@ -1,4 +1,4 @@
-package com.manning.aip;
+package com.manning.aip.mymovies;
 
 import android.app.ListActivity;
 import android.os.Bundle;
