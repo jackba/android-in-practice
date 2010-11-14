@@ -1,15 +1,8 @@
 package com.manning.aip.portfolio;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
-import android.accounts.AccountManagerFuture;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
 
 /**
  * <code>BroadcastReceiver</code> used to receive events from the
@@ -40,26 +33,11 @@ public class PushReceiver extends BroadcastReceiver {
 	 * @param 	intent			The <code>Intent</code> received from C2DM
 	 */
 	private void onRegistration(Context context, Intent intent) {
-		final String regId = intent.getStringExtra("registration_id"); 
+		String regId = intent.getStringExtra("registration_id"); 
 		if (regId != null) {
-			// get the Client Login token from the AccountManager service
-			AccountManager mgr = AccountManager.get(context);
-			Account googleAccount = mgr.getAccountsByType("com.google")[0];
-			mgr.getAuthToken(googleAccount, "ah", true, 
-					new AccountManagerCallback<Bundle>(){
-				public void run(AccountManagerFuture<Bundle> future) {
-					Bundle bundle;
-					try {
-						bundle = future.getResult();
-						String authToken = 
-							bundle.get(AccountManager.KEY_AUTHTOKEN)
-							.toString();
-						sendToServer(regId,authToken);
-					} catch (Exception e) {
-						Log.e("PushReceiver", "Reg/Auth exeption", e);
-					} 
-				}
-			},null);
+			Intent i = new Intent(context, SendC2dmRegistrationService.class);
+			i.putExtra("regId", regId);
+			context.startService(i);
 		}
 	}
 	
@@ -73,28 +51,8 @@ public class PushReceiver extends BroadcastReceiver {
 	private void onMessage(Context context, Intent intent){
 		Intent stockService = 
 			new Intent(context, PortfolioManagerService.class);
+		// copy any data sent from your server
+		stockService.putExtras(intent);
 		context.startService(stockService);
 	}
-	
-	/**
-	 * This method sends C2DM registration information to your server, so that
-	 * your server can then use this information to send events to C2DM.
-	 * 
-	 * @param 	regId			The registration ID received from C2DM
-	 * @param 	authToken		The Client Login token for the user
-	 */
-	private void sendToServer(String regId, String authToken){
-		new AsyncTask<String, Void, Void>(){
-			@Override
-			protected void onPostExecute(Void result) {
-				AlarmReceiver.releaseLock();
-			}
-			@Override
-			protected Void doInBackground(String... params) {
-				// send data to your app server
-				return null;
-			}
-		}.execute(regId, authToken);
-	}
-	
 }
