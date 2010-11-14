@@ -55,9 +55,12 @@ public abstract class LifecycleActivity extends Activity {
    // default this to true, or use the ctor, to send notifications
    // with many events notifications can be slow, but useful to "see" what's happening
    private boolean enableNotifications = true;
+   
+   private final String className;
 
    public LifecycleActivity() {
       super();
+      this.className = this.getClass().getName();
    }
 
    public LifecycleActivity(final boolean enableNotifications) {
@@ -66,10 +69,10 @@ public abstract class LifecycleActivity extends Activity {
    }
 
    @Override
-   public void onCreate(Bundle savedInstanceState) {
-      debugEvent("onCreate");
+   public void onCreate(Bundle savedInstanceState) {      
       super.onCreate(savedInstanceState);
-      notifyMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);      
+      notifyMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+      debugEvent("onCreate");
    }
 
    @Override
@@ -157,7 +160,7 @@ public abstract class LifecycleActivity extends Activity {
    //
    private void debugEvent(final String method) {
       long ts = System.currentTimeMillis();
-      Log.d(LOG_TAG, " *** " + method + " " + getClass().getName() + " " + ts);
+      Log.d(LOG_TAG, " *** " + method + " " + className + " " + ts);
       if (enableNotifications) {
          Notification notification = new Notification(android.R.drawable.star_big_on, "Lifeycle Event: " + method, 0L);
          RemoteViews notificationContentView = new RemoteViews(getPackageName(), R.layout.custom_notification_layout);
