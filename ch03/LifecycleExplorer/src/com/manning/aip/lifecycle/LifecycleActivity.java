@@ -67,21 +67,21 @@ public abstract class LifecycleActivity extends Activity {
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      notifyMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
       debugEvent("onCreate");
+      super.onCreate(savedInstanceState);
+      notifyMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);      
    }
 
    @Override
-   protected void onStart() {
+   protected void onStart() {      
       debugEvent("onStart");
-      super.onStart();
+      super.onStart();      
    }
 
    @Override
-   protected void onResume() {
+   protected void onResume() {      
       debugEvent("onResume");
-      super.onResume();
+      super.onResume();      
    }
 
    @Override
@@ -106,24 +106,24 @@ public abstract class LifecycleActivity extends Activity {
    // state related
    //
    @Override
-   protected void onRestoreInstanceState(Bundle savedInstanceState) {
+   protected void onRestoreInstanceState(Bundle savedInstanceState) {      
       debugEvent("onRestoreInstanceState");
-      super.onRestoreInstanceState(savedInstanceState);
+      super.onRestoreInstanceState(savedInstanceState);      
    }
 
    @Override
-   protected void onSaveInstanceState(Bundle outState) {
+   protected void onSaveInstanceState(Bundle outState) {      
       debugEvent("onSaveInstanceState");
-      super.onSaveInstanceState(outState);
+      super.onSaveInstanceState(outState);      
    }
 
    //
    // configuration related 
    //
    @Override
-   public void onConfigurationChanged(Configuration newConfig) {
+   public void onConfigurationChanged(Configuration newConfig) {      
       debugEvent("onConfigurationChanged");
-      super.onConfigurationChanged(newConfig);
+      super.onConfigurationChanged(newConfig);      
    }
 
    @Override
