@@ -96,6 +96,7 @@ public class DealDetails extends Activity {
       i.putExtra(Intent.EXTRA_TEXT, createDealMessage());
       try {
          startActivity(Intent.createChooser(i, "Share deal ..."));
+         //startActivity(i); // try this to see what happens when you don't set a chooser
       } catch (android.content.ActivityNotFoundException ex) {
          Toast.makeText(DealDetails.this, "There are no chooser options installed for the " + type + " + type.",
                   Toast.LENGTH_SHORT).show();

@@ -31,7 +31,6 @@ public class DealDroidApp extends Application {
    private List<Section> sectionList;
    private Map<Long, Bitmap> imageCache;
    private Item currentItem;
-   private SharedPreferences prefs;
 
    //
    // getters/setters
@@ -56,10 +55,6 @@ public class DealDroidApp extends Application {
       this.currentItem = currentItem;
    }
 
-   public SharedPreferences getPrefs() {
-      return this.prefs;
-   }
-
    //
    // lifecycle
    //
@@ -69,7 +64,6 @@ public class DealDroidApp extends Application {
       this.parser = new DailyDealsXmlPullFeedParser();
       this.sectionList = new ArrayList<Section>(6);
       this.imageCache = new HashMap<Long, Bitmap>();
-      this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
    }
 
    @Override
