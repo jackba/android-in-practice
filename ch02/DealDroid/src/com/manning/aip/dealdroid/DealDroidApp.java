@@ -2,13 +2,11 @@ package com.manning.aip.dealdroid;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.manning.aip.dealdroid.model.Item;
