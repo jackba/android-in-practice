@@ -13,7 +13,9 @@
         </activity>
 	    <service android:process=":stocks_background" 
 	    	android:name=".PortfolioManagerService"
-	    android:icon="@drawable/icon" android:label="@string/service_name"/>
+	    	android:icon="@drawable/icon" android:label="@string/service_name"/>
+	    <service android:process=":stocks_background" 
+	    	android:name=".SendC2dmRegistrationService"/>
 		<receiver android:name=".PortfolioStartupReceiver" 
 			android:process=":stocks_background">
 	        	<intent-filter>
@@ -43,7 +45,6 @@
 	<uses-permission android:name="com.manning.aip.portfolio.permission.C2D_MESSAGE"/>
 	<uses-permission android:name=
 		"com.google.android.c2dm.permission.RECEIVE"/>
-	<uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
 	<uses-permission android:name="android.permission.WAKE_LOCK"/>
 	<uses-permission android:name="android.permission.VIBRATE"/>
 </manifest>
