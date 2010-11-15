@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="app_name">Ch05SharedProcessApp1</string>
+    <string name="app_name">SharedProcessApp1: shares data to app2</string>
 </resources>
