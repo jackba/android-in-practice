@@ -36,8 +36,16 @@ public class MovieAdapter extends ArrayAdapter<String> {
       // View listItem = inflater.inflate(R.layout.movie_item, null);
       View listItem = super.getView(position, convertView, parent);
 
-      CheckedTextView checkMark =
-               (CheckedTextView) listItem.findViewById(android.R.id.text1);
+      CheckedTextView checkMark = null;
+      ViewHolder holder = (ViewHolder) listItem.getTag();
+      if (holder != null) {
+         checkMark = holder.checkMark;
+      } else {
+         checkMark = (CheckedTextView) listItem.findViewById(android.R.id.text1);
+         holder = new ViewHolder(checkMark);
+         listItem.setTag(holder);
+      }
+      
       checkMark.setChecked(isInCollection(position));
 
       // TextView movieRank = (TextView)
@@ -45,5 +53,13 @@ public class MovieAdapter extends ArrayAdapter<String> {
       // movieRank.setText(Integer.toString(position + 1));
 
       return listItem;
+   }
+
+   private class ViewHolder {
+      protected final CheckedTextView checkMark;
+
+      public ViewHolder(CheckedTextView checkMark) {
+         this.checkMark = checkMark;
+      }
    }
 }
