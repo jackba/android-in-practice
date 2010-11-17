@@ -1,12 +1,12 @@
 package com.manning.aip.mymovies;
 
+import java.util.HashMap;
+
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
-
-import java.util.HashMap;
 
 public class MovieAdapter extends ArrayAdapter<String> {
 
@@ -33,7 +33,6 @@ public class MovieAdapter extends ArrayAdapter<String> {
    @Override
    public View getView(int position, View convertView, ViewGroup parent) {
 
-      // View listItem = inflater.inflate(R.layout.movie_item, null);
       View listItem = super.getView(position, convertView, parent);
 
       CheckedTextView checkMark = null;
@@ -47,10 +46,6 @@ public class MovieAdapter extends ArrayAdapter<String> {
       }
       
       checkMark.setChecked(isInCollection(position));
-
-      // TextView movieRank = (TextView)
-      // listItem.findViewById(R.id.movie_rank);
-      // movieRank.setText(Integer.toString(position + 1));
 
       return listItem;
    }
