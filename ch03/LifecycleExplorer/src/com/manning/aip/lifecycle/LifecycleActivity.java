@@ -14,7 +14,7 @@ import android.widget.Toast;
 // logcat filterspec
 // adb -e logcat "*:s LifecycleExplorer:v"
 
-// also include adb shell dumpsys activity
+// see also: adb shell dumpsys activity
 
 /**
  * The lifecycle and task affinity of an Activity should be well understood when
