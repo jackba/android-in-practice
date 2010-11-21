@@ -27,11 +27,17 @@ import java.util.Map;
 
 public class DealDroidApp extends Application {
 
+   private ConnectivityManager cMgr;
    private DailyDealsFeedParser parser;
    private List<Section> sectionList;
    private Map<Long, Bitmap> imageCache;
    private Item currentItem;
    private SharedPreferences prefs;
+
+   public DealDroidApp() {
+      super();
+      this.cMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+   }
 
    //
    // getters/setters
@@ -123,7 +129,7 @@ public class DealDroidApp extends Application {
       }
       return idList;
    }
-   
+
    //
    // helper methods (used by more than one other activity, so placed here)
    //
@@ -137,20 +143,15 @@ public class DealDroidApp extends Application {
          Log.e(Constants.LOG_TAG, "Exception loading image, malformed URL", e);
       } catch (IOException e) {
          Log.e(Constants.LOG_TAG, "Exception loading image, IO error", e);
-      } 
+      }
       return bitmap;
-   }   
+   }
 
    public boolean connectionPresent() {
-      ConnectivityManager cMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-      if (cMgr != null) {
-         NetworkInfo netInfo = cMgr.getActiveNetworkInfo();
-         if ((netInfo != null) && (netInfo.getState() != null)) {
-            return netInfo.getState().equals(State.CONNECTED);
-         } else {
-            return false;
-         }
-      }
+      NetworkInfo netInfo = cMgr.getActiveNetworkInfo();
+      if ((netInfo != null) && (netInfo.getState() != null)) {
+         return netInfo.getState().equals(State.CONNECTED);
+      } 
       return false;
    }
 }
