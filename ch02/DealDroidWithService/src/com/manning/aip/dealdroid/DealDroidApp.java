@@ -105,6 +105,11 @@ public class DealDroidApp extends Application {
       editor.putLong(Constants.DEAL2, previousDealIds.get(1));
       editor.putLong(Constants.DEAL3, previousDealIds.get(2));
       editor.putLong(Constants.DEAL4, previousDealIds.get(3));
+      // we added support for 5th deal later, some users may only have 4 in file
+      // (one day last year eBay had 5 daily deals at once, it's normally 4)
+      if (previousDealIds.get(5) == null) {
+         previousDealIds.add(0L);
+      }
       editor.putLong(Constants.DEAL5, previousDealIds.get(5));
       editor.commit();
    }
