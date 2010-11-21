@@ -112,7 +112,7 @@ public class DealDroidApp extends Application {
       if (previousDealIds.size() == 4) {
          previousDealIds.add(0L);
       }
-      editor.putLong(Constants.DEAL5, previousDealIds.get(5));
+      editor.putLong(Constants.DEAL5, previousDealIds.get(4));
       editor.commit();
    }
 
