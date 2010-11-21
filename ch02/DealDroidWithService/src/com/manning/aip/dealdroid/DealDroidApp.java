@@ -34,11 +34,6 @@ public class DealDroidApp extends Application {
    private Item currentItem;
    private SharedPreferences prefs;
 
-   public DealDroidApp() {
-      super();
-      this.cMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-   }
-
    //
    // getters/setters
    //
@@ -76,6 +71,7 @@ public class DealDroidApp extends Application {
    @Override
    public void onCreate() {
       super.onCreate();
+      this.cMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
       this.parser = new DailyDealsXmlPullFeedParser();
       this.sectionList = new ArrayList<Section>(6);
       this.imageCache = new HashMap<Long, Bitmap>();
