@@ -3,5 +3,8 @@
     <string name="hello">Hello World, MediaBrowserActivity!</string>
     <string name="app_name">MediaMogul</string>
     <string name="step1">Step 1: Choose images</string>
+    <string name="step2">Step 2: Choose a song</string>
     <string name="next">Next</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
 </resources>

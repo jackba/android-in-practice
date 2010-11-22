@@ -32,7 +32,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import static android.os.Environment.*;
 
 
-public class MediaBrowserActivity extends Activity {
+public class ImageBrowserActivity extends Activity {
 	
 	GridView grid;
 	
@@ -41,7 +41,7 @@ public class MediaBrowserActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.image_browser);
         grid = (GridView) findViewById(R.id.grid);
         final GridAdapter adapter = new GridAdapter();
         grid.setAdapter(adapter);
@@ -50,13 +50,13 @@ public class MediaBrowserActivity extends Activity {
         nxtBtn.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				Intent i = new Intent(MediaBrowserActivity.this, SlideshowActivity.class);
+				Intent i = new Intent(ImageBrowserActivity.this, AudioBrowserActivity.class);
 				ArrayList<String> fileNamesList = new ArrayList<String>(selectedFiles.size());
 				for (File f : selectedFiles){
 					try {
 						fileNamesList.add(f.getCanonicalPath());
 					} catch (IOException e) {
-						Log.e("MediaBrowserActivity", "Exception putting image file names",e);
+						Log.e("ImageBrowserActivity", "Exception putting image file names",e);
 					}
 				}
 				i.putStringArrayListExtra("imageFileNames", fileNamesList);
@@ -67,6 +67,7 @@ public class MediaBrowserActivity extends Activity {
 
     private class GridAdapter extends BaseAdapter{
     	private List<File> imageFiles;
+    	private List<Bitmap> thumbs;
     	private static final int MAX_DIMENSION = 200;
     	
     	public GridAdapter(){
@@ -86,6 +87,11 @@ public class MediaBrowserActivity extends Activity {
     			theFiles.add(new File(picturesDir, fileName));
     		}
     		imageFiles = Collections.unmodifiableList(theFiles);
+    		ArrayList<Bitmap> tempThumbs = new ArrayList<Bitmap>(imageFiles.size());
+    		for (int i=0;i<imageFiles.size();i++){
+    			tempThumbs.add(makeThumb(i));
+    		}
+    		thumbs = Collections.unmodifiableList(tempThumbs);
     	}
     	
 		@Override
@@ -95,6 +101,10 @@ public class MediaBrowserActivity extends Activity {
 
 		@Override
 		public Object getItem(int position) {
+			return thumbs.get(position);
+		}
+		
+		private Bitmap makeThumb(int position){
 			try{
 				File imgFile = getImageFile(position);
 				InputStream stream = new FileInputStream(imgFile);
@@ -105,12 +115,12 @@ public class MediaBrowserActivity extends Activity {
 	        	double scale = ((double) MAX_DIMENSION) / ((double) max);
 	        	int width = (int) (scale * imgWidth);
 	        	int height = (int) (scale * imgHeight);
-	        	Log.d("MediaBrowserActivity", "Scaled width=" + width);
-	        	Log.d("MediaBrowserActivity", "Scaled height=" + height);
+	        	Log.d("ImageBrowserActivity", "Scaled width=" + width);
+	        	Log.d("ImageBrowserActivity", "Scaled height=" + height);
 	        	Bitmap thumb = ThumbnailUtils.extractThumbnail(bm, width, height);
 	        	return thumb;
 			} catch (Exception e) {
-				Log.e("MediaBrowserActivity", "Exception getting thumbnail image", e);
+				Log.e("ImageBrowserActivity", "Exception getting thumbnail image", e);
 			}
 			return null;
 		}
@@ -128,38 +138,31 @@ public class MediaBrowserActivity extends Activity {
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			if (convertView == null){
 				LayoutInflater airPump = 
-					(LayoutInflater) MediaBrowserActivity.this.
+					(LayoutInflater) ImageBrowserActivity.this.
 						getSystemService(LAYOUT_INFLATER_SERVICE);
 				convertView = airPump.inflate(R.layout.grid_item, parent, false);
 			}
 			ImageView img = (ImageView) convertView.findViewById(R.id.thumb);
-//			if (convertView == null){
-//				img = new ImageView(MediaBrowserActivity.this);
-//			} else {
-//				img = (ImageView) convertView;
-//			}
 			Bitmap thumb = (Bitmap) getItem(position);
 			img.setLayoutParams(new LinearLayout.LayoutParams(thumb.getWidth(), thumb.getHeight()));
 			img.setImageBitmap(thumb);
 			final CheckBox cbox = (CheckBox) convertView.findViewById(R.id.cbox);
 			cbox.setOnClickListener(new OnClickListener(){
-
 				@Override
 				public void onClick(View view) {
 					File file = getImageFile(position);
 					if (selectedFiles.remove(file)){
-						Log.d("MediaBrowserActivity", "Removed file:" + file.getName());
+						Log.d("ImageBrowserActivity", "Removed file:" + file.getName());
 						cbox.setSelected(false);
 					} else {
 						selectedFiles.add(file);
 						cbox.setSelected(true);
-						Log.d("MediaBrowserActivity", "Adding file:" + file.getName());
+						Log.d("ImageBrowserActivity", "Adding file:" + file.getName());
 					}
 				}
 				
 			});
 			return convertView;
-//			return img;
 		}
     	
     }
