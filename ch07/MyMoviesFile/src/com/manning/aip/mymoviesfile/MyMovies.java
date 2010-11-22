@@ -1,7 +1,10 @@
 package com.manning.aip.mymoviesfile;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -39,4 +42,22 @@ public class MyMovies extends ListActivity {
       this.adapter.toggleMovie(position);
       this.adapter.notifyDataSetInvalidated();
    }
+   
+   public static final int ENTRY_FORM = 0;
+   
+   @Override
+   public boolean onCreateOptionsMenu(Menu menu) {
+      menu.add(0, ENTRY_FORM, 0, "entry form");
+      return true;
+   }
+
+   @Override
+   public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+         case ENTRY_FORM:
+            startActivity(new Intent(this, MovieSearch.class));
+            break;
+      }
+      return false;
+   }   
 }
