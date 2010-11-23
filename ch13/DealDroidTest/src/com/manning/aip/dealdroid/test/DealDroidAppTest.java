@@ -23,10 +23,15 @@ public class DealDroidAppTest extends ApplicationTestCase<DealDroidApp> {
       dealdroid = getApplication();
    }
 
+   public void testShouldInitializeInstances() {
+      assertNotNull(dealdroid.getSectionList());
+      assertNotNull(dealdroid.getImageCache());
+      assertNotNull(dealdroid.getParser());
+   }
+
    public void testShouldStartWithEmptySections() {
-      assertTrue(dealdroid.sectionList.isEmpty());
-      assertNull(dealdroid.currentSection);
-      assertNull(dealdroid.currentItem);
+      assertTrue(dealdroid.getSectionList().isEmpty());
+      assertNull(dealdroid.getCurrentItem());
    }
 
    public void testCorrectProjectProperties() throws NameNotFoundException {
