@@ -1,4 +1,4 @@
-package com.manning.aip.mymoviesfile;
+package com.manning.aip.mymoviesdatabase;
 
 import java.util.Timer;
 import java.util.TimerTask;

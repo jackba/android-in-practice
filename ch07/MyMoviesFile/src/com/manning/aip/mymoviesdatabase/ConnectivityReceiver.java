@@ -1,4 +1,4 @@
-package com.manning.aip.mymoviesfile;
+package com.manning.aip.mymoviesdatabase;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

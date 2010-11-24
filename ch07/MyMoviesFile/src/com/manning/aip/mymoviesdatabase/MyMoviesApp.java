@@ -1,4 +1,4 @@
-package com.manning.aip.mymoviesfile;
+package com.manning.aip.mymoviesdatabase;
 
 import android.app.Application;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 
-import com.manning.aip.mymoviesfile.util.ImageCache;
+import com.manning.aip.mymoviesdatabase.util.ImageCache;
 
 public class MyMoviesApp extends Application {
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <style name="MyMoviesTheme" parent="@android:style/Theme.Black">
-    <item name="android:listViewStyle">@style/MyMoviesListView</item>
+    <item name="android:listViewStyle">@style/MyMoviesListView</item>    
   </style>
 
   <style name="SplashScreen" parent="@android:style/Theme.Black">
@@ -9,7 +9,7 @@
   </style>
 
   <style name="MyMoviesTextAppearance" parent="@android:style/TextAppearance">
-    <!--<item name="android:textStyle">bold</item>-->
+    dereasda<item name="android:textStyle">bold</item>
   </style>
 
   <style name="MyMoviesListView" parent="@android:Widget.ListView">

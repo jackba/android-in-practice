@@ -1,4 +1,4 @@
-package com.manning.aip.mymoviesfile;
+package com.manning.aip.mymoviesdatabase;
 
 import android.content.Context;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 
-import com.manning.aip.mymoviesfile.util.ImageCache;
+import com.manning.aip.mymoviesdatabase.util.ImageCache;
 
 import java.util.HashMap;
 

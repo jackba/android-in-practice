@@ -1,4 +1,4 @@
-package com.manning.aip.mymoviesfile.util;
+package com.manning.aip.mymoviesdatabase.util;
 
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;

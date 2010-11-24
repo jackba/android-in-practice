@@ -1,4 +1,4 @@
-package com.manning.aip.mymoviesfile;
+package com.manning.aip.mymoviesdatabase;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.manning.aip.mymoviesfile.util.ImageCache;
+import com.manning.aip.mymoviesdatabase.util.ImageCache;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

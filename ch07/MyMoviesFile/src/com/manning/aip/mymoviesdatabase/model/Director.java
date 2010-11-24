@@ -1,4 +1,4 @@
-package com.manning.aip.mymoviesfile.model;
+package com.manning.aip.mymoviesdatabase.model;
 
 public class Director extends Person {
    

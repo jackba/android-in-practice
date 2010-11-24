@@ -1,11 +1,11 @@
-package com.manning.aip.mymoviesfile.xml;
+package com.manning.aip.mymoviesdatabase.xml;
 
 import android.util.Log;
 import android.util.Xml;
 
-import com.manning.aip.mymoviesfile.Constants;
-import com.manning.aip.mymoviesfile.model.Movie;
-import com.manning.aip.mymoviesfile.model.MovieSearchResult;
+import com.manning.aip.mymoviesdatabase.Constants;
+import com.manning.aip.mymoviesdatabase.model.Movie;
+import com.manning.aip.mymoviesdatabase.model.MovieSearchResult;
 
 import org.xmlpull.v1.XmlPullParser;
 

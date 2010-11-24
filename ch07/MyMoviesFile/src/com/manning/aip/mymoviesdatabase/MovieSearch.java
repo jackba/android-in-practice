@@ -1,4 +1,4 @@
-package com.manning.aip.mymoviesfile;
+package com.manning.aip.mymoviesdatabase;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,9 +13,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.manning.aip.mymoviesfile.model.MovieSearchResult;
-import com.manning.aip.mymoviesfile.xml.MovieFeed;
-import com.manning.aip.mymoviesfile.xml.TheMovieDBXmlPullFeedParser;
+import com.manning.aip.mymoviesdatabase.model.MovieSearchResult;
+import com.manning.aip.mymoviesdatabase.xml.MovieFeed;
+import com.manning.aip.mymoviesdatabase.xml.TheMovieDBXmlPullFeedParser;
 
 import java.util.ArrayList;
 import java.util.List;
