@@ -11,6 +11,11 @@ import android.widget.ListView;
 
 public class MyMovies extends ListActivity {
 
+   public static final int PREFS = 0;
+   public static final int ENTRY_FORM = 1;
+   public static final int SEARCH_FORM = 2;
+   public static final int CAT_MANAGER= 3;
+   
    private MyMoviesApp app;
    private MovieAdapter adapter;
 
@@ -41,29 +46,29 @@ public class MyMovies extends ListActivity {
       this.adapter.notifyDataSetInvalidated();
    }
 
-   public static final int ENTRY_FORM = 0;
-   public static final int SEARCH_FORM = 1;
-   public static final int CAT_TEST = 2;
-
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
+      menu.add(0, PREFS, 0, "Preferences").setIcon(android.R.drawable.ic_menu_preferences);
       menu.add(0, SEARCH_FORM, 0, "Search").setIcon(android.R.drawable.ic_menu_search);
       menu.add(0, ENTRY_FORM, 0, "Form").setIcon(android.R.drawable.ic_menu_edit);
-      menu.add(0, CAT_TEST, 0, "cat_test");
+      menu.add(0, CAT_MANAGER, 0, "Category Manager").setIcon(android.R.drawable.ic_menu_manage);
       return true;
    }
 
    @Override
    public boolean onOptionsItemSelected(MenuItem item) {
       switch (item.getItemId()) {
+         case PREFS:
+            startActivity(new Intent(this, Preferences.class));
+            break;
          case ENTRY_FORM:
             startActivity(new Intent(this, MovieForm.class));
             break;
          case SEARCH_FORM:
             startActivity(new Intent(this, MovieSearch.class));
             break;
-         case CAT_TEST:
-            startActivity(new Intent(this, CategoryTest.class));
+         case CAT_MANAGER:
+            startActivity(new Intent(this, CategoryManager.class));
             break;
       }
       return false;

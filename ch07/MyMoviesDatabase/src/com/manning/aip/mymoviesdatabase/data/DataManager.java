@@ -12,8 +12,8 @@ import com.manning.aip.mymoviesdatabase.model.Category;
 
 /**
  * Android DataManager to encapsulate SQL and DB details.
- * Includes SQLiteOpenHelper, and uses Dao objects (in specified order)
- * to create/update and clear tables, and manipulate data.
+ * Includes SQLiteOpenHelper, and uses Dao objects
+ * to create/update/delete and otherwise manipulate data.
  *
  * @author ccollins
  *
@@ -24,31 +24,20 @@ public class DataManager {
 
    private Context context;
 
-   // Use a wrapper BackupManager, because it's only available on API level 8 and above
-   //private BackupManagerWrapper backupManager;
-
    private SQLiteDatabase db;
 
-   //private CategoryDao categoryDAO;
+   private CategoryDao categoryDao;
    //private MovieDAO movieDAO;
-
 
    public DataManager(final Context context) {
 
-      this.context = context;
-
-      /*
-      try { 
-         BackupManagerWrapper.isAvailable();
-         backupManager = new BackupManagerWrapper(this.context);
-      } catch (Throwable t) {
-         Log.i(Constants.LOG_TAG, "BackupManager not available (older Android version). BackupManager will not be used.");
-      } 
-      */     
+      this.context = context;  
 
       OpenHelper openHelper = new OpenHelper(this.context);
       db = openHelper.getWritableDatabase();
       Log.i(Constants.LOG_TAG, "DataManager created, db open status: " + db.isOpen());
+      
+      this.categoryDao = new CategoryDao(db);
    }
    
    public SQLiteDatabase getDb() {
@@ -57,7 +46,9 @@ public class DataManager {
 
    public void openDb() {
       if (!db.isOpen()) {
-         db = SQLiteDatabase.openDatabase(DataConstants.DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);         
+         db = SQLiteDatabase.openDatabase(DataConstants.DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
+         // since we pass db into DAO, have to recreate DAO if db is re-opened
+         categoryDao = new CategoryDao(db);
       }
    }
 
@@ -73,22 +64,19 @@ public class DataManager {
       SystemClock.sleep(500);
       openDb();
    }
-
-   //
-   // wrapped DB methods
-   //
    
-
    //
-   // end DB methods
-   //  
+   // getters/setters
+   //
+   public CategoryDao getCategoryDao() {
+      return this.categoryDao;
+   }
 
    //
    // SQLiteOpenHelper   
    //
    private static class OpenHelper extends SQLiteOpenHelper {
 
-      private boolean dbCreated;
       private Context context;
       
       OpenHelper(final Context context) {
@@ -100,16 +88,14 @@ public class DataManager {
       public void onCreate(final SQLiteDatabase db) {
          Log.i(Constants.LOG_TAG, "DataHelper.OpenHelper onCreate creating database " + DataConstants.DATABASE_NAME);
         
-         CategoryTable.onCreate(db);
-         
+         CategoryTable.onCreate(db);         
          // populate intial categories
          CategoryDao categoryDao = new CategoryDao(db);
          String[] categories = context.getResources().getStringArray(R.array.tmdb_categories);
          for (String cat : categories) {
             categoryDao.save(new Category(cat));
-         }         
-         
-         dbCreated = true;
+         }
+         // TODO remaining DAO init
       }
 
       @Override
@@ -117,12 +103,7 @@ public class DataManager {
          Log
                   .i(Constants.LOG_TAG, "SQLiteOpenHelper onUpgrade - oldVersion:" + oldVersion + " newVersion:"
                            + newVersion); 
-         
-         
-      }
-
-      public boolean isDbCreated() {
-         return dbCreated;
+         // TODO DAO onUpgrades here         
       }
    }
 }
