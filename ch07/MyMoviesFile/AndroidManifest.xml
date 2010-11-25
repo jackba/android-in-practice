@@ -25,6 +25,8 @@
 		<activity android:name=".MovieForm" />
 		
 		<activity android:name=".MovieSearch" />
+		
+		<activity android:name=".CategoryTest" />
 
 	</application>
 
