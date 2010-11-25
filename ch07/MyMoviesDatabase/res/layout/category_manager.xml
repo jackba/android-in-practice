@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="wrap_content">
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:layout_gravity="center_horizontal">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:layout_gravity="center_horizontal">
+
+	<TextView android:id="@+id/category_add_label"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:text="New Category:" />
+
+	<EditText android:id="@+id/category_new" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+
+	<Button android:id="@+id/category_new_submit"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:text="Create" android:layout_marginBottom="20dp" />
+
+
+	<LinearLayout android:orientation="vertical"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:layout_gravity="center_horizontal">
 
 		<TextView android:id="@+id/category_manager_label"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:text="Current Categories" />
 
-		<ListView android:id="@+id/category_manager_list" android:layout_width="fill_parent"
-			android:layout_height="0dp" android:layout_weight="1"
-			android:cacheColorHint="#00000000" />
+		<ListView android:id="@+id/category_manager_list"
+			android:layout_width="fill_parent" android:layout_height="0dp"
+			android:layout_weight="1" android:cacheColorHint="#00000000" />
 
-		<TextView android:id="@+id/category_manager_empty" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="No results" />
-
+		<TextView android:id="@+id/category_manager_empty"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="No results" />
 	</LinearLayout>
-</ScrollView>
+
+</LinearLayout>
+

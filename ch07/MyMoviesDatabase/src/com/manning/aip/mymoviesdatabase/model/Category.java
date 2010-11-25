@@ -21,7 +21,7 @@ public class Category extends ModelBase {
 
    @Override
    public String toString() {
-      return "Category [name=" + this.name + "]";
+      return this.name;
    }
 
    @Override

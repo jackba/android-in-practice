@@ -33,11 +33,12 @@ public class CategoryDao implements Dao<Category>, BaseColumns {
       }
    }
 
+   // get field slot error, show how it works by removing a column in the columns array here)
    @Override
    public Category get(long id) {
       Category category = null;
       Cursor c =
-               db.query(CategoryTable.TABLE_NAME, new String[] { CategoryColumns.NAME }, CategoryColumns._ID + " = ?",
+               db.query(CategoryTable.TABLE_NAME, new String[] { CategoryColumns._ID, CategoryColumns.NAME }, CategoryColumns._ID + " = ?",
                         new String[] { String.valueOf(id) }, null, null, null, "1");
       if (c.moveToFirst()) {
          category = new Category();

@@ -13,8 +13,7 @@ public final class MovieTable {
       public static final String RATING = "rating";
       public static final String URL = "url";
       public static final String HOMEPAGE = "homepage";
-      public static final String TRAILER = "trailer";
-      
+      public static final String TRAILER = "trailer";      
    }
    
    public static void onCreate(SQLiteDatabase db) {
@@ -23,6 +22,7 @@ public final class MovieTable {
       // book table
       sb.append("CREATE TABLE " + TABLE_NAME + " (");
       sb.append(MovieColumns._ID + " INTEGER PRIMARY KEY, ");
+      sb.append(MovieColumns.NAME + " TEXT, "); // movie names aren't unique, will need a smart get
       sb.append(MovieColumns.YEAR + " TEXT NOT NULL CHECK(year > 1900), ");
       sb.append(MovieColumns.RATING + " INTEGER, ");
       sb.append(MovieColumns.URL + " TEXT, ");
