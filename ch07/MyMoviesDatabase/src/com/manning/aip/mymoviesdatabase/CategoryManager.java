@@ -84,9 +84,8 @@ public class CategoryManager extends Activity {
 
    @Override
    public boolean onContextItemSelected(final MenuItem item) {
-      AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-      long id = info.id;
-      final Category category = application.dataManager.getCategoryDao().get(id);
+      AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();      
+      final Category category = categories.get(info.position);
       switch (item.getItemId()) {
          case EDIT:
             Toast.makeText(CategoryManager.this, "TODO EDIT " + category.getName(), Toast.LENGTH_SHORT);
@@ -96,7 +95,6 @@ public class CategoryManager extends Activity {
                      .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {
                            dataManager.getCategoryDao().delete(category);
-                           Toast.makeText(CategoryManager.this, "Deleted " + category.getName(), Toast.LENGTH_SHORT);
                            adapter.remove(category);
                         }
                      }).setNegativeButton("No", new DialogInterface.OnClickListener() {
