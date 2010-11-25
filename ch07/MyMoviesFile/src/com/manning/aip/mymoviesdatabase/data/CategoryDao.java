@@ -15,8 +15,7 @@ import java.util.List;
 public class CategoryDao implements Dao<Category>, BaseColumns {
 
    private static final String INSERT =
-            "insert into " + CategoryTable.TABLE_NAME + "(" + CategoryColumns._ID + "," + CategoryColumns.NAME
-                     + ") values (?, ?)";
+            "insert into " + CategoryTable.TABLE_NAME + "(" + CategoryColumns.NAME + ") values (?)";
 
    private SQLiteDatabase db;
    private SQLiteStatement insertStatement;
@@ -56,7 +55,7 @@ public class CategoryDao implements Dao<Category>, BaseColumns {
       List<Category> list = new ArrayList<Category>();
       Cursor c =
                db.query(CategoryTable.TABLE_NAME, new String[] { CategoryColumns._ID, CategoryColumns.NAME }, null,
-                        null, null, null, CategoryColumns.NAME + " desc", null);
+                        null, null, null, CategoryColumns.NAME, null);
       if (c.moveToFirst()) {
          do {
             Category category = new Category();
@@ -74,8 +73,7 @@ public class CategoryDao implements Dao<Category>, BaseColumns {
    @Override
    public long save(Category entity) {
       insertStatement.clearBindings();
-      insertStatement.bindLong(1, entity.getId());
-      insertStatement.bindString(2, entity.getName());
+      insertStatement.bindString(1, entity.getName());
       return insertStatement.executeInsert();
    }
 
