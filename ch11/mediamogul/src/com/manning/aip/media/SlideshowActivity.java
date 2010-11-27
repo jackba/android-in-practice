@@ -1,45 +1,63 @@
 package com.manning.aip.media;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
+import com.manning.aip.media.AudioBrowserActivity.Song;
+
 public class SlideshowActivity extends Activity {
 
-	private ImageView slide0;
-	private ImageView slide1;
+	private ImageView leftSlide;
+	private ImageView rightSlide;
 	private Handler handler = new Handler();
 	private static final int TIME_PER_SLIDE = 3*1000;
+	private Song song;
+	private MediaPlayer player;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.slideshow);
-		slide0 = (ImageView) findViewById(R.id.slide0);
-		slide1 = (ImageView) findViewById(R.id.slide1);
+		leftSlide = (ImageView) findViewById(R.id.slide0);
+		rightSlide = (ImageView) findViewById(R.id.slide1);
+		song = getIntent().getParcelableExtra("selectedSong");
+		player = MediaPlayer.create(this, song.uri);
+		player.setLooping(true);
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		if (player != null && player.isPlaying()){
+			player.pause();
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (player != null && player.isPlaying())
+			player.stop();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		handler.postDelayed(new AnimationAlphaTimer(), 100);
-		//new Timer(false).schedule(new AnimationAlphaTimer(), 100);
+		handler.postDelayed(new DissolveTransition(), 100);
+		player.start();
 	}
 
-	private class AnimationAlphaTimer implements Runnable,
-			Animation.AnimationListener {
+	private class DissolveTransition implements Runnable{
 
 		private ArrayList<String> images;
 		private int count = 0;
@@ -48,14 +66,12 @@ public class SlideshowActivity extends Activity {
 		private Bitmap nextImage = null;
 		private Random rnd = new Random(System.currentTimeMillis());
 
-		public AnimationAlphaTimer() {
+		public DissolveTransition() {
 			images = getIntent().getStringArrayListExtra("imageFileNames");
-			currentImage = getNextImage();
-			//slide0.setImageResource(currentImage);
-			
-			slide0.setImageBitmap(currentImage);
+			currentImage = getNextImage();			
+			leftSlide.setImageBitmap(currentImage);
 			nextImage = getNextImage();
-			slide1.setImageBitmap(nextImage);
+			rightSlide.setImageBitmap(nextImage);
 			count = 1;
 		}
 
@@ -76,21 +92,26 @@ public class SlideshowActivity extends Activity {
 			animation.setStartOffset(TIME_PER_SLIDE);
 			animation.setDuration(TIME_PER_SLIDE);
 			animation.setFillAfter(true);
-			animation.setAnimationListener(this);
-			slide1.startAnimation(animation);
+			animation.setAnimationListener(new Animation.AnimationListener() {
+				
+				@Override
+				public void onAnimationStart(Animation animation) {}
+				
+				@Override
+				public void onAnimationRepeat(Animation animation) {}
+				
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					nextImage = getNextImage();
+					ImageView backgroundImage = 
+						(count % 2 == 0) ? rightSlide : leftSlide;
+					backgroundImage.setImageBitmap(nextImage);
+					count++;
+					nextSlide();
+				}
+			});
+			rightSlide.startAnimation(animation);
 			currentImage = nextImage;
-		}
-
-		@Override
-		public void onAnimationEnd(Animation animation) {
-			nextImage = getNextImage();
-			if ((count % 2) == 0) {
-				slide1.setImageBitmap(nextImage);
-			} else {
-				slide0.setImageBitmap(nextImage);
-			}
-			count++;
-			nextSlide();
 		}
 		
 		public Bitmap getNextImage(){
@@ -101,12 +122,6 @@ public class SlideshowActivity extends Activity {
 			}
 			current = index;
 			return getImage(index);
-		}
-
-		public void onAnimationRepeat(Animation animation) {
-		}
-
-		public void onAnimationStart(Animation animation) {
 		}
 	}
 }

@@ -19,24 +19,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import static android.os.Environment.*;
 
 
 public class ImageBrowserActivity extends Activity {
 	
-	GridView grid;
-	
-	ArrayList<File> selectedFiles = new ArrayList<File>();
+	private static final String LOG_TAG = "ImageBrowserActivity";
+	private GridView grid;
+	private ArrayList<File> selectedFiles = new ArrayList<File>();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,13 +47,16 @@ public class ImageBrowserActivity extends Activity {
         nxtBtn.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				Intent i = new Intent(ImageBrowserActivity.this, AudioBrowserActivity.class);
-				ArrayList<String> fileNamesList = new ArrayList<String>(selectedFiles.size());
+				Intent i = 
+					new Intent(ImageBrowserActivity.this, 
+							AudioBrowserActivity.class);
+				ArrayList<String> fileNamesList = 
+					new ArrayList<String>(selectedFiles.size());
 				for (File f : selectedFiles){
 					try {
 						fileNamesList.add(f.getCanonicalPath());
 					} catch (IOException e) {
-						Log.e("ImageBrowserActivity", "Exception putting image file names",e);
+						Log.e(LOG_TAG, "Exception putting image file names",e);
 					}
 				}
 				i.putStringArrayListExtra("imageFileNames", fileNamesList);
@@ -69,6 +69,7 @@ public class ImageBrowserActivity extends Activity {
     	private List<File> imageFiles;
     	private List<Bitmap> thumbs;
     	private static final int MAX_DIMENSION = 200;
+    	private Activity activity = ImageBrowserActivity.this;
     	
     	public GridAdapter(){
     		File picturesDir = 
@@ -83,11 +84,11 @@ public class ImageBrowserActivity extends Activity {
     		ArrayList<File> theFiles = new ArrayList<File>(maxNumFiles);
     		if (maxNumFiles == 0) return;
     		for (String fileName : nameArray){
-    			// this doesn't handle directories, make this recursive for that
     			theFiles.add(new File(picturesDir, fileName));
     		}
     		imageFiles = Collections.unmodifiableList(theFiles);
-    		ArrayList<Bitmap> tempThumbs = new ArrayList<Bitmap>(imageFiles.size());
+    		ArrayList<Bitmap> tempThumbs = 
+    			new ArrayList<Bitmap>(imageFiles.size());
     		for (int i=0;i<imageFiles.size();i++){
     			tempThumbs.add(makeThumb(i));
     		}
@@ -115,12 +116,13 @@ public class ImageBrowserActivity extends Activity {
 	        	double scale = ((double) MAX_DIMENSION) / ((double) max);
 	        	int width = (int) (scale * imgWidth);
 	        	int height = (int) (scale * imgHeight);
-	        	Log.d("ImageBrowserActivity", "Scaled width=" + width);
-	        	Log.d("ImageBrowserActivity", "Scaled height=" + height);
-	        	Bitmap thumb = ThumbnailUtils.extractThumbnail(bm, width, height);
+	        	Log.d(LOG_TAG, "Scaled width=" + width);
+	        	Log.d(LOG_TAG, "Scaled height=" + height);
+	        	Bitmap thumb = 
+	        		ThumbnailUtils.extractThumbnail(bm, width, height);
 	        	return thumb;
 			} catch (Exception e) {
-				Log.e("ImageBrowserActivity", "Exception getting thumbnail image", e);
+				Log.e(LOG_TAG, "Exception getting thumbnail image", e);
 			}
 			return null;
 		}
@@ -135,35 +137,55 @@ public class ImageBrowserActivity extends Activity {
 		}
 
 		@Override
-		public View getView(final int position, View convertView, ViewGroup parent) {
-			if (convertView == null){
-				LayoutInflater airPump = 
-					(LayoutInflater) ImageBrowserActivity.this.
-						getSystemService(LAYOUT_INFLATER_SERVICE);
-				convertView = airPump.inflate(R.layout.grid_item, parent, false);
+		public View getView(final int position, View cell, ViewGroup parent) {
+			if (cell == null){
+				LayoutInflater airPump = activity.getLayoutInflater();
+				cell = airPump.inflate(R.layout.grid_item, parent, false);
 			}
-			ImageView img = (ImageView) convertView.findViewById(R.id.thumb);
+			ViewHolder holder = (ViewHolder) cell.getTag();
+			if (holder == null){
+				holder = new ViewHolder(cell);
+				cell.setTag(holder);
+			}
+			ImageView img = holder.img;
 			Bitmap thumb = (Bitmap) getItem(position);
-			img.setLayoutParams(new LinearLayout.LayoutParams(thumb.getWidth(), thumb.getHeight()));
+			img.setLayoutParams(
+					new LinearLayout.LayoutParams(thumb.getWidth(), 
+							thumb.getHeight()));
 			img.setImageBitmap(thumb);
-			final CheckBox cbox = (CheckBox) convertView.findViewById(R.id.cbox);
+			final File file = getImageFile(position);
+			final CheckBox cbox = holder.cbox;
+			if (selectedFiles.contains(file)){
+				cbox.setChecked(true);
+			} else {
+				cbox.setChecked(false);
+			}
 			cbox.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View view) {
-					File file = getImageFile(position);
+					
 					if (selectedFiles.remove(file)){
-						Log.d("ImageBrowserActivity", "Removed file:" + file.getName());
+						Log.d(LOG_TAG, "Removed file:" + file.getName());
 						cbox.setSelected(false);
 					} else {
 						selectedFiles.add(file);
 						cbox.setSelected(true);
-						Log.d("ImageBrowserActivity", "Adding file:" + file.getName());
+						Log.d(LOG_TAG, "Adding file:" + file.getName());
 					}
 				}
 				
 			});
-			return convertView;
+			return cell;
 		}
     	
+    }
+    
+   static class ViewHolder {
+    	final ImageView img;
+    	final CheckBox cbox;
+    	ViewHolder(View cell){
+    		img = (ImageView) cell.findViewById(R.id.thumb);
+    		cbox = (CheckBox) cell.findViewById(R.id.cbox);
+    	}
     }
 }
