@@ -1,4 +1,4 @@
-package com.manning.aip.mymoviesdatabase.data;
+package com.manning.aip.mymoviesdatabase.data.backup;
 
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.BackupDataInput;

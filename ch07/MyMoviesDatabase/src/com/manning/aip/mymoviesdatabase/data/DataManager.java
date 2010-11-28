@@ -82,13 +82,13 @@ public class DataManager {
    // movie
    public Movie getMovie(long movieId) {
       Movie movie = movieDao.get(movieId);
-      movie.getCategories().addAll(movieCategoryDao.getCategories(movie.getId()));      
+      movie.getCategories().addAll(movieCategoryDao.getCategories(movie.getId()));
       return movie;
    }
 
    public List<Movie> getMovieHeaders() {
       // these movies don't have categories, but they're really used as "headers" anyway, it's ok
-      return movieDao.getAll();      
+      return movieDao.getAll();
    }
 
    public Movie findMovie(String name) {
@@ -141,7 +141,7 @@ public class DataManager {
 
    public void deleteMovie(Movie movie) {
       movieDao.delete(movie);
-      for (Category c: movie.getCategories()) {
+      for (Category c : movie.getCategories()) {
          movieCategoryDao.delete(new MovieCategoryKey(movie.getId(), c.getId()));
       }
    }
@@ -185,6 +185,7 @@ public class DataManager {
 
          CategoryTable.onCreate(db);
          // populate initial categories (one way, there are several, this works ok for small data set)
+         // (this is just as an example, MyMovies really doesn't use/need the "category manager"
          CategoryDao categoryDao = new CategoryDao(db);
          String[] categories = context.getResources().getStringArray(R.array.tmdb_categories);
          for (String cat : categories) {
@@ -201,7 +202,12 @@ public class DataManager {
          Log
                   .i(Constants.LOG_TAG, "SQLiteOpenHelper onUpgrade - oldVersion:" + oldVersion + " newVersion:"
                            + newVersion);
-         // TODO DAO onUpgrades here         
+         
+         MovieCategoryTable.onUpgrade(db, oldVersion, newVersion);
+         
+         MovieTable.onUpgrade(db, oldVersion, newVersion);
+         
+         CategoryTable.onUpgrade(db, oldVersion, newVersion);         
       }
    }
 }

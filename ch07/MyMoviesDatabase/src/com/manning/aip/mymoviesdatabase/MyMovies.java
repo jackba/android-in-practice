@@ -23,14 +23,13 @@ public class MyMovies extends ListActivity {
 
    private static final int EDIT = 0;
    private static final int DELETE = 1;
-   
+
    public static final int PREFS = 0;
-   public static final int ENTRY_FORM = 1;
-   public static final int SEARCH_FORM = 2;
-   public static final int CAT_MANAGER= 3;
-   
+   public static final int SEARCH_FORM = 1;
+   public static final int CAT_MANAGER = 2;
+
    private MyMoviesApp app;
-   
+
    private MovieAdapterDatabase adapter;
    private List<Movie> movies;
 
@@ -68,7 +67,6 @@ public class MyMovies extends ListActivity {
    public boolean onCreateOptionsMenu(Menu menu) {
       menu.add(0, PREFS, 0, "Preferences").setIcon(android.R.drawable.ic_menu_preferences);
       menu.add(0, SEARCH_FORM, 0, "Search").setIcon(android.R.drawable.ic_menu_search);
-      menu.add(0, ENTRY_FORM, 0, "Form").setIcon(android.R.drawable.ic_menu_edit);
       menu.add(0, CAT_MANAGER, 0, "Category Manager").setIcon(android.R.drawable.ic_menu_manage);
       return true;
    }
@@ -79,9 +77,6 @@ public class MyMovies extends ListActivity {
          case PREFS:
             startActivity(new Intent(this, Preferences.class));
             break;
-         case ENTRY_FORM:
-            startActivity(new Intent(this, MovieForm.class));
-            break;
          case SEARCH_FORM:
             startActivity(new Intent(this, MovieSearch.class));
             break;
@@ -91,7 +86,7 @@ public class MyMovies extends ListActivity {
       }
       return false;
    }
-   
+
    @Override
    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo) {
       super.onCreateContextMenu(menu, v, menuInfo);
