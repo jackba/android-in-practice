@@ -50,7 +50,7 @@ public class MovieCategoryDao implements BaseColumns {
                db.query(MovieCategoryTable.TABLE_NAME, new String[] { MovieCategoryColumns.MOVIE_ID,
                         MovieCategoryColumns.CATEGORY_ID }, null, null, null, null, null, "1");
       if (c.moveToFirst()) {
-         result = true;
+         result = true; // don't just "return true" here, or Cursor won't get closed ;)
       }
       if (!c.isClosed()) {
          c.close();
