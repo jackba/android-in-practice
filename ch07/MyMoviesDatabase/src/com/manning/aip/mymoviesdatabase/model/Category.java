@@ -39,7 +39,8 @@ public class Category extends ModelBase implements Comparable<Category> {
    public int hashCode() {
       final int prime = 31;
       int result = super.hashCode();
-      result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+      // upper name so hashCode is consistent with equals (equals ignores case)
+      result = prime * result + ((this.name == null) ? 0 : this.name.toUpperCase().hashCode());
       return result;
    }
 
@@ -55,7 +56,8 @@ public class Category extends ModelBase implements Comparable<Category> {
       if (this.name == null) {
          if (other.name != null)
             return false;
-      } else if (!this.name.equals(other.name))
+         // name check ignores case
+      } else if (!this.name.equalsIgnoreCase(other.name))
          return false;
       return true;
    }   

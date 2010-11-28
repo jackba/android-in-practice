@@ -17,14 +17,12 @@ import java.net.URL;
 public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
 
    private final ImageCache cache;   
-   private final int position;
-   private final ImageView imageView;
    private final Drawable placeholder;
+   protected final ImageView imageView;
 
    // pass in the cache so we can populate it as we go
-   public DownloadTask(ImageCache cache, int position, ImageView imageView) {
+   public DownloadTask(ImageCache cache, ImageView imageView) {
       this.cache = cache;
-      this.position = position;
       this.imageView = imageView;
       Resources resources = imageView.getContext().getResources();
       this.placeholder = resources.getDrawable(android.R.drawable.gallery_thumb);
@@ -55,11 +53,8 @@ public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
 
    @Override
    protected void onPostExecute(Bitmap result) {
-      int forPosition = (Integer) imageView.getTag();
-      if (forPosition == this.position) {
-         if (result != null) {
-            this.imageView.setImageBitmap(result);
-         }
+      if (result != null) {
+         this.imageView.setImageBitmap(result);
       }
    }
 }

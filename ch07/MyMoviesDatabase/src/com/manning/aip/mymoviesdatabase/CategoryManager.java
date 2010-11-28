@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-import com.manning.aip.mymoviesdatabase.data.DataManager;
 import com.manning.aip.mymoviesdatabase.model.Category;
 
 import java.util.Collections;
@@ -29,8 +28,7 @@ public class CategoryManager extends Activity {
    private static final int EDIT = 0;
    private static final int DELETE = 1;
 
-   private MyMoviesApp application;
-   private DataManager dataManager;
+   private MyMoviesApp app;
 
    private List<Category> categories;
    private ArrayAdapter<Category> adapter;
@@ -47,12 +45,11 @@ public class CategoryManager extends Activity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.category_manager);
 
-      application = (MyMoviesApp) getApplication();
+      app = (MyMoviesApp) getApplication();
 
-      dataManager = application.getDataManager();
-      categories = dataManager.getCategoryDao().getAll();
+      categories = app.getDataManager().getCategoryDao().getAll();
       listView = (ListView) this.findViewById(R.id.category_manager_list);
-      listView.setEmptyView(findViewById(R.id.category_manager_empty));
+      listView.setEmptyView(findViewById(R.id.category_manager_list_empty));
       adapter = new ArrayAdapter<Category>(this, android.R.layout.simple_list_item_1, categories);
       listView.setAdapter(adapter);
       registerForContextMenu(listView);
@@ -74,10 +71,10 @@ public class CategoryManager extends Activity {
       categoryAddSubmit.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
             if (!isTextViewEmpty(categoryAdd)) {
-               Category exists = dataManager.getCategoryDao().find(categoryAdd.getText().toString());
+               Category exists = app.getDataManager().getCategoryDao().find(categoryAdd.getText().toString());
                if (exists == null) {
                   Category category = new Category(categoryAdd.getText().toString());
-                  dataManager.getCategoryDao().save(category);
+                  app.getDataManager().getCategoryDao().save(category);
                   // we could just ADD to adapter, and not backing collection
                   // but that will put element at end of ListView, here we want to add and sort
                   categories.add(category);
@@ -113,7 +110,7 @@ public class CategoryManager extends Activity {
             new AlertDialog.Builder(CategoryManager.this).setTitle("Delete Category?").setMessage(category.getName())
                      .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {
-                           dataManager.getCategoryDao().delete(category);
+                           app.getDataManager().getCategoryDao().delete(category);
                            adapter.remove(category);
                         }
                      }).setNegativeButton("No", new DialogInterface.OnClickListener() {

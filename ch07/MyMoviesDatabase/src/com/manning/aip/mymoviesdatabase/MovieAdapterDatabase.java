@@ -49,7 +49,7 @@ public class MovieAdapterDatabase extends ArrayAdapter<Movie> {
       String thumbUrl = movie.getThumbUrl();
       if (thumbUrl != null && !thumbUrl.equals("")) {         
          if (cache.get(thumbUrl) == null) {
-            new DownloadTask(cache, position, image).execute(thumbUrl);         
+            new DownloadListViewTask(cache, position, image).execute(thumbUrl);         
          } else {
             image.setImageBitmap(cache.get(thumbUrl));
          }

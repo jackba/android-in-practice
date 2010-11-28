@@ -1,6 +1,7 @@
 package com.manning.aip.mymoviesdatabase.model;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class Movie extends ModelBase {
 
@@ -13,8 +14,15 @@ public class Movie extends ModelBase {
    private String trailer;
    private String tagline;
    private String thumbUrl;
-   private List<Category> categories;
+   private Set<Category> categories;
 
+   // note, in the real-world making these model beans immutable would be a better approach
+   // (that is to say, not making them JavaBeans, but makign immutable model classes with Builder)
+   
+   public Movie() {
+      this.categories = new LinkedHashSet<Category>();
+   }
+   
    public String getProviderId() {
       return this.providerId;
    }
@@ -87,11 +95,11 @@ public class Movie extends ModelBase {
       this.thumbUrl = thumbUrl;
    }
 
-   public List<Category> getCategories() {
+   public Set<Category> getCategories() {
       return this.categories;
    }
 
-   public void setCategories(List<Category> categories) {
+   public void setCategories(Set<Category> categories) {
       this.categories = categories;
    }
 
@@ -109,7 +117,8 @@ public class Movie extends ModelBase {
       int result = super.hashCode();
       result = prime * result + ((this.categories == null) ? 0 : this.categories.hashCode());
       result = prime * result + ((this.homepage == null) ? 0 : this.homepage.hashCode());
-      result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+      // upper name so hashCode is consistent with equals (equals ignores case)
+      result = prime * result + ((this.name == null) ? 0 : this.name.toUpperCase().hashCode());
       result = prime * result + ((this.providerId == null) ? 0 : this.providerId.hashCode());
       long temp;
       temp = Double.doubleToLongBits(this.rating);
@@ -144,7 +153,8 @@ public class Movie extends ModelBase {
       if (this.name == null) {
          if (other.name != null)
             return false;
-      } else if (!this.name.equals(other.name))
+         // name check ignores case
+      } else if (!this.name.equalsIgnoreCase(other.name))
          return false;
       if (this.providerId == null) {
          if (other.providerId != null)
