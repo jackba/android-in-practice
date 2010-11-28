@@ -82,7 +82,9 @@ public class DataManager {
    // movie
    public Movie getMovie(long movieId) {
       Movie movie = movieDao.get(movieId);
-      movie.getCategories().addAll(movieCategoryDao.getCategories(movie.getId()));
+      if (movie != null) {
+         movie.getCategories().addAll(movieCategoryDao.getCategories(movie.getId()));
+      }
       return movie;
    }
 
@@ -93,7 +95,9 @@ public class DataManager {
 
    public Movie findMovie(String name) {
       Movie movie = movieDao.find(name);
-      movie.getCategories().addAll(movieCategoryDao.getCategories(movie.getId()));
+      if (movie != null) {
+         movie.getCategories().addAll(movieCategoryDao.getCategories(movie.getId()));
+      }
       return movie;
    }
 
@@ -109,7 +113,7 @@ public class DataManager {
 
          // first save movie                                 
          movieId = movieDao.save(movie);
-
+         
          // second, make sure categories exist, and save movie/category association
          // (this makes multiple queries, but usually not many cats, could just save and catch exception too, but that's ugly)
          if (movie.getCategories().size() > 0) {
