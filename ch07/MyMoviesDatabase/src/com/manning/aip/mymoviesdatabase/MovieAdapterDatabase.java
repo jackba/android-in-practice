@@ -16,20 +16,9 @@ public class MovieAdapterDatabase extends ArrayAdapter<Movie> {
 
    private final ImageCache cache;   
    
-   private List<Movie> movies;
-   
-   //private HashMap<Integer, Boolean> movieCollection;
-   //private String[] movieIconUrls;
-  
-   // TODO
-   
    public MovieAdapterDatabase(Context context, ImageCache cache, List<Movie> movies) {
-      //super(context, R.layout.movie_item, android.R.id.text1, context.getResources().getStringArray(R.array.movies));
-     
       super(context, R.layout.movie_item, android.R.id.text1, movies);
       this.cache = cache;
-      //this.movieCollection = new HashMap<Integer, Boolean>();
-      ///this.movieIconUrls = context.getResources().getStringArray(R.array.movie_thumbs);
    }
 
    @Override

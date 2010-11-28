@@ -51,7 +51,7 @@ public class MovieSearch extends Activity {
       search.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
             if (input.getText() != null && input.getText().toString() != null) {
-               // TODO parse from AsyncTask
+               // TODO parse from AsyncTask (and check net avail)
                movies.clear();
                movies.addAll(parser.search(input.getText().toString()));
                Log.d(Constants.LOG_TAG, " movies size after parse: " + movies.size());
@@ -70,26 +70,29 @@ public class MovieSearch extends Activity {
       listView.setOnItemClickListener(new OnItemClickListener() {
          public void onItemClick(final AdapterView<?> parent, final View v, final int index, final long id) {
             final MovieSearchResult movieSearchResult = movies.get(index);
-            // TODO parse from AsyncTask
+            // TODO parse from AsyncTask (and check net avail)
             final Movie movie = parser.get(movieSearchResult.getProviderId());
-
-            new AlertDialog.Builder(MovieSearch.this).setTitle("Add Movie?").setMessage(movie.toString())
-                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface d, final int i) {
-                           // TODO check if movie already exists
-                           Movie exists = app.getDataManager().getMovieDao().find(movie.getName());
-                           if (exists == null) {
-                              app.getDataManager().getMovieDao().save(movie);
-                              startActivity(new Intent(MovieSearch.this, MyMovies.class));
-                           } else {
-                              Toast.makeText(MovieSearch.this, "Movie already saved", Toast.LENGTH_SHORT).show();
+            if (movie != null) {
+               new AlertDialog.Builder(MovieSearch.this).setTitle("Add Movie?").setMessage(movie.toString())
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                           public void onClick(final DialogInterface d, final int i) {
+                              // TODO check if movie already exists
+                              Movie exists = app.getDataManager().getMovieDao().find(movie.getName());
+                              if (exists == null) {
+                                 app.getDataManager().getMovieDao().save(movie);
+                                 startActivity(new Intent(MovieSearch.this, MyMovies.class));
+                              } else {
+                                 Toast.makeText(MovieSearch.this, "Movie already saved", Toast.LENGTH_SHORT).show();
+                              }
                            }
-                        }
-                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface d, final int i) {
-                        }
-                     }).show();
-
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                           public void onClick(final DialogInterface d, final int i) {
+                           }
+                        }).show();
+            } else {
+               Toast.makeText(MovieSearch.this, "Problem parsing movie, no result, please try again later",
+                        Toast.LENGTH_SHORT).show();
+            }
          }
       });
    }

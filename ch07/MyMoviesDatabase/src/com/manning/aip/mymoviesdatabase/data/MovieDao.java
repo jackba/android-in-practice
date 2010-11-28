@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 
 import com.manning.aip.mymoviesdatabase.data.MovieTable.MovieColumns;
-import com.manning.aip.mymoviesdatabase.model.Category;
 import com.manning.aip.mymoviesdatabase.model.Movie;
 
 import java.util.ArrayList;
@@ -16,11 +15,11 @@ import java.util.List;
 public class MovieDao implements Dao<Movie>, BaseColumns {
 
    // TODO movie categories
-
    private static final String INSERT =
             "insert into " + MovieTable.TABLE_NAME + "(" + MovieColumns.HOMEPAGE + ", " + MovieColumns.NAME + ", "
-                     + MovieColumns.RATING + ", " + MovieColumns.TAGLINE + ", " + MovieColumns.TRAILER + ", " 
-                     + MovieColumns.URL + ", " + MovieColumns.YEAR + ") values (?, ?, ?, ?, ?, ?, ?)";
+                     + MovieColumns.RATING + ", " + MovieColumns.TAGLINE + ", " + MovieColumns.THUMB_URL + ", "
+                     + MovieColumns.TRAILER + ", " + MovieColumns.URL + ", " + MovieColumns.YEAR
+                     + ") values (?, ?, ?, ?, ?, ?, ?, ?)";
 
    private SQLiteDatabase db;
    private SQLiteStatement insertStatement;
@@ -43,9 +42,9 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
       Movie movie = null;
       Cursor c =
                db.query(MovieTable.TABLE_NAME, new String[] { MovieColumns._ID, MovieColumns.HOMEPAGE,
-                        MovieColumns.NAME, MovieColumns.RATING, MovieColumns.TAGLINE, MovieColumns.TRAILER,
-                        MovieColumns.URL, MovieColumns.YEAR }, MovieColumns._ID + " = ?", new String[] { String
-                        .valueOf(id) }, null, null, null, "1");
+                        MovieColumns.NAME, MovieColumns.RATING, MovieColumns.TAGLINE, MovieColumns.THUMB_URL,
+                        MovieColumns.TRAILER, MovieColumns.URL, MovieColumns.YEAR }, MovieColumns._ID + " = ?",
+                        new String[] { String.valueOf(id) }, null, null, null, "1");
       if (c.moveToFirst()) {
          movie = this.buildMovieFromCursor(c);
       }
@@ -78,8 +77,9 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
       List<Movie> list = new ArrayList<Movie>();
       Cursor c =
                db.query(MovieTable.TABLE_NAME, new String[] { MovieColumns._ID, MovieColumns.HOMEPAGE,
-                        MovieColumns.NAME, MovieColumns.RATING, MovieColumns.TAGLINE, MovieColumns.TRAILER,
-                        MovieColumns.URL, MovieColumns.YEAR }, null, null, null, null, MovieColumns.NAME, null);
+                        MovieColumns.NAME, MovieColumns.RATING, MovieColumns.TAGLINE, MovieColumns.THUMB_URL,
+                        MovieColumns.TRAILER, MovieColumns.URL, MovieColumns.YEAR }, null, null, null, null,
+                        MovieColumns.NAME, null);
       if (c.moveToFirst()) {
          do {
             Movie movie = this.buildMovieFromCursor(c);
@@ -101,9 +101,10 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
       insertStatement.bindString(2, entity.getName());
       insertStatement.bindDouble(3, entity.getRating());
       insertStatement.bindString(4, entity.getTagline());
-      insertStatement.bindString(5, entity.getTrailer());
-      insertStatement.bindString(6, entity.getUrl());
-      insertStatement.bindLong(7, entity.getYear());
+      insertStatement.bindString(5, entity.getThumbUrl());      
+      insertStatement.bindString(6, entity.getTrailer());
+      insertStatement.bindString(7, entity.getUrl());
+      insertStatement.bindLong(8, entity.getYear());
       return insertStatement.executeInsert();
    }
 
@@ -114,6 +115,7 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
       values.put(MovieColumns.NAME, entity.getName());
       values.put(MovieColumns.RATING, entity.getRating());
       values.put(MovieColumns.TAGLINE, entity.getTagline());
+      values.put(MovieColumns.THUMB_URL, entity.getThumbUrl());
       values.put(MovieColumns.TRAILER, entity.getTrailer());
       values.put(MovieColumns.URL, entity.getUrl());
       values.put(MovieColumns.YEAR, entity.getYear());
@@ -130,11 +132,11 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
          movie.setName(c.getString(2));
          movie.setRating(c.getInt(3));
          movie.setTagline(c.getString(4));
-         movie.setTrailer(c.getString(5));
-         movie.setUrl(c.getString(6));
-         movie.setYear(c.getInt(7));
+         movie.setThumbUrl(c.getString(5));
+         movie.setTrailer(c.getString(6));
+         movie.setUrl(c.getString(7));
+         movie.setYear(c.getInt(8));
       }
       return movie;
    }
-
 }
