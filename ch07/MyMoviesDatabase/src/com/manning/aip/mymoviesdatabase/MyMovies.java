@@ -47,7 +47,7 @@ public class MyMovies extends ListActivity {
                null, null, null);
       listView.addFooterView(backToTop, null, true);
 
-      movies = app.getDataManager().getAllMovies();
+      movies = app.getDataManager().getMovieHeaders();
       adapter = new MovieAdapterDatabase(this, app.getImageCache(), movies);
       listView.setAdapter(this.adapter);
       listView.setItemsCanFocus(false);

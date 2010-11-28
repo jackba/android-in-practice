@@ -3,6 +3,7 @@ package com.manning.aip.mymoviesdatabase;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -59,6 +60,7 @@ public class MovieDetail extends Activity {
       Intent intent = this.getIntent();
       long movieId = intent.getLongExtra(MOVIE_ID_KEY, 0);
       movie = app.getDataManager().getMovie(movieId);
+      Log.d(Constants.LOG_TAG, "MOVIE: " + movie);
       if (movie != null) {
          this.populateViews();
       } else {

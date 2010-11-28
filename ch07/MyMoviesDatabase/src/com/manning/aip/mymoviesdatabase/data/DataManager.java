@@ -81,15 +81,20 @@ public class DataManager {
 
    // movie
    public Movie getMovie(long movieId) {
-      return movieDao.get(movieId);
+      Movie movie = movieDao.get(movieId);
+      movie.getCategories().addAll(movieCategoryDao.getCategories(movie.getId()));      
+      return movie;
    }
 
-   public List<Movie> getAllMovies() {
-      return movieDao.getAll();
+   public List<Movie> getMovieHeaders() {
+      // these movies don't have categories, but they're really used as "headers" anyway, it's ok
+      return movieDao.getAll();      
    }
 
    public Movie findMovie(String name) {
-      return movieDao.find(name);
+      Movie movie = movieDao.find(name);
+      movie.getCategories().addAll(movieCategoryDao.getCategories(movie.getId()));
+      return movie;
    }
 
    public long saveMovie(Movie movie) {
@@ -136,6 +141,9 @@ public class DataManager {
 
    public void deleteMovie(Movie movie) {
       movieDao.delete(movie);
+      for (Category c: movie.getCategories()) {
+         movieCategoryDao.delete(new MovieCategoryKey(movie.getId(), c.getId()));
+      }
    }
 
    // category

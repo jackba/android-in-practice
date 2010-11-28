@@ -3,6 +3,8 @@
 	android:layout_width="fill_parent" android:layout_height="?android:attr/listPreferredItemHeight"
 	android:gravity="center_vertical">
 
+    <!-- TODO show other attribs here, maybe even rating indicator? style="?android:attr/ratingBarStyleSmall" -->    
+
 	<ImageView android:id="@+id/movie_icon" android:layout_width="50dp"
 		android:layout_height="50dp" android:scaleType="centerCrop" />
 

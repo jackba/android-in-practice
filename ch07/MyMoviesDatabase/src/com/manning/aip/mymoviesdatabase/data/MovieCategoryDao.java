@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 
+import com.manning.aip.mymoviesdatabase.data.CategoryTable.CategoryColumns;
 import com.manning.aip.mymoviesdatabase.data.MovieCategoryTable.MovieCategoryColumns;
 import com.manning.aip.mymoviesdatabase.model.Category;
 
@@ -58,10 +59,12 @@ public class MovieCategoryDao implements BaseColumns {
 
    public List<Category> getCategories(long movieId) {
       List<Category> list = new ArrayList<Category>();
-      Cursor c =
-               db.query(MovieCategoryTable.TABLE_NAME, new String[] { MovieCategoryColumns.CATEGORY_ID },
-                        MovieCategoryColumns.MOVIE_ID + " = ?", new String[] { String.valueOf(movieId) }, null, null,
-                        null, "1");
+      // join movie_category and category, so we can get category name in one query
+      String sql =
+               "select " + CategoryColumns.NAME + " from " + MovieCategoryTable.TABLE_NAME + ", "
+                        + CategoryTable.TABLE_NAME + " where " + MovieCategoryColumns.MOVIE_ID + " = ? and "
+                        + MovieCategoryColumns.CATEGORY_ID + " = " + CategoryColumns._ID;
+      Cursor c = db.rawQuery(sql, new String[] { String.valueOf(movieId) });
       if (c.moveToFirst()) {
          do {
             String categoryName = c.getString(0);
