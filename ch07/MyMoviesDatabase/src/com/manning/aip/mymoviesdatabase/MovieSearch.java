@@ -26,19 +26,18 @@ import java.util.List;
 
 public class MovieSearch extends Activity {
 
+   private MyMoviesApp app;
+   
    private MovieFeed parser;
    private List<MovieSearchResult> movies;
    private ArrayAdapter<MovieSearchResult> adapter;
 
    private EditText input;
    private Button search;
-   private ListView listView;
-
-   private MyMoviesApp app;
+   private ListView listView;   
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
-      // TODO form and use parser
       super.onCreate(savedInstanceState);
       setContentView(R.layout.movie_search);
 

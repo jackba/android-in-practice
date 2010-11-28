@@ -13,11 +13,15 @@ import android.widget.Toast;
 import com.manning.aip.mymoviesdatabase.model.Category;
 import com.manning.aip.mymoviesdatabase.model.Movie;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MovieDetail extends Activity {
 
    public static final String MOVIE_ID_KEY = "midkey";
 
    private MyMoviesApp app;
+   
    private Movie movie;
 
    private TextView name;
@@ -27,7 +31,8 @@ public class MovieDetail extends Activity {
    private RatingBar rating;
    
    private ListView categoriesListView;
-   private ArrayAdapter<Category> categoriesAdapter;
+   private ArrayAdapter<Category> adapter;
+   private List<Category> categories;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,10 @@ public class MovieDetail extends Activity {
       rating = (RatingBar) findViewById(R.id.movie_detail_rating);
 
       categoriesListView = (ListView) findViewById(R.id.movie_detail_category_list);
+      categoriesListView.setEmptyView(findViewById(R.id.movie_detail_category_list_empty));
+      categories = new ArrayList<Category>();
+      adapter = new ArrayAdapter<Category>(this, android.R.layout.simple_list_item_1, categories);
+      categoriesListView.setAdapter(adapter);
 
       Intent intent = this.getIntent();
       long movieId = intent.getLongExtra(MOVIE_ID_KEY, 0);
@@ -59,7 +68,7 @@ public class MovieDetail extends Activity {
    
    private void populateViews() {
       name.setText(movie.getName());
-      year.setText(movie.getYear());
+      year.setText(String.valueOf(movie.getYear()));
       
       String thumbUrl = movie.getThumbUrl();
       if (thumbUrl != null && !thumbUrl.equals("")) {         
@@ -74,9 +83,8 @@ public class MovieDetail extends Activity {
       
       // TODO rating.setNumStars(movie.getRating());
       
-      
-      
-      
+      categories.addAll(movie.getCategories());
+      adapter.notifyDataSetChanged();      
    }
 
 }

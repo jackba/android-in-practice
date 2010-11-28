@@ -14,7 +14,8 @@ public class SplashScreen extends Activity {
 
    public static final int SPLASH_TIMEOUT = 2000;
    
-   private MyMoviesApp application;
+   private MyMoviesApp app;
+   
    private SharedPreferences prefs;
 
    @Override
@@ -23,8 +24,8 @@ public class SplashScreen extends Activity {
 
       setContentView(R.layout.splash_screen);
       
-      application = (MyMoviesApp) getApplication();
-      prefs = application.getPrefs();
+      app = (MyMoviesApp) getApplication();
+      prefs = app.getPrefs();
    }
 
    @Override

@@ -30,6 +30,7 @@ public class MyMovies extends ListActivity {
    public static final int CAT_MANAGER= 3;
    
    private MyMoviesApp app;
+   
    private MovieAdapterDatabase adapter;
    private List<Movie> movies;
 
@@ -58,7 +59,9 @@ public class MyMovies extends ListActivity {
    }
 
    protected void onListItemClick(ListView l, View v, int position, long id) {
-      // TODO (go to detail page, allow user to see details and select whether they "got or not" there)
+      Intent intent = new Intent(this, MovieDetail.class);
+      intent.putExtra(MovieDetail.MOVIE_ID_KEY, movies.get(position).getId());
+      startActivity(intent);
    }
 
    @Override

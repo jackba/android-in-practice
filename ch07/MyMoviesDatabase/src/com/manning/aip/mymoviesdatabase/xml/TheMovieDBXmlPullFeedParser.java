@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class TheMovieDBXmlPullFeedParser implements MovieFeed {
@@ -50,7 +51,7 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
    private InputStream getSearchInputStream(String name) {
       URL url = null;
       try {
-         url = new URL(TheMovieDBXmlPullFeedParser.SEARCH_FEED_URL + name);
+         url = new URL(TheMovieDBXmlPullFeedParser.SEARCH_FEED_URL + URLEncoder.encode(name));
          Log.d(Constants.LOG_TAG, "Movie search URL: " + url);
       } catch (MalformedURLException e) {
          throw new RuntimeException(e);
@@ -66,7 +67,7 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
    private InputStream getInfoInputStream(String tmdbId) {
       URL url = null;
       try {
-         url = new URL(TheMovieDBXmlPullFeedParser.INFO_FEED_URL + tmdbId);
+         url = new URL(TheMovieDBXmlPullFeedParser.INFO_FEED_URL + URLEncoder.encode(tmdbId));
          Log.d(Constants.LOG_TAG, "Movie info URL: " + url);
       } catch (MalformedURLException e) {
          throw new RuntimeException(e);
