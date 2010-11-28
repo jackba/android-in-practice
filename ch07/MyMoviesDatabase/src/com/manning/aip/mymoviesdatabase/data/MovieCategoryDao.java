@@ -45,16 +45,17 @@ public class MovieCategoryDao implements BaseColumns {
    }
 
    public boolean exists(MovieCategoryKey key) {
+      boolean result = false;
       Cursor c =
                db.query(MovieCategoryTable.TABLE_NAME, new String[] { MovieCategoryColumns.MOVIE_ID,
                         MovieCategoryColumns.CATEGORY_ID }, null, null, null, null, null, "1");
       if (c.moveToFirst()) {
-         return true;
+         result = true;
       }
       if (!c.isClosed()) {
          c.close();
       }
-      return false;
+      return result;
    }
 
    public List<Category> getCategories(long movieId) {
