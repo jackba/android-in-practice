@@ -1,6 +1,7 @@
 package com.manning.aip.mymoviesdatabase.data;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.SystemClock;
@@ -77,12 +78,12 @@ public class DataManager {
    // this lets us encapsulate usage of DAOs 
    // we only expose methods app is actually using, and we can combine DAOs, with logic in one place
    //  
-   
+
    // movie
    public Movie getMovie(long movieId) {
       return movieDao.get(movieId);
    }
-   
+
    public List<Movie> getAllMovies() {
       return movieDao.getAll();
    }
@@ -94,58 +95,66 @@ public class DataManager {
    public long saveMovie(Movie movie) {
       // NOTE could wrap entity manip functions in DataManager, make "manager" for each entity
       // here though, to keep it simpler, we use the DAOs directly (even when multiple are involved)
+      long movieId = 0L;
+      System.out.println("SAVE MOVIE: " + movie);
 
       // put it in a transaction, since we're touching multiple tables
-      db.beginTransaction();
+      try {
+         db.beginTransaction();
 
-      // first save movie                                 
-      long movId = movieDao.save(movie);
+         // first save movie                                 
+         movieId = movieDao.save(movie);
 
-      // second, make sure categories exist, and save movie/category association
-      // (this makes multiple queries, but usually not many cats, could just save and catch exception too, but that's ugly)
-      if (movie.getCategories().size() > 0) {
-         for (Category c : movie.getCategories()) {
-            long catId = 0L;
-            Category dbCat = categoryDao.find(c.getName());
-            if (dbCat == null) {
-               catId = categoryDao.save(c);
-            } else {
-               catId = dbCat.getId();
-            }
-            MovieCategoryKey mcKey = new MovieCategoryKey(movId, catId);
-            if (!movieCategoryDao.exists(mcKey)) {
-               movieCategoryDao.save(mcKey);
+         // second, make sure categories exist, and save movie/category association
+         // (this makes multiple queries, but usually not many cats, could just save and catch exception too, but that's ugly)
+         if (movie.getCategories().size() > 0) {
+            for (Category c : movie.getCategories()) {
+               long catId = 0L;
+               Category dbCat = categoryDao.find(c.getName());
+               if (dbCat == null) {
+                  catId = categoryDao.save(c);
+               } else {
+                  catId = dbCat.getId();
+               }
+               MovieCategoryKey mcKey = new MovieCategoryKey(movieId, catId);
+               if (!movieCategoryDao.exists(mcKey)) {
+                  movieCategoryDao.save(mcKey);
+               }
             }
          }
+
+         db.setTransactionSuccessful();
+      } catch (SQLException e) {
+         movieId = 0L;
+      } finally {
+         // an "alias" for commit
+         db.endTransaction();
       }
 
-      // an "alias" for commit!
-      db.endTransaction();
-
-      return movId;
+      return movieId;
    }
 
    public void deleteMovie(Movie movie) {
       movieDao.delete(movie);
-   }   
-   
+   }
+
    // category
    public Category getCategory(long categoryId) {
       return categoryDao.get(categoryId);
    }
-   
+
    public List<Category> getAllCategories() {
       return categoryDao.getAll();
    }
-   
+
    public Category findCategory(String name) {
       return categoryDao.find(name);
    }
-   
+
    public long saveCategory(Category category) {
       return categoryDao.save(category);
    }
-   
+
    public void deleteCategory(Category category) {
       categoryDao.delete(category);
    }
