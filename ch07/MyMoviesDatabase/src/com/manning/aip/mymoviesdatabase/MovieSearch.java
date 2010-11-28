@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -49,7 +50,7 @@ public class MovieSearch extends Activity {
       search = (Button) findViewById(R.id.search);
       search.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
-            if (input.getText() != null && input.getText().toString() != null) {
+            if (!isTextViewEmpty(input)) {
                // TODO parse from AsyncTask (and check net avail)
                movies.clear();
                movies.addAll(parser.search(input.getText().toString()));
@@ -95,5 +96,10 @@ public class MovieSearch extends Activity {
             }
          }
       });
+   }
+
+   private boolean isTextViewEmpty(final TextView textView) {
+      return !(textView != null && textView.getText() != null && textView.getText().toString() != null && !textView
+               .getText().toString().equals(""));
    }
 }

@@ -49,7 +49,7 @@ public class CategoryManager extends Activity {
 
       categories = app.getDataManager().getAllCategories();
       listView = (ListView) this.findViewById(R.id.category_manager_list);
-      listView.setEmptyView(findViewById(R.id.category_manager_list_empty));
+      listView.setEmptyView(findViewById(R.id.empty));
       adapter = new ArrayAdapter<Category>(this, android.R.layout.simple_list_item_1, categories);
       listView.setAdapter(adapter);
       registerForContextMenu(listView);

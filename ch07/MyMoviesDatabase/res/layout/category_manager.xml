@@ -25,10 +25,5 @@
 		android:layout_weight="1" android:cacheColorHint="#00000000"
 		android:choiceMode="none" />
 
-	<TextView android:id="@+id/category_manager_list_empty"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:text="No categories" />
-
-
 </LinearLayout>
 

@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +28,7 @@ public class MovieDetail extends Activity {
    private TextView year;
    private ImageView thumb;
    private TextView tagline;
-   private RatingBar rating;
+   private TextView rating;
    
    private ListView categoriesListView;
    private ArrayAdapter<Category> adapter;
@@ -44,12 +43,9 @@ public class MovieDetail extends Activity {
 
       name = (TextView) findViewById(R.id.movie_detail_name);
       year = (TextView) findViewById(R.id.movie_detail_year);
-
       thumb = (ImageView) findViewById(R.id.movie_detail_thumb);
-
       tagline = (TextView) findViewById(R.id.movie_detail_tagline);
-
-      rating = (RatingBar) findViewById(R.id.movie_detail_rating);
+      rating = (TextView) findViewById(R.id.movie_detail_rating);
 
       categoriesListView = (ListView) findViewById(R.id.movie_detail_category_list);
       categoriesListView.setEmptyView(findViewById(R.id.movie_detail_category_list_empty));
@@ -83,7 +79,7 @@ public class MovieDetail extends Activity {
       
       tagline.setText(movie.getTagline());
       
-      // TODO rating.setNumStars(movie.getRating());
+      rating.setText("Rating: " + String.valueOf(movie.getRating()));
       
       categories.addAll(movie.getCategories());
       adapter.notifyDataSetChanged();      

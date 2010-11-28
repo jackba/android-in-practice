@@ -7,7 +7,6 @@ import android.provider.BaseColumns;
 
 import com.manning.aip.mymoviesdatabase.data.CategoryTable.CategoryColumns;
 import com.manning.aip.mymoviesdatabase.data.MovieCategoryTable.MovieCategoryColumns;
-import com.manning.aip.mymoviesdatabase.data.MovieTable.MovieColumns;
 import com.manning.aip.mymoviesdatabase.model.Category;
 
 import java.util.ArrayList;
