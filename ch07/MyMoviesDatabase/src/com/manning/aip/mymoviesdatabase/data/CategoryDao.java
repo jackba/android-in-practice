@@ -50,6 +50,21 @@ public class CategoryDao implements Dao<Category>, BaseColumns {
       }
       return category;
    }
+   
+   public Category find(String name) {
+      Category category = null;
+      String sql = "select _id, name from " + CategoryTable.TABLE_NAME + " where name like ? limit 1";
+      Cursor c = db.rawQuery(sql, new String[] { name });
+      if (c.moveToFirst()) {
+         category = new Category();
+         category.setId(c.getLong(0));
+         category.setName(c.getString(1));
+      }
+      if (!c.isClosed()) {
+         c.close();
+      }
+      return category;
+   }
 
    @Override
    public List<Category> getAll() {

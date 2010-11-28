@@ -14,7 +14,7 @@
 	<EditText android:id="@+id/name" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_below="@id/add_movie_title"
 		android:layout_toRightOf="@id/name_label" android:gravity="left"
-		android:capitalize="words" android:autoText="true" android:inputType="textCapWords"/>
+		android:capitalize="words" android:autoText="true" android:inputType="textCapWords" />
 
 	<TextView android:id="@+id/year_label" android:layout_width="100dp"
 		android:layout_height="wrap_content" android:layout_below="@id/name"
@@ -22,15 +22,16 @@
 
 	<EditText android:id="@+id/year" android:layout_width="100dp"
 		android:layout_height="wrap_content" android:layout_below="@id/name"
-		android:layout_toRightOf="@id/year_label" android:inputType="numberSigned"  android:numeric="signed" />
+		android:layout_toRightOf="@id/year_label" android:inputType="numberSigned"
+		android:numeric="signed" />
 
 	<TextView android:id="@+id/rating_label" android:layout_width="200dp"
 		android:layout_height="wrap_content" android:layout_below="@id/year"
 		android:text="Rating:" />
 
 	<RatingBar android:id="@+id/rating" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:numStars="5" android:stepSize="0.5"
-		android:layout_below="@id/rating_label" />
+		android:layout_height="wrap_content" android:numStars="5"
+		android:stepSize="0.5" android:layout_below="@id/rating_label" />
 
 	<Button android:id="@+id/submit" android:layout_width="100dp"
 		android:layout_height="wrap_content" android:layout_below="@id/rating"

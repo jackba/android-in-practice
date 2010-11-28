@@ -17,7 +17,7 @@ public final class CategoryTable {
       // category table
       sb.append("CREATE TABLE " + TABLE_NAME + " (");
       sb.append(CategoryColumns._ID + " INTEGER PRIMARY KEY, ");
-      sb.append(CategoryColumns.NAME + " TEXT UNIQUE");
+      sb.append(CategoryColumns.NAME + " TEXT UNIQUE NOT NULL");
       sb.append(");");
       db.execSQL(sb.toString());
    }

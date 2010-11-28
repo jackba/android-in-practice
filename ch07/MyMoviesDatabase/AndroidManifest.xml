@@ -26,6 +26,8 @@
 		
 		<activity android:name=".MovieSearch" />
 		
+		<activity android:name=".MovieDetail" />
+		
 		<activity android:name=".CategoryManager" />
 		
 		<activity android:name=".Preferences" />

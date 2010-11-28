@@ -11,6 +11,8 @@ public class Movie extends ModelBase {
    private String url;
    private String homepage;
    private String trailer;
+   private String tagline;
+   private String thumbUrl;
    private List<Category> categories;
 
    public String getProviderId() {
@@ -69,6 +71,22 @@ public class Movie extends ModelBase {
       this.trailer = trailer;
    }
 
+   public String getTagline() {
+      return this.tagline;
+   }
+
+   public void setTagline(String tagline) {
+      this.tagline = tagline;
+   }
+
+   public String getThumbUrl() {
+      return this.thumbUrl;
+   }
+
+   public void setThumbUrl(String thumbUrl) {
+      this.thumbUrl = thumbUrl;
+   }
+
    public List<Category> getCategories() {
       return this.categories;
    }
@@ -80,8 +98,9 @@ public class Movie extends ModelBase {
    @Override
    public String toString() {
       return "Movie [categories=" + this.categories + ", homepage=" + this.homepage + ", name=" + this.name
-               + ", providerId=" + this.providerId + ", rating=" + this.rating + ", trailer=" + this.trailer + ", url="
-               + this.url + ", year=" + this.year + "]";
+               + ", providerId=" + this.providerId + ", rating=" + this.rating + ", tagline=" + this.tagline
+               + ", thumbUrl=" + this.thumbUrl + ", trailer=" + this.trailer + ", url=" + this.url + ", year="
+               + this.year + "]";
    }
 
    @Override
@@ -95,6 +114,8 @@ public class Movie extends ModelBase {
       long temp;
       temp = Double.doubleToLongBits(this.rating);
       result = prime * result + (int) (temp ^ (temp >>> 32));
+      result = prime * result + ((this.tagline == null) ? 0 : this.tagline.hashCode());
+      result = prime * result + ((this.thumbUrl == null) ? 0 : this.thumbUrl.hashCode());
       result = prime * result + ((this.trailer == null) ? 0 : this.trailer.hashCode());
       result = prime * result + ((this.url == null) ? 0 : this.url.hashCode());
       result = prime * result + this.year;
@@ -132,6 +153,16 @@ public class Movie extends ModelBase {
          return false;
       if (Double.doubleToLongBits(this.rating) != Double.doubleToLongBits(other.rating))
          return false;
+      if (this.tagline == null) {
+         if (other.tagline != null)
+            return false;
+      } else if (!this.tagline.equals(other.tagline))
+         return false;
+      if (this.thumbUrl == null) {
+         if (other.thumbUrl != null)
+            return false;
+      } else if (!this.thumbUrl.equals(other.thumbUrl))
+         return false;
       if (this.trailer == null) {
          if (other.trailer != null)
             return false;
@@ -146,4 +177,5 @@ public class Movie extends ModelBase {
          return false;
       return true;
    }
+
 }

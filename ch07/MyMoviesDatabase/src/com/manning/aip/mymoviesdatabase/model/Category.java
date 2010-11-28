@@ -1,6 +1,6 @@
 package com.manning.aip.mymoviesdatabase.model;
 
-public class Category extends ModelBase {
+public class Category extends ModelBase implements Comparable<Category> {
 
    private String name;
    
@@ -22,6 +22,17 @@ public class Category extends ModelBase {
    @Override
    public String toString() {
       return this.name;
+   }   
+
+   @Override
+   public int compareTo(Category another) {
+      if (another == null) {
+         return -1;
+      }
+      if (this.name == null) {
+         return 1;
+      }
+      return this.name.compareTo(another.name);      
    }
 
    @Override

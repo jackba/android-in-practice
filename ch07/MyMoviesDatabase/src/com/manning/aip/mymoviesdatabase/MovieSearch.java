@@ -1,6 +1,9 @@
 package com.manning.aip.mymoviesdatabase;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.manning.aip.mymoviesdatabase.model.Movie;
 import com.manning.aip.mymoviesdatabase.model.MovieSearchResult;
 import com.manning.aip.mymoviesdatabase.xml.MovieFeed;
 import com.manning.aip.mymoviesdatabase.xml.TheMovieDBXmlPullFeedParser;
@@ -30,17 +34,21 @@ public class MovieSearch extends Activity {
    private Button search;
    private ListView listView;
 
+   private MyMoviesApp app;
+
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       // TODO form and use parser
       super.onCreate(savedInstanceState);
       setContentView(R.layout.movie_search);
 
-      this.parser = new TheMovieDBXmlPullFeedParser();
+      app = (MyMoviesApp) getApplication();
 
-      this.input = (EditText) this.findViewById(R.id.input);
-      this.search = (Button) this.findViewById(R.id.search);
-      this.search.setOnClickListener(new OnClickListener() {
+      parser = new TheMovieDBXmlPullFeedParser();
+
+      input = (EditText) findViewById(R.id.input);
+      search = (Button) findViewById(R.id.search);
+      search.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
             if (input.getText() != null && input.getText().toString() != null) {
                // TODO parse from AsyncTask
@@ -61,29 +69,23 @@ public class MovieSearch extends Activity {
       listView.setAdapter(adapter);
       listView.setOnItemClickListener(new OnItemClickListener() {
          public void onItemClick(final AdapterView<?> parent, final View v, final int index, final long id) {
-            Toast.makeText(MovieSearch.this, "selected Movie " + movies.get(index).getName(), Toast.LENGTH_SHORT).show();
+            final MovieSearchResult movieSearchResult = movies.get(index);
+            // TODO parse from AsyncTask
+            final Movie movie = parser.get(movieSearchResult.getProviderId());
+
+            new AlertDialog.Builder(MovieSearch.this).setTitle("Add Movie?").setMessage(movie.toString())
+                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface d, final int i) {
+                           // TODO check if movie already exists
+                           app.getDataManager().getMovieDao().save(movie);
+                           startActivity(new Intent(MovieSearch.this, MyMovies.class));
+                        }
+                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface d, final int i) {
+                        }
+                     }).show();
+
          }
       });
-      //registerForContextMenu(listView);
    }
-   
-   // long press "context" menu - don't have a use for it now, but need to come up with one to demo it
-   /*
-   @Override
-   public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo) {
-      super.onCreateContextMenu(menu, v, menuInfo);
-      // group, item, order
-      menu.add(0, 0, 0, "context A");
-      menu.add(0, 1, 1, "context B");
-      menu.setHeaderTitle("Action");
-   }
-
-   @Override
-   public boolean onContextItemSelected(final MenuItem item) {
-      AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo(); 
-      Toast.makeText(MovieSearch.this, "item " + info.id, Toast.LENGTH_SHORT).show();
-      return true;
-   }
-   */
-
 }

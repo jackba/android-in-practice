@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="MyMoviesTheme" parent="@android:style/Theme.Black">
-    <item name="android:listViewStyle">@style/MyMoviesListView</item>    
-  </style>
+	<style name="MyMoviesTheme" parent="@android:style/Theme.Black">
+		<item name="android:listViewStyle">@style/MyMoviesListView</item>		
+	</style>
 
-  <style name="SplashScreen" parent="@android:style/Theme.Black">
-    <item name="android:windowNoTitle">true</item>
-  </style>
+	<style name="SplashScreen" parent="@android:style/Theme.Black">
+		<item name="android:windowNoTitle">true</item>
+	</style>
 
-  <style name="MyMoviesTextAppearance" parent="@android:style/TextAppearance">
-    dereasda<item name="android:textStyle">bold</item>
-  </style>
+	<style name="MyMoviesListView" parent="@android:Widget.ListView">
+	    <!--  TODO somehow this applies to custom Dialog/AlertDialogs too, and we don't want dk bgrnd there. -->
+		<item name="android:background">@color/list_background</item>
+		<item name="android:listSelector">@drawable/list_selector</item>
+		<item name="android:cacheColorHint">@android:color/transparent</item>
+		<item name="android:fastScrollEnabled">true</item>
+		<item name="android:footerDividersEnabled">false</item>
+	</style>
 
-  <style name="MyMoviesListView" parent="@android:Widget.ListView">
-    <item name="android:background">@color/list_background</item>
-    <item name="android:listSelector">@drawable/list_selector</item>
-    <item name="android:cacheColorHint">@android:color/transparent</item>
-    <item name="android:fastScrollEnabled">true</item>
-    <item name="android:footerDividersEnabled">false</item>
-  </style>
-  
 </resources>

@@ -8,12 +8,13 @@ public final class MovieTable {
    public static final String TABLE_NAME = "movie";       
    
    public static class MovieColumns implements BaseColumns {
-      public static final String NAME = "movie_name";
-      public static final String YEAR = "year";
-      public static final String RATING = "rating";
-      public static final String URL = "url";
       public static final String HOMEPAGE = "homepage";
+      public static final String NAME = "movie_name";
+      public static final String RATING = "rating";
+      public static final String TAGLINE = "tagline";      
       public static final String TRAILER = "trailer";      
+      public static final String URL = "url";
+      public static final String YEAR = "year";      
    }
    
    public static void onCreate(SQLiteDatabase db) {
@@ -22,13 +23,13 @@ public final class MovieTable {
       // book table
       sb.append("CREATE TABLE " + TABLE_NAME + " (");
       sb.append(MovieColumns._ID + " INTEGER PRIMARY KEY, ");
-      sb.append(MovieColumns.NAME + " TEXT, "); // movie names aren't unique, will need a smart get
-      sb.append(MovieColumns.YEAR + " TEXT NOT NULL CHECK(year > 1900), ");
-      sb.append(MovieColumns.RATING + " INTEGER, ");
-      sb.append(MovieColumns.URL + " TEXT, ");
       sb.append(MovieColumns.HOMEPAGE + " TEXT, ");
-      sb.append(MovieColumns.TRAILER + " TEXT");
-      
+      sb.append(MovieColumns.NAME + " TEXT UNIQUE NOT NULL, "); // movie names aren't unique, but for simplification we constrain
+      sb.append(MovieColumns.RATING + " INTEGER, ");
+      sb.append(MovieColumns.TAGLINE + " TEXT, ");
+      sb.append(MovieColumns.TRAILER + " TEXT, ");      
+      sb.append(MovieColumns.URL + " TEXT, ");
+      sb.append(MovieColumns.YEAR + " INTEGER");      
       sb.append(");");
       db.execSQL(sb.toString());
    }

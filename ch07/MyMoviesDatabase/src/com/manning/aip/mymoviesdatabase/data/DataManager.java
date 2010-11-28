@@ -27,7 +27,7 @@ public class DataManager {
    private SQLiteDatabase db;
 
    private CategoryDao categoryDao;
-   //private MovieDAO movieDAO;
+   private MovieDao movieDao;
 
    public DataManager(final Context context) {
 
@@ -37,7 +37,8 @@ public class DataManager {
       db = openHelper.getWritableDatabase();
       Log.i(Constants.LOG_TAG, "DataManager created, db open status: " + db.isOpen());
       
-      this.categoryDao = new CategoryDao(db);
+      categoryDao = new CategoryDao(db);
+      movieDao = new MovieDao(db);
    }
    
    public SQLiteDatabase getDb() {
@@ -69,7 +70,11 @@ public class DataManager {
    // getters/setters
    //
    public CategoryDao getCategoryDao() {
-      return this.categoryDao;
+      return categoryDao;
+   }
+   
+   public MovieDao getMovieDao() {
+      return movieDao;
    }
 
    //
@@ -89,13 +94,16 @@ public class DataManager {
          Log.i(Constants.LOG_TAG, "DataHelper.OpenHelper onCreate creating database " + DataConstants.DATABASE_NAME);
         
          CategoryTable.onCreate(db);         
-         // populate intial categories
+         // populate initial categories (one way, there are several, this works ok for small data set)
          CategoryDao categoryDao = new CategoryDao(db);
          String[] categories = context.getResources().getStringArray(R.array.tmdb_categories);
          for (String cat : categories) {
             categoryDao.save(new Category(cat));
          }
-         // TODO remaining DAO init
+         
+         MovieTable.onCreate(db);
+         
+         MovieCategoryTable.onCreate(db);
       }
 
       @Override
