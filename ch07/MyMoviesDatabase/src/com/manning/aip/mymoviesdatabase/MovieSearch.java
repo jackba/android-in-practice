@@ -27,14 +27,14 @@ import java.util.List;
 public class MovieSearch extends Activity {
 
    private MyMoviesApp app;
-   
+
    private MovieFeed parser;
    private List<MovieSearchResult> movies;
    private ArrayAdapter<MovieSearchResult> adapter;
 
    private EditText input;
    private Button search;
-   private ListView listView;   
+   private ListView listView;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +75,14 @@ public class MovieSearch extends Activity {
                new AlertDialog.Builder(MovieSearch.this).setTitle("Add Movie?").setMessage(movie.toString())
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                            public void onClick(final DialogInterface d, final int i) {
-                              // TODO check if movie already exists
-                              Movie exists = app.getDataManager().getMovieDao().find(movie.getName());
+                              // let the activity check if movie exists, not manager
+                              // (activity has contextual info to know the check is necessary)
+                              Movie exists = app.getDataManager().findMovie(movie.getName());
                               if (exists == null) {
-                                 app.getDataManager().getMovieDao().save(movie);
+                                 app.getDataManager().saveMovie(movie);
                                  startActivity(new Intent(MovieSearch.this, MyMovies.class));
                               } else {
-                                 Toast.makeText(MovieSearch.this, "Movie already saved", Toast.LENGTH_SHORT).show();
+                                 Toast.makeText(MovieSearch.this, "Movie already exists", Toast.LENGTH_SHORT).show();
                               }
                            }
                         }).setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -2,6 +2,11 @@ package com.manning.aip.mymoviesdatabase.model;
 
 public class Category extends ModelBase implements Comparable<Category> {
 
+   // NOTE in real-world android app you might want a CategoryFactory
+   // or factory method here, to cut down on number of objects created
+   // (there will only ever be a small number of categories, and they are simple, 
+   // no need to recreate objects over again that represent same String)  
+   
    private String name;
    
    public Category() {      

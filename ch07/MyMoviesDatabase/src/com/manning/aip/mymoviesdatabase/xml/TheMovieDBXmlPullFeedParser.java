@@ -94,7 +94,6 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
             String name = null;
             switch (eventType) {
                case XmlPullParser.START_DOCUMENT:
-                  //Log.d(Constants.LOG_TAG, " **** start document");
                   break;
                case XmlPullParser.START_TAG:
                   name = parser.getName();
@@ -158,7 +157,7 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
                         movie.setThumbUrl(url);
                      }
                   }
-                  
+
                   if (name.equalsIgnoreCase(CATEGORY)) {
                      String categoryName = parser.getAttributeValue(parser.getNamespace(), NAME);
                      Category category = new Category(categoryName);
@@ -181,8 +180,9 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
                      movie.setName(nextText);
                   }
                   if (name.equalsIgnoreCase(RATING)) {
-                     // TODO catch parse issues
-                     movie.setRating(Double.parseDouble(nextText));
+                     if (nextText != null && !nextText.equals("") && !nextText.equals("0")) {
+                        movie.setRating(Double.parseDouble(nextText));
+                     }
                   }
                   if (name.equalsIgnoreCase(TAGLINE)) {
                      movie.setTagline(nextText);
@@ -194,9 +194,8 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
                      movie.setUrl(nextText);
                   }
                   if (name.equalsIgnoreCase(RELEASED)) {
-                     if (nextText != null && !nextText.equals("0")) {
+                     if (nextText != null && !nextText.equals("") && !nextText.equals("0")) {
                         String yearString = nextText.substring(0, 4);
-                        // TODO catch parse issues
                         movie.setYear(Integer.parseInt(yearString));
                      }
                   }

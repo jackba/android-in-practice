@@ -14,7 +14,6 @@ import java.util.List;
 
 public class MovieDao implements Dao<Movie>, BaseColumns {
 
-   // TODO movie categories
    private static final String INSERT =
             "insert into " + MovieTable.TABLE_NAME + "(" + MovieColumns.HOMEPAGE + ", " + MovieColumns.NAME + ", "
                      + MovieColumns.RATING + ", " + MovieColumns.TAGLINE + ", " + MovieColumns.THUMB_URL + ", "
@@ -67,8 +66,8 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
       if (!c.isClosed()) {
          c.close();
       }
-      // we make another query here, which is another trip, for such small amount of data
-      // this is better (clearer code) than repeating the cursor handling logic
+      // we make another query here, which is another trip, 
+      // this is a trade off we accept with such a small amount of data
       return this.get(movieId);
    }
 

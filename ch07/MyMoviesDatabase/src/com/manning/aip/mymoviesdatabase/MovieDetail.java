@@ -58,7 +58,7 @@ public class MovieDetail extends Activity {
 
       Intent intent = this.getIntent();
       long movieId = intent.getLongExtra(MOVIE_ID_KEY, 0);
-      movie = app.getDataManager().getMovieDao().get(movieId);
+      movie = app.getDataManager().getMovie(movieId);
       if (movie != null) {
          this.populateViews();
       } else {

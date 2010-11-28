@@ -47,7 +47,7 @@ public class MyMovies extends ListActivity {
                null, null, null);
       listView.addFooterView(backToTop, null, true);
 
-      movies = app.getDataManager().getMovieDao().getAll();
+      movies = app.getDataManager().getAllMovies();
       adapter = new MovieAdapterDatabase(this, app.getImageCache(), movies);
       listView.setAdapter(this.adapter);
       listView.setItemsCanFocus(false);
@@ -112,7 +112,7 @@ public class MyMovies extends ListActivity {
             new AlertDialog.Builder(MyMovies.this).setTitle("Delete Movie?").setMessage(movie.getName())
                      .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {
-                           app.getDataManager().getMovieDao().delete(movie);
+                           app.getDataManager().deleteMovie(movie);
                            adapter.remove(movie);
                         }
                      }).setNegativeButton("No", new DialogInterface.OnClickListener() {

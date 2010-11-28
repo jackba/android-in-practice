@@ -47,7 +47,7 @@ public class CategoryManager extends Activity {
 
       app = (MyMoviesApp) getApplication();
 
-      categories = app.getDataManager().getCategoryDao().getAll();
+      categories = app.getDataManager().getAllCategories();
       listView = (ListView) this.findViewById(R.id.category_manager_list);
       listView.setEmptyView(findViewById(R.id.category_manager_list_empty));
       adapter = new ArrayAdapter<Category>(this, android.R.layout.simple_list_item_1, categories);
@@ -71,10 +71,10 @@ public class CategoryManager extends Activity {
       categoryAddSubmit.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
             if (!isTextViewEmpty(categoryAdd)) {
-               Category exists = app.getDataManager().getCategoryDao().find(categoryAdd.getText().toString());
+               Category exists = app.getDataManager().findCategory(categoryAdd.getText().toString());
                if (exists == null) {
                   Category category = new Category(categoryAdd.getText().toString());
-                  app.getDataManager().getCategoryDao().save(category);
+                  app.getDataManager().saveCategory(category);
                   // we could just ADD to adapter, and not backing collection
                   // but that will put element at end of ListView, here we want to add and sort
                   categories.add(category);
@@ -110,7 +110,7 @@ public class CategoryManager extends Activity {
             new AlertDialog.Builder(CategoryManager.this).setTitle("Delete Category?").setMessage(category.getName())
                      .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {
-                           app.getDataManager().getCategoryDao().delete(category);
+                           app.getDataManager().deleteCategory(category);
                            adapter.remove(category);
                         }
                      }).setNegativeButton("No", new DialogInterface.OnClickListener() {
