@@ -12,7 +12,8 @@ public class Category extends ModelBase implements Comparable<Category> {
    public Category() {      
    }
    
-   public Category(String name) {
+   public Category(long id, String name) {
+      this.id = id;
       this.name = name;
    }
 

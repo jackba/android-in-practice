@@ -1,6 +1,7 @@
 package com.manning.aip.mymoviesdatabase.data;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -105,7 +106,6 @@ public class DataManager {
       // NOTE could wrap entity manip functions in DataManager, make "manager" for each entity
       // here though, to keep it simpler, we use the DAOs directly (even when multiple are involved)
       long movieId = 0L;
-      System.out.println("SAVE MOVIE: " + movie);
 
       // put it in a transaction, since we're touching multiple tables
       try {
@@ -113,7 +113,7 @@ public class DataManager {
 
          // first save movie                                 
          movieId = movieDao.save(movie);
-         
+
          // second, make sure categories exist, and save movie/category association
          // (this makes multiple queries, but usually not many cats, could just save and catch exception too, but that's ugly)
          if (movie.getCategories().size() > 0) {
@@ -134,6 +134,7 @@ public class DataManager {
 
          db.setTransactionSuccessful();
       } catch (SQLException e) {
+         Log.e(Constants.LOG_TAG, "Error saving movie (transaction rolled back)", e);
          movieId = 0L;
       } finally {
          // an "alias" for commit
@@ -143,11 +144,27 @@ public class DataManager {
       return movieId;
    }
 
-   public void deleteMovie(Movie movie) {
-      movieDao.delete(movie);
-      for (Category c : movie.getCategories()) {
-         movieCategoryDao.delete(new MovieCategoryKey(movie.getId(), c.getId()));
+   public boolean deleteMovie(long movieId) {
+      boolean result = false;
+      // NOTE switch this order around to see constraint error (foreign keys work)
+      try {
+         db.beginTransaction();
+         // make sure to use getMovie and not movieDao directly, categories need to be included
+         Movie movie = getMovie(movieId); 
+         if (movie != null) {
+            for (Category c : movie.getCategories()) {
+               movieCategoryDao.delete(new MovieCategoryKey(movie.getId(), c.getId()));
+            }
+            movieDao.delete(movie);
+         }
+         db.setTransactionSuccessful();
+         result = true;
+      } catch (SQLException e) {
+         Log.e(Constants.LOG_TAG, "Error deleting movie (transaction rolled back)", e);         
+      } finally {
+         db.endTransaction();
       }
+      return result;
    }
 
    // category
@@ -184,6 +201,33 @@ public class DataManager {
       }
 
       @Override
+      public void onOpen(final SQLiteDatabase db) {
+         super.onOpen(db);
+         if (!db.isReadOnly()) {
+            // versions of SQLite older than 3.6.19 don't support foreign keys
+            // and neither do any version compiled with SQLITE_OMIT_FOREIGN_KEY
+            // http://www.sqlite.org/foreignkeys.html#fk_enable
+            // 
+            // to enable foreign keys on newer versions that allow it, we have to turn them on            
+            db.execSQL("PRAGMA foreign_keys=ON;");
+
+            // then we check to make sure they're on 
+            // (if this returns no data they aren't even available, so we shouldn't even TRY to use them)
+            Cursor c = db.rawQuery("PRAGMA foreign_keys", null);
+            if (c.moveToFirst()) {
+               int result = c.getInt(0);
+               Log.i(Constants.LOG_TAG, "SQLite foreign key support (1 is on, 0 is off): " + result);
+            } else {
+               // could use this approach in onCreate, and not set foreign keys it not available, etc.
+               Log.i(Constants.LOG_TAG, "SQLite foreign key support NOT AVAILABLE");
+            }
+            if (!c.isClosed()) {
+               c.close();
+            }
+         }
+      }
+
+      @Override
       public void onCreate(final SQLiteDatabase db) {
          Log.i(Constants.LOG_TAG, "DataHelper.OpenHelper onCreate creating database " + DataConstants.DATABASE_NAME);
 
@@ -193,7 +237,7 @@ public class DataManager {
          CategoryDao categoryDao = new CategoryDao(db);
          String[] categories = context.getResources().getStringArray(R.array.tmdb_categories);
          for (String cat : categories) {
-            categoryDao.save(new Category(cat));
+            categoryDao.save(new Category(0, cat));
          }
 
          MovieTable.onCreate(db);
@@ -206,12 +250,12 @@ public class DataManager {
          Log
                   .i(Constants.LOG_TAG, "SQLiteOpenHelper onUpgrade - oldVersion:" + oldVersion + " newVersion:"
                            + newVersion);
-         
+
          MovieCategoryTable.onUpgrade(db, oldVersion, newVersion);
-         
+
          MovieTable.onUpgrade(db, oldVersion, newVersion);
-         
-         CategoryTable.onUpgrade(db, oldVersion, newVersion);         
+
+         CategoryTable.onUpgrade(db, oldVersion, newVersion);
       }
    }
 }

@@ -7,6 +7,7 @@ import android.provider.BaseColumns;
 
 import com.manning.aip.mymoviesdatabase.data.CategoryTable.CategoryColumns;
 import com.manning.aip.mymoviesdatabase.data.MovieCategoryTable.MovieCategoryColumns;
+import com.manning.aip.mymoviesdatabase.data.MovieTable.MovieColumns;
 import com.manning.aip.mymoviesdatabase.model.Category;
 
 import java.util.ArrayList;
@@ -48,7 +49,9 @@ public class MovieCategoryDao implements BaseColumns {
       boolean result = false;
       Cursor c =
                db.query(MovieCategoryTable.TABLE_NAME, new String[] { MovieCategoryColumns.MOVIE_ID,
-                        MovieCategoryColumns.CATEGORY_ID }, null, null, null, null, null, "1");
+                        MovieCategoryColumns.CATEGORY_ID }, MovieCategoryColumns.MOVIE_ID + " = ? and "
+                        + MovieCategoryColumns.CATEGORY_ID + " = ?", new String[] { String.valueOf(key.getMovieId()),
+                        String.valueOf(key.getCategoryId()) }, null, null, null, "1");
       if (c.moveToFirst()) {
          result = true; // don't just "return true" here, or Cursor won't get closed ;)
       }
@@ -62,14 +65,15 @@ public class MovieCategoryDao implements BaseColumns {
       List<Category> list = new ArrayList<Category>();
       // join movie_category and category, so we can get category name in one query
       String sql =
-               "select " + CategoryColumns.NAME + " from " + MovieCategoryTable.TABLE_NAME + ", "
-                        + CategoryTable.TABLE_NAME + " where " + MovieCategoryColumns.MOVIE_ID + " = ? and "
-                        + MovieCategoryColumns.CATEGORY_ID + " = " + CategoryColumns._ID;
+               "select " + MovieCategoryColumns.CATEGORY_ID + ", " + CategoryColumns.NAME + " from "
+                        + MovieCategoryTable.TABLE_NAME + ", " + CategoryTable.TABLE_NAME + " where "
+                        + MovieCategoryColumns.MOVIE_ID + " = ? and " + MovieCategoryColumns.CATEGORY_ID + " = "
+                        + CategoryColumns._ID;
       Cursor c = db.rawQuery(sql, new String[] { String.valueOf(movieId) });
       if (c.moveToFirst()) {
          do {
-            String categoryName = c.getString(0);
-            list.add(new Category(categoryName));
+            Category category = new Category(c.getLong(0), c.getString(1));
+            list.add(category);
          } while (c.moveToNext());
       }
       if (!c.isClosed()) {

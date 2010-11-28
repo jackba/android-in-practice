@@ -31,7 +31,6 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
    // names of the XML tags   
    private static final String MOVIE = "movie";
    private static final String NAME = "name";
-   private static final String YEAR = "year";
    private static final String RELEASED = "released";
    private static final String RATING = "rating";
    private static final String TAGLINE = "tagline";
@@ -39,10 +38,8 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
    private static final String URL = "url";
    private static final String HOMEPAGE = "homepage";
    private static final String IMAGE = "image";
-   private static final String IMAGES = "images";
    private static final String THUMB = "thumb";
    private static final String POSTER = "poster";
-   private static final String CATEGORIES = "categories";
    private static final String CATEGORY = "category";
    private static final String TYPE = "type";
    private static final String SIZE = "size";
@@ -160,7 +157,7 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
 
                   if (name.equalsIgnoreCase(CATEGORY)) {
                      String categoryName = parser.getAttributeValue(parser.getNamespace(), NAME);
-                     Category category = new Category(categoryName);
+                     Category category = new Category(0, categoryName);
                      if (!movie.getCategories().contains(category)) {
                         movie.getCategories().add(category);
                      }

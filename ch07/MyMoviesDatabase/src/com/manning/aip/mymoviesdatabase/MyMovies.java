@@ -25,7 +25,7 @@ public class MyMovies extends ListActivity {
    private static final int DELETE = 1;
 
    public static final int SEARCH_FORM = 0;
-   public static final int PREFS = 1;   
+   public static final int PREFS = 1;
    public static final int CAT_MANAGER = 2;
 
    private MyMoviesApp app;
@@ -66,7 +66,7 @@ public class MyMovies extends ListActivity {
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
       menu.add(0, SEARCH_FORM, 0, "Search").setIcon(android.R.drawable.ic_menu_search);
-      menu.add(0, PREFS, 0, "Preferences").setIcon(android.R.drawable.ic_menu_preferences);      
+      menu.add(0, PREFS, 0, "Preferences").setIcon(android.R.drawable.ic_menu_preferences);
       menu.add(0, CAT_MANAGER, 0, "Category Manager").setIcon(android.R.drawable.ic_menu_manage);
       return true;
    }
@@ -107,8 +107,13 @@ public class MyMovies extends ListActivity {
             new AlertDialog.Builder(MyMovies.this).setTitle("Delete Movie?").setMessage(movie.getName())
                      .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {
-                           app.getDataManager().deleteMovie(movie);
-                           adapter.remove(movie);
+                           if (app.getDataManager().deleteMovie(movie.getId())) {
+                              adapter.remove(movie);
+                           } else {
+                              // should never get this, but just in case
+                              Toast.makeText(MyMovies.this, "Unable to delete movie, please check logs",
+                                       Toast.LENGTH_SHORT).show();
+                           }
                         }
                      }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {

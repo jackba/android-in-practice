@@ -2,7 +2,7 @@ package com.manning.aip.mymoviesdatabase.model;
 
 public class ModelBase {
 
-   private long id;
+   protected long id;
 
    public long getId() {
       return this.id;

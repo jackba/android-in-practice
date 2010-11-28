@@ -73,7 +73,7 @@ public class CategoryManager extends Activity {
             if (!isTextViewEmpty(categoryAdd)) {
                Category exists = app.getDataManager().findCategory(categoryAdd.getText().toString());
                if (exists == null) {
-                  Category category = new Category(categoryAdd.getText().toString());
+                  Category category = new Category(0, categoryAdd.getText().toString());
                   app.getDataManager().saveCategory(category);
                   // we could just ADD to adapter, and not backing collection
                   // but that will put element at end of ListView, here we want to add and sort
