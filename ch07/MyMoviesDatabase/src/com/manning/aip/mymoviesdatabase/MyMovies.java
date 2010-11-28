@@ -1,23 +1,37 @@
 package com.manning.aip.mymoviesdatabase;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+
+import com.manning.aip.mymoviesdatabase.model.Movie;
+
+import java.util.List;
 
 public class MyMovies extends ListActivity {
 
+   private static final int EDIT = 0;
+   private static final int DELETE = 1;
+   
    public static final int PREFS = 0;
    public static final int ENTRY_FORM = 1;
    public static final int SEARCH_FORM = 2;
    public static final int CAT_MANAGER= 3;
    
    private MyMoviesApp app;
-   private MovieAdapter adapter;
+   private MovieAdapterDatabase adapter;
+   private List<Movie> movies;
 
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -32,9 +46,11 @@ public class MyMovies extends ListActivity {
                null, null, null);
       listView.addFooterView(backToTop, null, true);
 
-      this.adapter = new MovieAdapter(this, app.getImageCache());
+      movies = app.getDataManager().getMovieDao().getAll();
+      adapter = new MovieAdapterDatabase(this, app.getImageCache(), movies);
       listView.setAdapter(this.adapter);
       listView.setItemsCanFocus(false);
+      registerForContextMenu(listView);
    }
 
    public void backToTop(View view) {
@@ -42,8 +58,7 @@ public class MyMovies extends ListActivity {
    }
 
    protected void onListItemClick(ListView l, View v, int position, long id) {
-      this.adapter.toggleMovie(position);
-      this.adapter.notifyDataSetInvalidated();
+      // TODO (go to detail page, allow user to see details and select whether they "got or not" there)
    }
 
    @Override
@@ -72,5 +87,38 @@ public class MyMovies extends ListActivity {
             break;
       }
       return false;
+   }
+   
+   @Override
+   public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo) {
+      super.onCreateContextMenu(menu, v, menuInfo);
+      menu.add(0, EDIT, 0, "Edit Movie");
+      menu.add(0, DELETE, 1, "Delete Movie");
+      menu.setHeaderTitle("Action");
+   }
+
+   @Override
+   public boolean onContextItemSelected(final MenuItem item) {
+      AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+      final Movie movie = movies.get(info.position);
+      switch (item.getItemId()) {
+         case EDIT:
+            Toast.makeText(MyMovies.this, "TODO EDIT " + movie.getName(), Toast.LENGTH_SHORT);
+            return true;
+         case DELETE:
+            new AlertDialog.Builder(MyMovies.this).setTitle("Delete Movie?").setMessage(movie.getName())
+                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface d, final int i) {
+                           app.getDataManager().getMovieDao().delete(movie);
+                           adapter.remove(movie);
+                        }
+                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface d, final int i) {
+                        }
+                     }).show();
+            return true;
+         default:
+            return super.onContextItemSelected(item);
+      }
    }
 }

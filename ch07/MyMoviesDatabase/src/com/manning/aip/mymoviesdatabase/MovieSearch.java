@@ -57,7 +57,7 @@ public class MovieSearch extends Activity {
                Log.d(Constants.LOG_TAG, " movies size after parse: " + movies.size());
                adapter.notifyDataSetChanged();
             } else {
-               Toast.makeText(MovieSearch.this, "Search term required", Toast.LENGTH_LONG).show();
+               Toast.makeText(MovieSearch.this, "Search term required", Toast.LENGTH_SHORT).show();
             }
          }
       });
@@ -77,8 +77,13 @@ public class MovieSearch extends Activity {
                      .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {
                            // TODO check if movie already exists
-                           app.getDataManager().getMovieDao().save(movie);
-                           startActivity(new Intent(MovieSearch.this, MyMovies.class));
+                           Movie exists = app.getDataManager().getMovieDao().find(movie.getName());
+                           if (exists == null) {
+                              app.getDataManager().getMovieDao().save(movie);
+                              startActivity(new Intent(MovieSearch.this, MyMovies.class));
+                           } else {
+                              Toast.makeText(MovieSearch.this, "Movie already saved", Toast.LENGTH_SHORT).show();
+                           }
                         }
                      }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {

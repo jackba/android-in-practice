@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 
 import com.manning.aip.mymoviesdatabase.data.MovieTable.MovieColumns;
+import com.manning.aip.mymoviesdatabase.model.Category;
 import com.manning.aip.mymoviesdatabase.model.Movie;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
    // and allow the user to select, or make query use other attributes in combination with name
    public Movie find(String name) {
       long movieId = 0L;
-      String sql = "select _id from " + MovieTable.TABLE_NAME + " where name like ? limit 1";
+      String sql = "select _id from " + MovieTable.TABLE_NAME + " where movie_name like ? limit 1";
       Cursor c = db.rawQuery(sql, new String[] { name });
       if (c.moveToFirst()) {
          movieId = c.getLong(0);
