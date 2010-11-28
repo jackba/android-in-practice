@@ -46,8 +46,8 @@ public class MovieSearch extends Activity {
 
       parser = new TheMovieDBXmlPullFeedParser();
 
-      input = (EditText) findViewById(R.id.input);
-      search = (Button) findViewById(R.id.search);
+      input = (EditText) findViewById(R.id.search_input);
+      search = (Button) findViewById(R.id.search_submit);
       search.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
             if (!isTextViewEmpty(input)) {
@@ -63,8 +63,8 @@ public class MovieSearch extends Activity {
       });
 
       movies = new ArrayList<MovieSearchResult>();
-      listView = (ListView) findViewById(R.id.searchresults);
-      listView.setEmptyView(findViewById(R.id.empty));
+      listView = (ListView) findViewById(R.id.search_results_list);
+      listView.setEmptyView(findViewById(R.id.search_results_list_empty));
       adapter = new ArrayAdapter<MovieSearchResult>(this, android.R.layout.simple_list_item_1, movies);
       listView.setAdapter(adapter);
       listView.setOnItemClickListener(new OnItemClickListener() {

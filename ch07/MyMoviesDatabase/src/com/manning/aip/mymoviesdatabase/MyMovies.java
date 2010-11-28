@@ -50,7 +50,7 @@ public class MyMovies extends ListActivity {
       adapter = new MovieAdapterDatabase(this, app.getImageCache(), movies);
       listView.setAdapter(this.adapter);
       listView.setItemsCanFocus(false);
-      listView.setEmptyView(findViewById(R.id.empty));
+      listView.setEmptyView(findViewById(R.id.main_list_empty));
       registerForContextMenu(listView);
    }
 
