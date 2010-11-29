@@ -18,9 +18,9 @@ import com.manning.aip.dealdroid.model.Item;
 
 public class DealDetails extends Activity {
 
-   private static final int MENU_MAIL = 1;
-   private static final int MENU_BROWSE = 2;
-   private static final int MENU_SHARE = 3;
+   public static final int MENU_MAIL = 1;
+   public static final int MENU_BROWSE = 2;
+   public static final int MENU_SHARE = 3;
 
    private DealDroidApp app;
    private ProgressBar progressBar;
