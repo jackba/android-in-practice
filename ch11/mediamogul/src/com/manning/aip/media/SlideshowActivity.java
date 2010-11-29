@@ -7,11 +7,18 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import com.manning.aip.media.AudioBrowserActivity.Song;
 
@@ -23,6 +30,9 @@ public class SlideshowActivity extends Activity {
 	private static final int TIME_PER_SLIDE = 3*1000;
 	private Song song;
 	private MediaPlayer player;
+	private MediaController videoPlayer;
+	private VideoView video;
+	private boolean playingSlides = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +42,27 @@ public class SlideshowActivity extends Activity {
 		rightSlide = (ImageView) findViewById(R.id.slide1);
 		song = getIntent().getParcelableExtra("selectedSong");
 		player = MediaPlayer.create(this, song.uri);
-		player.setLooping(true);
+		player.setLooping(false);
+		player.setOnCompletionListener(new OnCompletionListener(){
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				FrameLayout frame = (FrameLayout) findViewById(R.id.frame);
+				frame.removeAllViews();
+				playingSlides = false;
+//				video = (VideoView) getLayoutInflater().inflate(
+//							R.layout.video_player, frame, false);
+				video = new VideoView(SlideshowActivity.this);
+				video.setLayoutParams(new LayoutParams(
+								LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+				frame.addView(video);
+				video.setVideoURI((Uri) getIntent().getExtras().get("videoUri")); 
+				videoPlayer = new MediaController(SlideshowActivity.this);
+				videoPlayer.setMediaPlayer(video);
+				video.setMediaController(videoPlayer);
+				video.requestFocus();
+				video.start();
+			}
+		});
 	}
 	
 	@Override
@@ -41,13 +71,20 @@ public class SlideshowActivity extends Activity {
 		if (player != null && player.isPlaying()){
 			player.pause();
 		}
+		if (video != null && video.isPlaying()){
+			video.pause();
+		}
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (player != null && player.isPlaying())
+		if (player != null && player.isPlaying()){
 			player.stop();
+		}
+		if (video != null && video.isPlaying()){
+			video.stopPlayback();
+		}
 	}
 
 	@Override
@@ -102,12 +139,14 @@ public class SlideshowActivity extends Activity {
 				
 				@Override
 				public void onAnimationEnd(Animation animation) {
-					nextImage = getNextImage();
-					ImageView backgroundImage = 
-						(count % 2 == 0) ? rightSlide : leftSlide;
-					backgroundImage.setImageBitmap(nextImage);
-					count++;
-					nextSlide();
+					if (playingSlides){
+						nextImage = getNextImage();
+						ImageView backgroundImage = 
+							(count % 2 == 0) ? rightSlide : leftSlide;
+						backgroundImage.setImageBitmap(nextImage);
+						count++;
+						nextSlide();
+					}
 				}
 			});
 			rightSlide.startAnimation(animation);

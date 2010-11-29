@@ -43,9 +43,9 @@ public class AudioBrowserActivity extends Activity {
 		next.setOnClickListener(new OnClickListener(){
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				Intent intent = new Intent(AudioBrowserActivity.this, 
-						SlideshowActivity.class);
+						VideoChooserActivity.class);
 				intent.putExtras(getIntent());
 				intent.putExtra("selectedSong", selectedSong);
 				startActivity(intent);
@@ -164,6 +164,11 @@ public class AudioBrowserActivity extends Activity {
 				}
 				
 			});
+			if (selectedSong != null && song.id == selectedSong.id){
+				radio.setChecked(true);
+			} else {
+				radio.setChecked(false);
+			}
 			return row;
 		}		
 	}
