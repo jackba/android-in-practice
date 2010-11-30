@@ -64,15 +64,6 @@ public class DealDetailsTest extends ActivityUnitTestCase<DealDetails> {
       Intent browserIntent = getStartedActivityIntent();
       assertEquals(Intent.ACTION_VIEW, browserIntent.getAction());
       assertEquals(testItem.getDealUrl(), browserIntent.getDataString());
-
-      //      IntentFilter browserStarted = new IntentFilter(Intent.ACTION_VIEW);
-      //      //browserStarted.addDataScheme("http");
-      //      //browserStarted.addDataAuthority("example.com", "80");
-      //      ActivityMonitor monitor =
-      //               getInstrumentation().addMonitor(browserStarted, null, true);
-      //      getInstrumentation().waitForIdleSync();
-      //
-      //      assertTrue(getInstrumentation().checkMonitorHit(monitor, 1));
    }
 
    private String getViewText(int textViewId) {
