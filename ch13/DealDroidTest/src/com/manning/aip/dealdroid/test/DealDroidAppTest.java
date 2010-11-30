@@ -21,6 +21,15 @@ public class DealDroidAppTest extends ApplicationTestCase<DealDroidApp> {
       super.setUp();
       createApplication();
       dealdroid = getApplication();
+      System.out.println(Thread.currentThread().getName());
+      Thread[] threads = new Thread[50];
+      Thread.enumerate(threads);
+      for (Thread t : threads) {
+         if (t == null) {
+            continue;
+         }
+         System.out.println(t.getName());
+      }
    }
 
    public void testShouldInitializeInstances() {
