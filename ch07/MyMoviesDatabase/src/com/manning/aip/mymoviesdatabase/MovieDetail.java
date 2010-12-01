@@ -81,14 +81,14 @@ public class MovieDetail extends Activity {
    public boolean onOptionsItemSelected(MenuItem item) {
       switch (item.getItemId()) {
          case OPTIONS_MENU_HOMEPAGE:
-            if (movie.getHomepage() != null) {
+            if (movie.getHomepage() != null && !movie.getHomepage().equals("")) {
                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(movie.getHomepage())));
             } else {
                Toast.makeText(this, "Homepage not available", Toast.LENGTH_SHORT).show();
             }
             break;
          case OPTIONS_MENU_TRAILER:
-            if (movie.getHomepage() != null) {
+            if (movie.getTrailer() != null && !movie.getTrailer().equals("")) {
                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(movie.getTrailer())));
             } else {
                Toast.makeText(this, "Trailer not available", Toast.LENGTH_SHORT).show();

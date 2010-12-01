@@ -5,7 +5,8 @@
 
 	<TextView android:id="@+id/movie_detail_name"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:textStyle="bold" android:textAppearance="?android:attr/textAppearanceLarge" />
+		android:textStyle="bold" android:textAppearance="?android:attr/textAppearanceLarge"
+		android:gravity="center_horizontal" />
 
 	<TextView android:id="@+id/movie_detail_year"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -17,10 +18,12 @@
 
 	<TextView android:id="@+id/movie_detail_tagline"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall" />
+		android:textStyle="italic" android:textAppearance="?android:attr/textAppearanceSmall"
+		android:gravity="center_horizontal" />
 
 	<TextView android:id="@+id/movie_detail_rating"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_marginTop="5dp" android:layout_marginBottom="5dp" />
 
 	<ListView android:id="@+id/movie_detail_category_list"
 		android:layout_width="fill_parent" android:layout_height="0dp"
