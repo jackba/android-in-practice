@@ -17,8 +17,8 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
    private static final String INSERT =
             "insert into " + MovieTable.TABLE_NAME + "(" + MovieColumns.HOMEPAGE + ", " + MovieColumns.NAME + ", "
                      + MovieColumns.RATING + ", " + MovieColumns.TAGLINE + ", " + MovieColumns.THUMB_URL + ", "
-                     + MovieColumns.TRAILER + ", " + MovieColumns.URL + ", " + MovieColumns.YEAR
-                     + ") values (?, ?, ?, ?, ?, ?, ?, ?)";
+                     + MovieColumns.IMAGE_URL + ", " + MovieColumns.TRAILER + ", " + MovieColumns.URL + ", "
+                     + MovieColumns.YEAR + ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
    private SQLiteDatabase db;
    private SQLiteStatement insertStatement;
@@ -42,8 +42,8 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
       Cursor c =
                db.query(MovieTable.TABLE_NAME, new String[] { MovieColumns._ID, MovieColumns.HOMEPAGE,
                         MovieColumns.NAME, MovieColumns.RATING, MovieColumns.TAGLINE, MovieColumns.THUMB_URL,
-                        MovieColumns.TRAILER, MovieColumns.URL, MovieColumns.YEAR }, MovieColumns._ID + " = ?",
-                        new String[] { String.valueOf(id) }, null, null, null, "1");
+                        MovieColumns.IMAGE_URL, MovieColumns.TRAILER, MovieColumns.URL, MovieColumns.YEAR },
+                        MovieColumns._ID + " = ?", new String[] { String.valueOf(id) }, null, null, null, "1");
       if (c.moveToFirst()) {
          movie = this.buildMovieFromCursor(c);
       }
@@ -77,8 +77,8 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
       Cursor c =
                db.query(MovieTable.TABLE_NAME, new String[] { MovieColumns._ID, MovieColumns.HOMEPAGE,
                         MovieColumns.NAME, MovieColumns.RATING, MovieColumns.TAGLINE, MovieColumns.THUMB_URL,
-                        MovieColumns.TRAILER, MovieColumns.URL, MovieColumns.YEAR }, null, null, null, null,
-                        MovieColumns.NAME, null);
+                        MovieColumns.IMAGE_URL, MovieColumns.TRAILER, MovieColumns.URL, MovieColumns.YEAR }, null,
+                        null, null, null, MovieColumns.NAME, null);
       if (c.moveToFirst()) {
          do {
             Movie movie = this.buildMovieFromCursor(c);
@@ -100,10 +100,11 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
       insertStatement.bindString(2, entity.getName());
       insertStatement.bindDouble(3, entity.getRating());
       insertStatement.bindString(4, entity.getTagline());
-      insertStatement.bindString(5, entity.getThumbUrl());      
-      insertStatement.bindString(6, entity.getTrailer());
-      insertStatement.bindString(7, entity.getUrl());
-      insertStatement.bindLong(8, entity.getYear());
+      insertStatement.bindString(5, entity.getThumbUrl());
+      insertStatement.bindString(6, entity.getImageUrl());
+      insertStatement.bindString(7, entity.getTrailer());
+      insertStatement.bindString(8, entity.getUrl());
+      insertStatement.bindLong(9, entity.getYear());
       return insertStatement.executeInsert();
    }
 
@@ -115,6 +116,7 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
       values.put(MovieColumns.RATING, entity.getRating());
       values.put(MovieColumns.TAGLINE, entity.getTagline());
       values.put(MovieColumns.THUMB_URL, entity.getThumbUrl());
+      values.put(MovieColumns.IMAGE_URL, entity.getImageUrl());
       values.put(MovieColumns.TRAILER, entity.getTrailer());
       values.put(MovieColumns.URL, entity.getUrl());
       values.put(MovieColumns.YEAR, entity.getYear());
@@ -132,9 +134,10 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
          movie.setRating(c.getInt(3));
          movie.setTagline(c.getString(4));
          movie.setThumbUrl(c.getString(5));
-         movie.setTrailer(c.getString(6));
-         movie.setUrl(c.getString(7));
-         movie.setYear(c.getInt(8));
+         movie.setImageUrl(c.getString(6));
+         movie.setTrailer(c.getString(7));
+         movie.setUrl(c.getString(8));
+         movie.setYear(c.getInt(9));
       }
       return movie;
    }

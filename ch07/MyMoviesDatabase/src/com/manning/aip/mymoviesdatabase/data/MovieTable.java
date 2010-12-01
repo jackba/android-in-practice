@@ -13,6 +13,7 @@ public final class MovieTable {
       public static final String RATING = "rating";
       public static final String TAGLINE = "tagline";      
       public static final String THUMB_URL = "thumb_url";
+      public static final String IMAGE_URL = "image_url";
       public static final String TRAILER = "trailer";      
       public static final String URL = "url";      
       public static final String YEAR = "year";      
@@ -29,6 +30,7 @@ public final class MovieTable {
       sb.append(MovieColumns.RATING + " INTEGER, ");
       sb.append(MovieColumns.TAGLINE + " TEXT, ");
       sb.append(MovieColumns.THUMB_URL + " TEXT, ");
+      sb.append(MovieColumns.IMAGE_URL + " TEXT, ");
       sb.append(MovieColumns.TRAILER + " TEXT, ");      
       sb.append(MovieColumns.URL + " TEXT, ");
       sb.append(MovieColumns.YEAR + " INTEGER");      

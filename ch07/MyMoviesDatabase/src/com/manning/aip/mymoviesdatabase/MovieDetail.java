@@ -26,7 +26,7 @@ public class MovieDetail extends Activity {
 
    private TextView name;
    private TextView year;
-   private ImageView thumb;
+   private ImageView image;
    private TextView tagline;
    private TextView rating;
    
@@ -43,7 +43,7 @@ public class MovieDetail extends Activity {
 
       name = (TextView) findViewById(R.id.movie_detail_name);
       year = (TextView) findViewById(R.id.movie_detail_year);
-      thumb = (ImageView) findViewById(R.id.movie_detail_thumb);
+      image = (ImageView) findViewById(R.id.movie_detail_image);
       tagline = (TextView) findViewById(R.id.movie_detail_tagline);
       rating = (TextView) findViewById(R.id.movie_detail_rating);
 
@@ -68,12 +68,12 @@ public class MovieDetail extends Activity {
       name.setText(movie.getName());
       year.setText(String.valueOf(movie.getYear()));
       
-      String thumbUrl = movie.getThumbUrl();
-      if (thumbUrl != null && !thumbUrl.equals("")) {         
-         if (app.getImageCache().get(thumbUrl) == null) {
-            new DownloadTask(app.getImageCache(), thumb).execute(thumbUrl);         
+      String imageUrl = movie.getImageUrl();
+      if (imageUrl != null && !imageUrl.equals("")) {         
+         if (app.getImageCache().get(imageUrl) == null) {
+            new DownloadTask(app.getImageCache(), image).execute(imageUrl);         
          } else {
-            thumb.setImageBitmap(app.getImageCache().get(thumbUrl));
+            image.setImageBitmap(app.getImageCache().get(imageUrl));
          }
       }  
       

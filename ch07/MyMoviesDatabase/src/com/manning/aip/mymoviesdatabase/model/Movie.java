@@ -14,15 +14,16 @@ public class Movie extends ModelBase {
    private String trailer;
    private String tagline;
    private String thumbUrl;
+   private String imageUrl;
    private Set<Category> categories;
 
    // note, in the real-world making these model beans immutable would be a better approach
    // (that is to say, not making them JavaBeans, but makign immutable model classes with Builder)
-   
+
    public Movie() {
       this.categories = new LinkedHashSet<Category>();
    }
-   
+
    public String getProviderId() {
       return this.providerId;
    }
@@ -95,6 +96,14 @@ public class Movie extends ModelBase {
       this.thumbUrl = thumbUrl;
    }
 
+   public String getImageUrl() {
+      return this.imageUrl;
+   }
+
+   public void setImageUrl(String imageUrl) {
+      this.imageUrl = imageUrl;
+   }
+
    public Set<Category> getCategories() {
       return this.categories;
    }
@@ -107,8 +116,8 @@ public class Movie extends ModelBase {
    public String toString() {
       return "Movie [categories=" + this.categories + ", homepage=" + this.homepage + ", name=" + this.name
                + ", providerId=" + this.providerId + ", rating=" + this.rating + ", tagline=" + this.tagline
-               + ", thumbUrl=" + this.thumbUrl + ", trailer=" + this.trailer + ", url=" + this.url + ", year="
-               + this.year + "]";
+               + ", thumbUrl=" + this.thumbUrl + ", imageUrl=" + this.imageUrl + ", trailer=" + this.trailer + ", url="
+               + this.url + ", year=" + this.year + "]";
    }
 
    @Override
@@ -125,6 +134,7 @@ public class Movie extends ModelBase {
       result = prime * result + (int) (temp ^ (temp >>> 32));
       result = prime * result + ((this.tagline == null) ? 0 : this.tagline.hashCode());
       result = prime * result + ((this.thumbUrl == null) ? 0 : this.thumbUrl.hashCode());
+      result = prime * result + ((this.imageUrl == null) ? 0 : this.imageUrl.hashCode());
       result = prime * result + ((this.trailer == null) ? 0 : this.trailer.hashCode());
       result = prime * result + ((this.url == null) ? 0 : this.url.hashCode());
       result = prime * result + this.year;
@@ -172,6 +182,11 @@ public class Movie extends ModelBase {
          if (other.thumbUrl != null)
             return false;
       } else if (!this.thumbUrl.equals(other.thumbUrl))
+         return false;
+      if (this.imageUrl == null) {
+         if (other.imageUrl != null)
+            return false;
+      } else if (!this.imageUrl.equals(other.imageUrl))
          return false;
       if (this.trailer == null) {
          if (other.trailer != null)

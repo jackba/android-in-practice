@@ -39,6 +39,7 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
    private static final String HOMEPAGE = "homepage";
    private static final String IMAGE = "image";
    private static final String THUMB = "thumb";
+   private static final String COVER = "cover";
    private static final String POSTER = "poster";
    private static final String CATEGORY = "category";
    private static final String TYPE = "type";
@@ -149,9 +150,12 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
                      String type = parser.getAttributeValue(parser.getNamespace(), TYPE);
                      String size = parser.getAttributeValue(parser.getNamespace(), SIZE);
                      String url = parser.getAttributeValue(parser.getNamespace(), URL);
-                     if ((type != null && type.equalsIgnoreCase(POSTER))
-                              && (size != null && size.equalsIgnoreCase(THUMB))) {
-                        movie.setThumbUrl(url);
+                     if (type != null && type.equalsIgnoreCase(POSTER)) {
+                        if (size != null && size.equalsIgnoreCase(THUMB)) {
+                           movie.setThumbUrl(url);
+                        } else if (size != null && size.equalsIgnoreCase(COVER)) {
+                           movie.setImageUrl(url);
+                        }
                      }
                   }
 

@@ -8,15 +8,16 @@
 		android:textAppearance="?android:attr/textAppearanceLarge" />
 
 	<TextView android:id="@+id/movie_detail_year"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		android:layout_width="wrap_content" android:layout_height="wrap_content" 
+		android:textAppearance="?android:attr/textAppearanceMedium" />
 
-	<ImageView android:id="@+id/movie_detail_thumb"
+	<ImageView android:id="@+id/movie_detail_image"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:layout_margin="5dp" />
 
 	<TextView android:id="@+id/movie_detail_tagline"
 		android:layout_width="300dp" android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall" />
+		android:textAppearance="?android:attr/textAppearanceMedium" />
 
 	<TextView android:id="@+id/movie_detail_rating"
 		android:layout_width="fill_parent" android:layout_height="wrap_content" />
