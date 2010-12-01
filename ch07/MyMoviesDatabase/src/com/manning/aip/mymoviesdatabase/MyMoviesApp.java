@@ -42,7 +42,7 @@ public class MyMoviesApp extends Application {
       cMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
       prefs = PreferenceManager.getDefaultSharedPreferences(this);
       dataManager = new DataManager(this);
-      imageCache = new ImageCache(cMgr);
+      imageCache = new ImageCache();
    }
 
    @Override

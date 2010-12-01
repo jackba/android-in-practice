@@ -13,6 +13,7 @@ import com.manning.aip.mymoviesdatabase.util.ImageCache;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
 
@@ -38,8 +39,15 @@ public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
       Log.d(Constants.LOG_TAG, "making HTTP trip for image:" + inputUrls[0]);
       Bitmap bitmap = null;
       try {
+         // NOTE, be careful about just doing "url.openStream()"
+         // it's a shortcut for openConnection().getInputStream() and doesn't set timeouts
+         // (the defaults are "infinite" so it will wait forever if endpoint server is down)
+         // do it properly with a few more lines of code . . .
          URL url = new URL(inputUrls[0]);
-         bitmap = BitmapFactory.decodeStream(url.openStream());
+         URLConnection conn = url.openConnection();     
+         conn.setConnectTimeout(3000);
+         conn.setReadTimeout(5000);         
+         bitmap = BitmapFactory.decodeStream(conn.getInputStream());
          if (bitmap != null) {
             cache.put(inputUrls[0], bitmap);
          }

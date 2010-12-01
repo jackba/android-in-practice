@@ -1,7 +1,6 @@
 package com.manning.aip.mymoviesdatabase.util;
 
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -22,7 +21,7 @@ public class ImageCache {
 
    // HashMap decorator that only grows to X size
    // (note, using simple WeakHashMap is NOT a good cache for this, it uses weak references for *keys*)
-   public ImageCache(final ConnectivityManager cMgr) {
+   public ImageCache() {
       this.cache = Collections.synchronizedMap(new LinkedHashMap<String, Bitmap>(IMAGE_CACHE_SIZE + 1, .75F, true) {
          public boolean removeEldestEntry(Map.Entry<String, Bitmap> eldest) {
             return size() > IMAGE_CACHE_SIZE;
@@ -31,10 +30,10 @@ public class ImageCache {
    }
 
    public Bitmap get(String urlString) {
-      return this.cache.get(urlString);      
+      return this.cache.get(urlString);
    }
 
    public void put(String urlString, Bitmap bitmap) {
       this.cache.put(urlString, bitmap);
-   }   
+   }
 }
