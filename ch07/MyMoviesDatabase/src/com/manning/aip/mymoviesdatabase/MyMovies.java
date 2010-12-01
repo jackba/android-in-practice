@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -97,11 +99,14 @@ public class MyMovies extends ListActivity {
             startActivity(new Intent(this, CategoryManager.class));
             break;
          case OPTIONS_MENU_ABOUT:
-            new AlertDialog.Builder(MyMovies.this).setTitle("About MyMovies").setMessage(aboutString).setNeutralButton(
-                     "Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface d, final int i) {
-                        }
-                     }).show();
+            AlertDialog dialog =
+                     new AlertDialog.Builder(MyMovies.this).setTitle("About MyMovies").setMessage(aboutString)
+                              .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                 public void onClick(final DialogInterface d, final int i) {
+                                 }
+                              }).create();
+            dialog.show();
+            ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
             break;
       }
       return false;
