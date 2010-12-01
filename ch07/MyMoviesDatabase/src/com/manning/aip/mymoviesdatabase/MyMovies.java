@@ -5,6 +5,8 @@ import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.util.Linkify;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +32,9 @@ public class MyMovies extends ListActivity {
    private static final int OPTIONS_MENU_ABOUT = 3;
 
    private static final String ABOUT =
-            "Demo application for the Manning Publications book \"Android in Practice\".\n\nPowered by TheMovieDB.org!";
+            "Demo application for the Manning Publications book \"Android in Practice\".\n\nPowered by:\n http://www.themoviedb.org";
+
+   private SpannableString aboutString;
 
    private MyMoviesApp app;
 
@@ -56,6 +60,9 @@ public class MyMovies extends ListActivity {
       listView.setItemsCanFocus(false);
       listView.setEmptyView(findViewById(R.id.main_list_empty));
       registerForContextMenu(listView);
+
+      aboutString = new SpannableString(ABOUT);
+      Linkify.addLinks(aboutString, Linkify.ALL);
    }
 
    public void backToTop(View view) {
@@ -90,9 +97,9 @@ public class MyMovies extends ListActivity {
             startActivity(new Intent(this, CategoryManager.class));
             break;
          case OPTIONS_MENU_ABOUT:
-            new AlertDialog.Builder(MyMovies.this).setTitle("About MyMovies").setMessage(ABOUT).setNeutralButton("Ok",
-                     new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface d, final int i) {                          
+            new AlertDialog.Builder(MyMovies.this).setTitle("About MyMovies").setMessage(aboutString).setNeutralButton(
+                     "Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface d, final int i) {
                         }
                      }).show();
             break;
