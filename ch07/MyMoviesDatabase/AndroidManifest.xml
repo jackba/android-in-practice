@@ -10,9 +10,7 @@
 		android:anyDensity="true" />
 
 	<application android:name="MyMoviesApp" android:icon="@drawable/icon"
-		android:label="@string/app_name" android:theme="@style/MyMoviesTheme"
-		android:screenOrientation="portrait">
-		<!--  for demo/example we lock to portrait, in reality we want to support that with alt layouts -->
+		android:label="@string/app_name" android:theme="@style/MyMoviesTheme">		
 
 		<activity android:name=".SplashScreen" android:label="@string/app_name"
 			android:theme="@style/SplashScreen">
@@ -26,7 +24,8 @@
 
 		<activity android:name=".MovieSearch" />
 
-		<activity android:name=".MovieDetail" />
+        <!--  for demo/example we lock to portrait, in reality we want to support that with alt layouts -->
+		<activity android:name=".MovieDetail" android:screenOrientation="portrait"/>
 
 		<activity android:name=".CategoryManager" />
 
