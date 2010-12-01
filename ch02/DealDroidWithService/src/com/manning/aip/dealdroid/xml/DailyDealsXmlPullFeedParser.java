@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
@@ -56,6 +57,13 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
 
    protected InputStream getInputStream() {
       try {
+         // NOTE, be careful about just doing "url.openStream()"
+         // it's a shortcut for openConnection().getInputStream() and doesn't set timeouts
+         // (the defaults are "infinite" so it will wait forever if endpoint server is down)
+         // do it properly with a few more lines of code . . .         
+         URLConnection conn = feedUrl.openConnection();     
+         conn.setConnectTimeout(3000);
+         conn.setReadTimeout(5000);      
          return feedUrl.openConnection().getInputStream();
       } catch (IOException e) {
          throw new RuntimeException(e);
