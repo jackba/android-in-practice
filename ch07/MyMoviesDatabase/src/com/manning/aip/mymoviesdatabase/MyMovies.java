@@ -21,12 +21,12 @@ import java.util.List;
 
 public class MyMovies extends ListActivity {
 
-   private static final int EDIT = 0;
-   private static final int DELETE = 1;
+   private static final int CONTEXT_MENU_EDIT = 0;
+   private static final int CONTEXT_MENU_DELETE = 1;
 
-   public static final int SEARCH_FORM = 0;
-   public static final int PREFS = 1;
-   public static final int CAT_MANAGER = 2;
+   public static final int OPTIONS_MENU_SEARCH_FORM = 0;
+   public static final int OPTIONS_MENU_PREFS = 1;
+   public static final int OPTIONS_MENU_CAT_MANAGER = 2;
 
    private MyMoviesApp app;
 
@@ -66,22 +66,22 @@ public class MyMovies extends ListActivity {
 
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
-      menu.add(0, SEARCH_FORM, 0, "Search").setIcon(android.R.drawable.ic_menu_search);
-      menu.add(0, PREFS, 0, "Preferences").setIcon(android.R.drawable.ic_menu_preferences);
-      menu.add(0, CAT_MANAGER, 0, "Category Manager").setIcon(android.R.drawable.ic_menu_manage);
+      menu.add(0, OPTIONS_MENU_SEARCH_FORM, 0, "Search").setIcon(android.R.drawable.ic_menu_search);
+      menu.add(0, OPTIONS_MENU_PREFS, 0, "Preferences").setIcon(android.R.drawable.ic_menu_preferences);
+      menu.add(0, OPTIONS_MENU_CAT_MANAGER, 0, "Category Manager").setIcon(android.R.drawable.ic_menu_manage);
       return true;
    }
 
    @Override
    public boolean onOptionsItemSelected(MenuItem item) {
       switch (item.getItemId()) {
-         case SEARCH_FORM:
+         case OPTIONS_MENU_SEARCH_FORM:
             startActivity(new Intent(this, MovieSearch.class));
             break;
-         case PREFS:
+         case OPTIONS_MENU_PREFS:
             startActivity(new Intent(this, Preferences.class));
             break;
-         case CAT_MANAGER:
+         case OPTIONS_MENU_CAT_MANAGER:
             startActivity(new Intent(this, CategoryManager.class));
             break;
       }
@@ -91,8 +91,8 @@ public class MyMovies extends ListActivity {
    @Override
    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo) {
       super.onCreateContextMenu(menu, v, menuInfo);
-      menu.add(0, EDIT, 0, "Edit Movie");
-      menu.add(0, DELETE, 1, "Delete Movie");
+      menu.add(0, CONTEXT_MENU_EDIT, 0, "Edit Movie");
+      menu.add(0, CONTEXT_MENU_DELETE, 1, "Delete Movie");
       menu.setHeaderTitle("Action");
    }
 
@@ -101,10 +101,10 @@ public class MyMovies extends ListActivity {
       AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
       final Movie movie = movies.get(info.position);
       switch (item.getItemId()) {
-         case EDIT:
+         case CONTEXT_MENU_EDIT:
             Toast.makeText(MyMovies.this, "TODO EDIT " + movie.getName(), Toast.LENGTH_SHORT);
             return true;
-         case DELETE:
+         case CONTEXT_MENU_DELETE:
             new AlertDialog.Builder(MyMovies.this).setTitle("Delete Movie?").setMessage(movie.getName())
                      .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {

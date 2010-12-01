@@ -2,8 +2,11 @@ package com.manning.aip.mymoviesdatabase;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -20,8 +23,11 @@ public class MovieDetail extends Activity {
 
    public static final String MOVIE_ID_KEY = "midkey";
 
+   private static final int OPTIONS_MENU_HOMEPAGE = 0;
+   private static final int OPTIONS_MENU_TRAILER = 1;
+
    private MyMoviesApp app;
-   
+
    private Movie movie;
 
    private TextView name;
@@ -29,7 +35,7 @@ public class MovieDetail extends Activity {
    private ImageView image;
    private TextView tagline;
    private TextView rating;
-   
+
    private ListView categoriesListView;
    private ArrayAdapter<Category> adapter;
    private List<Category> categories;
@@ -63,26 +69,53 @@ public class MovieDetail extends Activity {
          Toast.makeText(this, "No movie found, nothing to see here", Toast.LENGTH_LONG).show();
       }
    }
-   
+
+   @Override
+   public boolean onCreateOptionsMenu(Menu menu) {
+      menu.add(0, OPTIONS_MENU_HOMEPAGE, 0, "Homepage").setIcon(android.R.drawable.ic_menu_info_details);
+      menu.add(0, OPTIONS_MENU_TRAILER, 0, "Trailer").setIcon(android.R.drawable.ic_menu_view);
+      return true;
+   }
+
+   @Override
+   public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+         case OPTIONS_MENU_HOMEPAGE:
+            if (movie.getHomepage() != null) {
+               startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(movie.getHomepage())));
+            } else {
+               Toast.makeText(this, "Homepage not available", Toast.LENGTH_SHORT).show();
+            }
+            break;
+         case OPTIONS_MENU_TRAILER:
+            if (movie.getHomepage() != null) {
+               startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(movie.getTrailer())));
+            } else {
+               Toast.makeText(this, "Trailer not available", Toast.LENGTH_SHORT).show();
+            }
+            break;
+      }
+      return false;
+   }
+
    private void populateViews() {
       name.setText(movie.getName());
       year.setText(String.valueOf(movie.getYear()));
-      
-      String imageUrl = movie.getImageUrl();
-      if (imageUrl != null && !imageUrl.equals("")) {         
-         if (app.getImageCache().get(imageUrl) == null) {
-            new DownloadTask(app.getImageCache(), image).execute(imageUrl);         
-         } else {
-            image.setImageBitmap(app.getImageCache().get(imageUrl));
-         }
-      }  
-      
-      tagline.setText(movie.getTagline());
-      
-      rating.setText("Rating: " + String.valueOf(movie.getRating()));
-      
-      categories.addAll(movie.getCategories());
-      adapter.notifyDataSetChanged();      
-   }
 
+      String thumbUrl = movie.getThumbUrl();
+      if (thumbUrl != null && !thumbUrl.equals("")) {
+         if (app.getImageCache().get(thumbUrl) == null) {
+            new DownloadTask(app.getImageCache(), image).execute(thumbUrl);
+         } else {
+            image.setImageBitmap(app.getImageCache().get(thumbUrl));
+         }
+      }
+
+      tagline.setText(movie.getTagline());
+
+      rating.setText("Rating: " + String.valueOf(movie.getRating()));
+
+      categories.addAll(movie.getCategories());
+      adapter.notifyDataSetChanged();
+   }
 }
