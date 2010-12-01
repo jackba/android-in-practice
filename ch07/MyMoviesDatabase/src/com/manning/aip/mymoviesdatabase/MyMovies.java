@@ -24,9 +24,13 @@ public class MyMovies extends ListActivity {
    private static final int CONTEXT_MENU_EDIT = 0;
    private static final int CONTEXT_MENU_DELETE = 1;
 
-   public static final int OPTIONS_MENU_SEARCH_FORM = 0;
-   public static final int OPTIONS_MENU_PREFS = 1;
-   public static final int OPTIONS_MENU_CAT_MANAGER = 2;
+   private static final int OPTIONS_MENU_SEARCH_FORM = 0;
+   private static final int OPTIONS_MENU_PREFS = 1;
+   private static final int OPTIONS_MENU_CAT_MANAGER = 2;
+   private static final int OPTIONS_MENU_ABOUT = 3;
+
+   private static final String ABOUT =
+            "Demo application for the Manning Publications book \"Android in Practice\".\n\nPowered by TheMovieDB.org!";
 
    private MyMoviesApp app;
 
@@ -69,6 +73,7 @@ public class MyMovies extends ListActivity {
       menu.add(0, OPTIONS_MENU_SEARCH_FORM, 0, "Search").setIcon(android.R.drawable.ic_menu_search);
       menu.add(0, OPTIONS_MENU_PREFS, 0, "Preferences").setIcon(android.R.drawable.ic_menu_preferences);
       menu.add(0, OPTIONS_MENU_CAT_MANAGER, 0, "Category Manager").setIcon(android.R.drawable.ic_menu_manage);
+      menu.add(0, OPTIONS_MENU_ABOUT, 0, "About").setIcon(android.R.drawable.ic_menu_info_details);
       return true;
    }
 
@@ -83,6 +88,13 @@ public class MyMovies extends ListActivity {
             break;
          case OPTIONS_MENU_CAT_MANAGER:
             startActivity(new Intent(this, CategoryManager.class));
+            break;
+         case OPTIONS_MENU_ABOUT:
+            new AlertDialog.Builder(MyMovies.this).setTitle("About MyMovies").setMessage(ABOUT).setNeutralButton("Ok",
+                     new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface d, final int i) {                          
+                        }
+                     }).show();
             break;
       }
       return false;
