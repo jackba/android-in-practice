@@ -73,7 +73,7 @@ public class MovieSearch extends Activity {
             // TODO parse from AsyncTask (and check net avail)
             final Movie movie = parser.get(movieSearchResult.getProviderId());
             if (movie != null) {
-               new AlertDialog.Builder(MovieSearch.this).setTitle("Add Movie?").setMessage(movie.toString())
+               new AlertDialog.Builder(MovieSearch.this).setTitle("Add Movie?").setMessage(movie.getName())
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                            public void onClick(final DialogInterface d, final int i) {
                               // let the activity check if movie exists, not manager
