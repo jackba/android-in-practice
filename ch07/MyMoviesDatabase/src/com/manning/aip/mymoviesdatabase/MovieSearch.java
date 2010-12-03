@@ -51,7 +51,7 @@ public class MovieSearch extends Activity {
       search.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
             if (!isTextViewEmpty(input)) {
-               // TODO parse from AsyncTask (and check net avail)
+               // TODO move parse to AsyncTask (and check net avail)
                movies.clear();
                movies.addAll(parser.search(input.getText().toString()));
                Log.d(Constants.LOG_TAG, " movies size after parse: " + movies.size());
@@ -70,7 +70,7 @@ public class MovieSearch extends Activity {
       listView.setOnItemClickListener(new OnItemClickListener() {
          public void onItemClick(final AdapterView<?> parent, final View v, final int index, final long id) {
             final MovieSearchResult movieSearchResult = movies.get(index);
-            // TODO parse from AsyncTask (and check net avail)
+            // TODO move parse to AsyncTask (and check net avail)
             final Movie movie = parser.get(movieSearchResult.getProviderId());
             if (movie != null) {
                new AlertDialog.Builder(MovieSearch.this).setTitle("Add Movie?").setMessage(movie.getName())

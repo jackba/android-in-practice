@@ -42,8 +42,6 @@ public class MovieAdapterDatabase extends ArrayAdapter<Movie> {
 
       text.setText(movie.getName());
 
-      // TODO add other elements to this view (such as year), and create movie detail page
-
       image.setImageDrawable(null);
       image.setTag(position);
       String thumbUrl = movie.getThumbUrl();
