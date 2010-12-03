@@ -3,9 +3,6 @@
 	<PreferenceCategory android:title="Application Settings">
 		<CheckBoxPreference android:title="Splash Screen"
 			android:key="showsplash" android:summary="Disabled"
-			android:defaultValue="false" />
-		<CheckBoxPreference android:title="Debug Logging"
-			android:key="debuglogging" android:summary="Disabled"
-			android:defaultValue="false" />
+			android:defaultValue="false" />		
 	</PreferenceCategory>
 </PreferenceScreen>
