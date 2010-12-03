@@ -4,7 +4,7 @@ public class MovieCategoryKey {
 
    private final long movieId;
    private final long categoryId;
-   
+
    public MovieCategoryKey(long movieId, long categoryId) {
       this.movieId = movieId;
       this.categoryId = categoryId;

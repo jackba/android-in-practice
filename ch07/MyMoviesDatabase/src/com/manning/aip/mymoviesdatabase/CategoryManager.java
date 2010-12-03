@@ -25,8 +25,7 @@ import java.util.List;
 
 public class CategoryManager extends Activity {
 
-   private static final int EDIT = 0;
-   private static final int DELETE = 1;
+   private static final int CONTEXT_MENU_DELETE = 0;
 
    private MyMoviesApp app;
 
@@ -93,8 +92,7 @@ public class CategoryManager extends Activity {
    @Override
    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo) {
       super.onCreateContextMenu(menu, v, menuInfo);
-      menu.add(0, EDIT, 0, "Edit Category");
-      menu.add(0, DELETE, 1, "Delete Category");
+      menu.add(0, CategoryManager.CONTEXT_MENU_DELETE, 0, "Delete Category");
       menu.setHeaderTitle("Action");
    }
 
@@ -103,10 +101,7 @@ public class CategoryManager extends Activity {
       AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
       final Category category = categories.get(info.position);
       switch (item.getItemId()) {
-         case EDIT:
-            Toast.makeText(CategoryManager.this, "TODO EDIT " + category.getName(), Toast.LENGTH_SHORT);
-            return true;
-         case DELETE:
+         case CONTEXT_MENU_DELETE:
             new AlertDialog.Builder(CategoryManager.this).setTitle("Delete Category?").setMessage(category.getName())
                      .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {
@@ -124,7 +119,7 @@ public class CategoryManager extends Activity {
    }
 
    private boolean isTextViewEmpty(final TextView textView) {
-      return !(textView != null && textView.getText() != null && textView.getText().toString() != null && !textView
+      return !((textView != null) && (textView.getText() != null) && (textView.getText().toString() != null) && !textView
                .getText().toString().equals(""));
    }
 }

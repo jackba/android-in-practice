@@ -14,17 +14,17 @@ import com.manning.aip.mymoviesdatabase.util.ImageCache;
 public class MyMoviesApp extends Application {
 
    private ConnectivityManager cMgr;
-   private DataManager dataManager;   
+   private DataManager dataManager;
    private ImageCache imageCache;
    private SharedPreferences prefs;
-   
+
    //
    // getters/setters
    //   
    public SharedPreferences getPrefs() {
       return this.prefs;
    }
-   
+
    public DataManager getDataManager() {
       return this.dataManager;
    }
@@ -60,5 +60,5 @@ public class MyMoviesApp extends Application {
          return netInfo.getState().equals(State.CONNECTED);
       }
       return false;
-   }   
+   }
 }

@@ -26,11 +26,11 @@ public class MovieCategoryDao implements BaseColumns {
 
    public MovieCategoryDao(SQLiteDatabase db) {
       this.db = db;
-      insertStatement = db.compileStatement(INSERT);
+      insertStatement = db.compileStatement(MovieCategoryDao.INSERT);
    }
 
    public void delete(MovieCategoryKey key) {
-      if (key.getMovieId() > 0 && key.getCategoryId() > 0) {
+      if ((key.getMovieId() > 0) && (key.getCategoryId() > 0)) {
          db.delete(MovieCategoryTable.TABLE_NAME, MovieCategoryColumns.MOVIE_ID + " = ? and "
                   + MovieCategoryColumns.CATEGORY_ID + " = ?", new String[] { String.valueOf(key.getMovieId()),
                   String.valueOf(key.getCategoryId()) });
@@ -67,7 +67,7 @@ public class MovieCategoryDao implements BaseColumns {
                "select " + MovieCategoryColumns.CATEGORY_ID + ", " + CategoryColumns.NAME + " from "
                         + MovieCategoryTable.TABLE_NAME + ", " + CategoryTable.TABLE_NAME + " where "
                         + MovieCategoryColumns.MOVIE_ID + " = ? and " + MovieCategoryColumns.CATEGORY_ID + " = "
-                        + CategoryColumns._ID;
+                        + BaseColumns._ID;
       Cursor c = db.rawQuery(sql, new String[] { String.valueOf(movieId) });
       if (c.moveToFirst()) {
          do {

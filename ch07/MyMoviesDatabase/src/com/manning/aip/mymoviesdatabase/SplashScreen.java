@@ -13,9 +13,9 @@ import java.util.TimerTask;
 public class SplashScreen extends Activity {
 
    public static final int SPLASH_TIMEOUT = 2000;
-   
+
    private MyMoviesApp app;
-   
+
    private SharedPreferences prefs;
 
    @Override
@@ -23,7 +23,7 @@ public class SplashScreen extends Activity {
       super.onCreate(savedInstanceState);
 
       setContentView(R.layout.splash_screen);
-      
+
       app = (MyMoviesApp) getApplication();
       prefs = app.getPrefs();
    }
@@ -42,7 +42,7 @@ public class SplashScreen extends Activity {
          editor.putBoolean("splashseenonce", true);
          editor.commit();
       }
-     
+
       boolean showSplash = prefs.getBoolean("showsplash", false);
       if (!showSplash && splashSeenOnce) {
          proceed();
@@ -52,10 +52,10 @@ public class SplashScreen extends Activity {
             public void run() {
                proceed();
             }
-         }, SPLASH_TIMEOUT);
+         }, SplashScreen.SPLASH_TIMEOUT);
       }
    }
-   
+
    @Override
    public boolean onTouchEvent(MotionEvent event) {
       if (event.getAction() == MotionEvent.ACTION_DOWN) {

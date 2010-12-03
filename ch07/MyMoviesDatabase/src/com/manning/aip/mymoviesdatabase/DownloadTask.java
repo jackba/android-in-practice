@@ -18,7 +18,7 @@ import java.net.URLConnection;
 
 public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
 
-   private final ImageCache cache;   
+   private final ImageCache cache;
    private final Drawable placeholder;
    protected final ImageView imageView;
 
@@ -45,9 +45,9 @@ public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
          // (the defaults are "infinite" so it will wait forever if endpoint server is down)
          // do it properly with a few more lines of code . . .
          URL url = new URL(inputUrls[0]);
-         URLConnection conn = url.openConnection();     
+         URLConnection conn = url.openConnection();
          conn.setConnectTimeout(3000);
-         conn.setReadTimeout(5000);         
+         conn.setReadTimeout(5000);
          bitmap = BitmapFactory.decodeStream(conn.getInputStream());
          if (bitmap != null) {
             bitmap = ImageUtil.getRoundedCornerBitmap(bitmap, 12);

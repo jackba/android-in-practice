@@ -10,8 +10,8 @@ public class ModelBase {
 
    public void setId(long id) {
       this.id = id;
-   }  
-   
+   }
+
    @Override
    public String toString() {
       return "ModelBase [id=" + this.id + "]";
@@ -27,15 +27,19 @@ public class ModelBase {
 
    @Override
    public boolean equals(Object obj) {
-      if (this == obj)
+      if (this == obj) {
          return true;
-      if (obj == null)
+      }
+      if (obj == null) {
          return false;
-      if (!(obj instanceof ModelBase))
+      }
+      if (!(obj instanceof ModelBase)) {
          return false;
+      }
       ModelBase other = (ModelBase) obj;
-      if (this.id != other.id)
+      if (this.id != other.id) {
          return false;
+      }
       return true;
-   }   
+   }
 }

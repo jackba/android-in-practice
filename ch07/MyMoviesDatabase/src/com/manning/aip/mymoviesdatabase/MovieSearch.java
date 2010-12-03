@@ -99,7 +99,7 @@ public class MovieSearch extends Activity {
    }
 
    private boolean isTextViewEmpty(final TextView textView) {
-      return !(textView != null && textView.getText() != null && textView.getText().toString() != null && !textView
+      return !((textView != null) && (textView.getText() != null) && (textView.getText().toString() != null) && !textView
                .getText().toString().equals(""));
    }
 }

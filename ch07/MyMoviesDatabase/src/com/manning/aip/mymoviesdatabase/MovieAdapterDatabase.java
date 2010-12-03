@@ -14,8 +14,8 @@ import java.util.List;
 
 public class MovieAdapterDatabase extends ArrayAdapter<Movie> {
 
-   private final ImageCache cache;   
-   
+   private final ImageCache cache;
+
    public MovieAdapterDatabase(Context context, ImageCache cache, List<Movie> movies) {
       super(context, R.layout.movie_item, android.R.id.text1, movies);
       this.cache = cache;
@@ -36,28 +36,28 @@ public class MovieAdapterDatabase extends ArrayAdapter<Movie> {
          image = (ImageView) listItem.findViewById(R.id.movie_icon);
          holder = new ViewHolder(text, image);
          listItem.setTag(holder);
-      }      
-      
+      }
+
       Movie movie = this.getItem(position);
-      
+
       text.setText(movie.getName());
-      
+
       // TODO add other elements to this view (such as year), and create movie detail page
-      
+
       image.setImageDrawable(null);
       image.setTag(position);
       String thumbUrl = movie.getThumbUrl();
-      if (thumbUrl != null && !thumbUrl.equals("")) {         
+      if ((thumbUrl != null) && !thumbUrl.equals("")) {
          if (cache.get(thumbUrl) == null) {
-            new DownloadListViewTask(cache, position, image).execute(thumbUrl);         
+            new DownloadListViewTask(cache, position, image).execute(thumbUrl);
          } else {
             image.setImageBitmap(cache.get(thumbUrl));
          }
-      }      
+      }
 
       return listItem;
-   }  
-   
+   }
+
    private class ViewHolder {
       protected final TextView text;
       protected final ImageView image;

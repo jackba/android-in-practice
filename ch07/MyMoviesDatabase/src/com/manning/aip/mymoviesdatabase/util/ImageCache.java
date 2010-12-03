@@ -22,11 +22,14 @@ public class ImageCache {
    // HashMap decorator that only grows to X size
    // (note, using simple WeakHashMap is NOT a good cache for this, it uses weak references for *keys*)
    public ImageCache() {
-      this.cache = Collections.synchronizedMap(new LinkedHashMap<String, Bitmap>(IMAGE_CACHE_SIZE + 1, .75F, true) {
-         public boolean removeEldestEntry(Map.Entry<String, Bitmap> eldest) {
-            return size() > IMAGE_CACHE_SIZE;
-         }
-      });
+      this.cache =
+               Collections.synchronizedMap(new LinkedHashMap<String, Bitmap>(ImageCache.IMAGE_CACHE_SIZE + 1, .75F,
+                        true) {
+                  @Override
+                  public boolean removeEldestEntry(Map.Entry<String, Bitmap> eldest) {
+                     return size() > ImageCache.IMAGE_CACHE_SIZE;
+                  }
+               });
    }
 
    public Bitmap get(String urlString) {

@@ -37,23 +37,30 @@ public class MovieSearchResult {
 
    @Override
    public boolean equals(Object obj) {
-      if (this == obj)
+      if (this == obj) {
          return true;
-      if (obj == null)
+      }
+      if (obj == null) {
          return false;
-      if (!(obj instanceof MovieSearchResult))
+      }
+      if (!(obj instanceof MovieSearchResult)) {
          return false;
+      }
       MovieSearchResult other = (MovieSearchResult) obj;
       if (this.name == null) {
-         if (other.name != null)
+         if (other.name != null) {
             return false;
-      } else if (!this.name.equals(other.name))
+         }
+      } else if (!this.name.equals(other.name)) {
          return false;
+      }
       if (this.providerId == null) {
-         if (other.providerId != null)
+         if (other.providerId != null) {
             return false;
-      } else if (!this.providerId.equals(other.providerId))
+         }
+      } else if (!this.providerId.equals(other.providerId)) {
          return false;
+      }
       return true;
-   }   
+   }
 }

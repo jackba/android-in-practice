@@ -22,14 +22,13 @@ public class CategoryDao implements Dao<Category>, BaseColumns {
 
    public CategoryDao(SQLiteDatabase db) {
       this.db = db;
-      insertStatement = db.compileStatement(INSERT);
+      insertStatement = db.compileStatement(CategoryDao.INSERT);
    }
 
    @Override
    public void delete(Category entity) {
       if (entity.getId() > 0) {
-         db.delete(CategoryTable.TABLE_NAME, CategoryColumns._ID + " = ?", new String[] { String
-                  .valueOf(entity.getId()) });
+         db.delete(CategoryTable.TABLE_NAME, BaseColumns._ID + " = ?", new String[] { String.valueOf(entity.getId()) });
       }
    }
 
@@ -37,8 +36,8 @@ public class CategoryDao implements Dao<Category>, BaseColumns {
    public Category get(long id) {
       Category category = null;
       Cursor c =
-               db.query(CategoryTable.TABLE_NAME, new String[] { CategoryColumns._ID, CategoryColumns.NAME },
-                        CategoryColumns._ID + " = ?", new String[] { String.valueOf(id) }, null, null, null, "1");
+               db.query(CategoryTable.TABLE_NAME, new String[] { BaseColumns._ID, CategoryColumns.NAME },
+                        BaseColumns._ID + " = ?", new String[] { String.valueOf(id) }, null, null, null, "1");
       if (c.moveToFirst()) {
          category = new Category();
          category.setId(c.getLong(0));
@@ -69,8 +68,8 @@ public class CategoryDao implements Dao<Category>, BaseColumns {
    public List<Category> getAll() {
       List<Category> list = new ArrayList<Category>();
       Cursor c =
-               db.query(CategoryTable.TABLE_NAME, new String[] { CategoryColumns._ID, CategoryColumns.NAME }, null,
-                        null, null, null, CategoryColumns.NAME, null);
+               db.query(CategoryTable.TABLE_NAME, new String[] { BaseColumns._ID, CategoryColumns.NAME }, null, null,
+                        null, null, CategoryColumns.NAME, null);
       if (c.moveToFirst()) {
          do {
             Category category = new Category();
@@ -96,7 +95,7 @@ public class CategoryDao implements Dao<Category>, BaseColumns {
    public void update(Category entity) {
       final ContentValues values = new ContentValues();
       values.put(CategoryColumns.NAME, entity.getName());
-      db.update(CategoryTable.TABLE_NAME, values, CategoryColumns._ID + " = ?", new String[] { String.valueOf(entity
+      db.update(CategoryTable.TABLE_NAME, values, BaseColumns._ID + " = ?", new String[] { String.valueOf(entity
                .getName()) });
    }
 }

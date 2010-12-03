@@ -143,63 +143,86 @@ public class Movie extends ModelBase {
 
    @Override
    public boolean equals(Object obj) {
-      if (this == obj)
+      if (this == obj) {
          return true;
-      if (!super.equals(obj))
+      }
+      if (!super.equals(obj)) {
          return false;
-      if (!(obj instanceof Movie))
+      }
+      if (!(obj instanceof Movie)) {
          return false;
+      }
       Movie other = (Movie) obj;
       if (this.categories == null) {
-         if (other.categories != null)
+         if (other.categories != null) {
             return false;
-      } else if (!this.categories.equals(other.categories))
+         }
+      } else if (!this.categories.equals(other.categories)) {
          return false;
+      }
       if (this.homepage == null) {
-         if (other.homepage != null)
+         if (other.homepage != null) {
             return false;
-      } else if (!this.homepage.equals(other.homepage))
+         }
+      } else if (!this.homepage.equals(other.homepage)) {
          return false;
+      }
       if (this.name == null) {
-         if (other.name != null)
+         if (other.name != null) {
             return false;
-         // name check ignores case
-      } else if (!this.name.equalsIgnoreCase(other.name))
+            // name check ignores case
+         }
+      } else if (!this.name.equalsIgnoreCase(other.name)) {
          return false;
+      }
       if (this.providerId == null) {
-         if (other.providerId != null)
+         if (other.providerId != null) {
             return false;
-      } else if (!this.providerId.equals(other.providerId))
+         }
+      } else if (!this.providerId.equals(other.providerId)) {
          return false;
-      if (Double.doubleToLongBits(this.rating) != Double.doubleToLongBits(other.rating))
+      }
+      if (Double.doubleToLongBits(this.rating) != Double.doubleToLongBits(other.rating)) {
          return false;
+      }
       if (this.tagline == null) {
-         if (other.tagline != null)
+         if (other.tagline != null) {
             return false;
-      } else if (!this.tagline.equals(other.tagline))
+         }
+      } else if (!this.tagline.equals(other.tagline)) {
          return false;
+      }
       if (this.thumbUrl == null) {
-         if (other.thumbUrl != null)
+         if (other.thumbUrl != null) {
             return false;
-      } else if (!this.thumbUrl.equals(other.thumbUrl))
+         }
+      } else if (!this.thumbUrl.equals(other.thumbUrl)) {
          return false;
+      }
       if (this.imageUrl == null) {
-         if (other.imageUrl != null)
+         if (other.imageUrl != null) {
             return false;
-      } else if (!this.imageUrl.equals(other.imageUrl))
+         }
+      } else if (!this.imageUrl.equals(other.imageUrl)) {
          return false;
+      }
       if (this.trailer == null) {
-         if (other.trailer != null)
+         if (other.trailer != null) {
             return false;
-      } else if (!this.trailer.equals(other.trailer))
+         }
+      } else if (!this.trailer.equals(other.trailer)) {
          return false;
+      }
       if (this.url == null) {
-         if (other.url != null)
+         if (other.url != null) {
             return false;
-      } else if (!this.url.equals(other.url))
+         }
+      } else if (!this.url.equals(other.url)) {
          return false;
-      if (this.year != other.year)
+      }
+      if (this.year != other.year) {
          return false;
+      }
       return true;
    }
 

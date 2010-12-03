@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import com.manning.aip.mymoviesdatabase.util.ImageCache;
 
 public class DownloadListViewTask extends DownloadTask {
-   
+
    private final int position;
 
    // pass in the cache so we can populate it as we go
@@ -19,7 +19,7 @@ public class DownloadListViewTask extends DownloadTask {
    protected void onPostExecute(Bitmap bitmap) {
       int forPosition = (Integer) imageView.getTag();
       if (forPosition == this.position) {
-         if (bitmap != null) {            
+         if (bitmap != null) {
             this.imageView.setImageBitmap(bitmap);
          }
       }

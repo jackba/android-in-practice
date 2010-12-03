@@ -17,11 +17,11 @@ public class Preferences extends PreferenceActivity {
       super.onCreate(savedInstanceState);
 
       addPreferencesFromResource(R.layout.preferences);
- 
+
       // handle to preferences doesn't come from findViewById!
       showSplash = (CheckBoxPreference) getPreferenceScreen().findPreference("showsplash");
-      debugLogging = (CheckBoxPreference) getPreferenceScreen().findPreference("debuglogging"); 
-      
+      debugLogging = (CheckBoxPreference) getPreferenceScreen().findPreference("debuglogging");
+
       setCheckBoxSummary(showSplash);
       setCheckBoxSummary(debugLogging);
 
@@ -37,7 +37,7 @@ public class Preferences extends PreferenceActivity {
          }
       });
    }
-   
+
    private void setCheckBoxSummary(CheckBoxPreference pref) {
       if (pref.isChecked()) {
          pref.setSummary("Enabled");

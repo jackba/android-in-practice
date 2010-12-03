@@ -25,8 +25,10 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
    private static final String API_KEY = "e83a393a2cd8bf5a978ee1909e32d531";
 
    // feed urls
-   private static final String SEARCH_FEED_URL = "http://api.themoviedb.org/2.1/Movie.search/en/xml/" + API_KEY + "/";
-   private static final String INFO_FEED_URL = "http://api.themoviedb.org/2.1/Movie.getInfo/en/xml/" + API_KEY + "/";
+   private static final String SEARCH_FEED_URL =
+            "http://api.themoviedb.org/2.1/Movie.search/en/xml/" + TheMovieDBXmlPullFeedParser.API_KEY + "/";
+   private static final String INFO_FEED_URL =
+            "http://api.themoviedb.org/2.1/Movie.getInfo/en/xml/" + TheMovieDBXmlPullFeedParser.API_KEY + "/";
 
    // names of the XML tags   
    private static final String MOVIE = "movie";
@@ -96,10 +98,10 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
                case XmlPullParser.START_TAG:
                   name = parser.getName();
                   String nextText = parser.nextText();
-                  if (name.equalsIgnoreCase(MOVIE)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.MOVIE)) {
                      movie = new MovieSearchResult();
                   }
-                  if (name.equalsIgnoreCase(NAME)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.NAME)) {
                      movie.setName(nextText);
                   }
                   if (name.equalsIgnoreCase(ID)) {
@@ -108,7 +110,7 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
                   break;
                case XmlPullParser.END_TAG:
                   name = parser.getName();
-                  if (name.equalsIgnoreCase(MOVIE)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.MOVIE)) {
                      if (movie != null) {
                         movies.add(movie);
                      }
@@ -146,21 +148,22 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
                   // we handle image tags, which are empty and have only attributes, before we call parser.nextText()
                   // (nextX will move to the END_TAG and then ExpatParser will throw an exception 
                   // (can't get attributes on END)
-                  if (name.equalsIgnoreCase(IMAGE)) {
-                     String type = parser.getAttributeValue(parser.getNamespace(), TYPE);
-                     String size = parser.getAttributeValue(parser.getNamespace(), SIZE);
-                     String url = parser.getAttributeValue(parser.getNamespace(), URL);
-                     if (type != null && type.equalsIgnoreCase(POSTER)) {
-                        if (size != null && size.equalsIgnoreCase(THUMB)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.IMAGE)) {
+                     String type = parser.getAttributeValue(parser.getNamespace(), TheMovieDBXmlPullFeedParser.TYPE);
+                     String size = parser.getAttributeValue(parser.getNamespace(), TheMovieDBXmlPullFeedParser.SIZE);
+                     String url = parser.getAttributeValue(parser.getNamespace(), TheMovieDBXmlPullFeedParser.URL);
+                     if ((type != null) && type.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.POSTER)) {
+                        if ((size != null) && size.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.THUMB)) {
                            movie.setThumbUrl(url);
-                        } else if (size != null && size.equalsIgnoreCase(COVER)) {
+                        } else if ((size != null) && size.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.COVER)) {
                            movie.setImageUrl(url);
                         }
                      }
                   }
 
-                  if (name.equalsIgnoreCase(CATEGORY)) {
-                     String categoryName = parser.getAttributeValue(parser.getNamespace(), NAME);
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.CATEGORY)) {
+                     String categoryName =
+                              parser.getAttributeValue(parser.getNamespace(), TheMovieDBXmlPullFeedParser.NAME);
                      Category category = new Category(0, categoryName);
                      if (!movie.getCategories().contains(category)) {
                         movie.getCategories().add(category);
@@ -168,34 +171,34 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
                   }
 
                   String nextText = parser.nextText();
-                  if (name.equalsIgnoreCase(MOVIE)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.MOVIE)) {
                      movie = new Movie();
                   }
                   if (name.equalsIgnoreCase(ID)) {
                      movie.setProviderId(nextText);
                   }
-                  if (name.equalsIgnoreCase(HOMEPAGE)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.HOMEPAGE)) {
                      movie.setHomepage(nextText);
                   }
-                  if (name.equalsIgnoreCase(NAME)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.NAME)) {
                      movie.setName(nextText);
                   }
-                  if (name.equalsIgnoreCase(RATING)) {
-                     if (nextText != null && !nextText.equals("") && !nextText.equals("0")) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.RATING)) {
+                     if ((nextText != null) && !nextText.equals("") && !nextText.equals("0")) {
                         movie.setRating(Double.parseDouble(nextText));
                      }
                   }
-                  if (name.equalsIgnoreCase(TAGLINE)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.TAGLINE)) {
                      movie.setTagline(nextText);
                   }
-                  if (name.equalsIgnoreCase(TRAILER)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.TRAILER)) {
                      movie.setTrailer(nextText);
                   }
-                  if (name.equalsIgnoreCase(URL)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.URL)) {
                      movie.setUrl(nextText);
                   }
-                  if (name.equalsIgnoreCase(RELEASED)) {
-                     if (nextText != null && !nextText.equals("") && !nextText.equals("0")) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.RELEASED)) {
+                     if ((nextText != null) && !nextText.equals("") && !nextText.equals("0")) {
                         String yearString = nextText.substring(0, 4);
                         movie.setYear(Integer.parseInt(yearString));
                      }
@@ -203,7 +206,7 @@ public class TheMovieDBXmlPullFeedParser implements MovieFeed {
                   break;
                case XmlPullParser.END_TAG:
                   name = parser.getName();
-                  if (name.equalsIgnoreCase(MOVIE)) {
+                  if (name.equalsIgnoreCase(TheMovieDBXmlPullFeedParser.MOVIE)) {
                      return movie;
                   }
                   break;

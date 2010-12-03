@@ -49,7 +49,7 @@ public class MovieDetail extends Activity {
       categories = (TextView) findViewById(R.id.movie_detail_categories);
 
       Intent intent = this.getIntent();
-      long movieId = intent.getLongExtra(MOVIE_ID_KEY, 0);
+      long movieId = intent.getLongExtra(MovieDetail.MOVIE_ID_KEY, 0);
       movie = app.getDataManager().getMovie(movieId);
       Log.d(Constants.LOG_TAG, "MOVIE: " + movie);
       if (movie != null) {
@@ -61,8 +61,8 @@ public class MovieDetail extends Activity {
 
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
-      menu.add(0, OPTIONS_MENU_HOMEPAGE, 0, "Homepage").setIcon(android.R.drawable.ic_menu_info_details);
-      menu.add(0, OPTIONS_MENU_TRAILER, 0, "Trailer").setIcon(android.R.drawable.ic_menu_view);
+      menu.add(0, MovieDetail.OPTIONS_MENU_HOMEPAGE, 0, "Homepage").setIcon(android.R.drawable.ic_menu_info_details);
+      menu.add(0, MovieDetail.OPTIONS_MENU_TRAILER, 0, "Trailer").setIcon(android.R.drawable.ic_menu_view);
       return true;
    }
 
@@ -70,14 +70,14 @@ public class MovieDetail extends Activity {
    public boolean onOptionsItemSelected(MenuItem item) {
       switch (item.getItemId()) {
          case OPTIONS_MENU_HOMEPAGE:
-            if (movie.getHomepage() != null && !movie.getHomepage().equals("")) {
+            if ((movie.getHomepage() != null) && !movie.getHomepage().equals("")) {
                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(movie.getHomepage())));
             } else {
                Toast.makeText(this, "Homepage not available", Toast.LENGTH_SHORT).show();
             }
             break;
          case OPTIONS_MENU_TRAILER:
-            if (movie.getTrailer() != null && !movie.getTrailer().equals("")) {
+            if ((movie.getTrailer() != null) && !movie.getTrailer().equals("")) {
                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(movie.getTrailer())));
             } else {
                Toast.makeText(this, "Trailer not available", Toast.LENGTH_SHORT).show();
@@ -92,7 +92,7 @@ public class MovieDetail extends Activity {
       year.setText(String.valueOf(movie.getYear()));
 
       String imageUrl = movie.getImageUrl();
-      if (imageUrl != null && !imageUrl.equals("")) {
+      if ((imageUrl != null) && !imageUrl.equals("")) {
          if (app.getImageCache().get(imageUrl) == null) {
             new DownloadTask(app.getImageCache(), image).execute(imageUrl);
          } else {

@@ -23,7 +23,7 @@ public final class FileUtil {
 
    // Object for intrinsic lock (per docs 0 length array "lighter" than a normal Object)
    public static final Object[] DATA_LOCK = new Object[0];
-   
+
    private FileUtil() {
    }
 
@@ -48,7 +48,7 @@ public final class FileUtil {
          }
       }
    }
-   
+
    /**
     * Replace entire File with contents of String.
     * 
@@ -59,12 +59,12 @@ public final class FileUtil {
    public static boolean writeStringAsFile(final String fileContents, final File file) {
       boolean result = false;
       try {
-         synchronized (DATA_LOCK) {
+         synchronized (FileUtil.DATA_LOCK) {
             if (file != null) {
                file.createNewFile(); // ok if returns false, overwrite
                Writer out = new BufferedWriter(new FileWriter(file), 1024);
                out.write(fileContents);
-               out.close();   
+               out.close();
                result = true;
             }
          }
@@ -73,7 +73,7 @@ public final class FileUtil {
       }
       return result;
    }
-   
+
    /**
     * Append String to end of File.
     * 
@@ -84,12 +84,12 @@ public final class FileUtil {
    public static boolean appendStringToFile(final String appendContents, final File file) {
       boolean result = false;
       try {
-         synchronized (DATA_LOCK) {
-            if (file != null && file.canWrite()) {
+         synchronized (FileUtil.DATA_LOCK) {
+            if ((file != null) && file.canWrite()) {
                file.createNewFile(); // ok if returns false, overwrite
                Writer out = new BufferedWriter(new FileWriter(file, true), 1024);
                out.write(appendContents);
-               out.close();   
+               out.close();
                result = true;
             }
          }

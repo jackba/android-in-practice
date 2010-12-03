@@ -19,15 +19,15 @@ public class BackupManagerWrapper {
          throw new RuntimeException(e);
       }
    }
-   
+
    public static void isAvailable() {
    }
 
    public BackupManagerWrapper(final Context context) {
       instance = new BackupManager(context);
-   }   
+   }
 
    public void dataChanged() {
       instance.dataChanged();
-   }  
+   }
 }

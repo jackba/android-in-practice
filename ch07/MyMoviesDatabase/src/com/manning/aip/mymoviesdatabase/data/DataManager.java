@@ -150,7 +150,7 @@ public class DataManager {
       try {
          db.beginTransaction();
          // make sure to use getMovie and not movieDao directly, categories need to be included
-         Movie movie = getMovie(movieId); 
+         Movie movie = getMovie(movieId);
          if (movie != null) {
             for (Category c : movie.getCategories()) {
                movieCategoryDao.delete(new MovieCategoryKey(movie.getId(), c.getId()));
@@ -160,7 +160,7 @@ public class DataManager {
          db.setTransactionSuccessful();
          result = true;
       } catch (SQLException e) {
-         Log.e(Constants.LOG_TAG, "Error deleting movie (transaction rolled back)", e);         
+         Log.e(Constants.LOG_TAG, "Error deleting movie (transaction rolled back)", e);
       } finally {
          db.endTransaction();
       }
