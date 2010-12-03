@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 public class Preferences extends PreferenceActivity {
 
    private CheckBoxPreference showSplash;
-   private CheckBoxPreference debugLogging;
 
    @Override
    public void onCreate(final Bundle savedInstanceState) {
@@ -20,10 +19,8 @@ public class Preferences extends PreferenceActivity {
 
       // handle to preferences doesn't come from findViewById!
       showSplash = (CheckBoxPreference) getPreferenceScreen().findPreference("showsplash");
-      debugLogging = (CheckBoxPreference) getPreferenceScreen().findPreference("debuglogging");
 
       setCheckBoxSummary(showSplash);
-      setCheckBoxSummary(debugLogging);
 
       // listen to see if user changes pref, so we can update display of current value
       SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -31,8 +28,6 @@ public class Preferences extends PreferenceActivity {
          public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
             if (key.equals("showsplash")) {
                setCheckBoxSummary(showSplash);
-            } else if (key.equals("debuglogging")) {
-               setCheckBoxSummary(debugLogging);
             }
          }
       });
