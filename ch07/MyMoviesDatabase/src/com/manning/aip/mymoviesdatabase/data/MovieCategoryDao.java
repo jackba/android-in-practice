@@ -81,21 +81,11 @@ public class MovieCategoryDao implements BaseColumns {
       return list;
    }
 
+   // if we had more sophisticated searching we might want movies by category
    /*
    public List<Movie> getMovies(long categoryId) {
       List<Movie> list = new ArrayList<Movie>();
-      Cursor c =
-               db.query(MovieCategoryTable.TABLE_NAME, new String[] { MovieCategoryColumns.MOVIE_ID },
-                        MovieCategoryColumns.CATEGORY_ID + " = ?", new String[] { String.valueOf(categoryId) }, null, null,
-                        null, "1");
-      if (c.moveToFirst()) {
-         do {
-           // TODO create movies based on movie IDs, call out to MovieDao if/when this is needed
-         } while (c.moveToNext());
-      }
-      if (!c.isClosed()) {
-         c.close();
-      }
+      
       return list;
    }
    */
