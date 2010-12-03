@@ -21,6 +21,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.manning.aip.mymoviesdatabase.model.Movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyMovies extends ListActivity {
@@ -28,9 +29,9 @@ public class MyMovies extends ListActivity {
    private static final int CONTEXT_MENU_EDIT = 0;
    private static final int CONTEXT_MENU_DELETE = 1;
 
-   private static final int OPTIONS_MENU_SEARCH_FORM = 0;
-   private static final int OPTIONS_MENU_PREFS = 1;
-   private static final int OPTIONS_MENU_CAT_MANAGER = 2;
+   private static final int OPTIONS_MENU_SEARCH = 0;
+   private static final int OPTIONS_MENU_CATMGR = 1;
+   private static final int OPTIONS_MENU_PREFS = 2;   
    private static final int OPTIONS_MENU_ABOUT = 3;
 
    private static final String ABOUT =
@@ -42,6 +43,8 @@ public class MyMovies extends ListActivity {
 
    private MovieAdapterDatabase adapter;
    private List<Movie> movies;
+   
+   private Button backToTop;
 
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -50,21 +53,34 @@ public class MyMovies extends ListActivity {
       app = (MyMoviesApp) getApplication();
 
       ListView listView = getListView();
-
-      Button backToTop = (Button) getLayoutInflater().inflate(R.layout.list_footer, null);
+      
+      backToTop = (Button) getLayoutInflater().inflate(R.layout.list_footer, null);
       backToTop.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(android.R.drawable.ic_menu_upload),
                null, null, null);
+      // must add to ListView BEFORE setting adapter
       listView.addFooterView(backToTop, null, true);
-
-      movies = app.getDataManager().getMovieHeaders();
+      
+      movies = new ArrayList<Movie>();
       adapter = new MovieAdapterDatabase(this, app.getImageCache(), movies);
       listView.setAdapter(this.adapter);
       listView.setItemsCanFocus(false);
       listView.setEmptyView(findViewById(R.id.main_list_empty));
       registerForContextMenu(listView);
-
       aboutString = new SpannableString(ABOUT);
       Linkify.addLinks(aboutString, Linkify.ALL);
+   }
+   
+   @Override
+   public void onResume() {
+      super.onResume();
+      movies.clear();
+      movies.addAll(app.getDataManager().getMovieHeaders());
+      adapter.notifyDataSetChanged();
+      if (movies.size() < 8) {
+         backToTop.setVisibility(View.INVISIBLE);
+      } else {
+         backToTop.setVisibility(View.VISIBLE);
+      }
    }
 
    public void backToTop(View view) {
@@ -79,9 +95,9 @@ public class MyMovies extends ListActivity {
 
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
-      menu.add(0, OPTIONS_MENU_SEARCH_FORM, 0, "Search").setIcon(android.R.drawable.ic_menu_search);
-      menu.add(0, OPTIONS_MENU_PREFS, 0, "Preferences").setIcon(android.R.drawable.ic_menu_preferences);
-      menu.add(0, OPTIONS_MENU_CAT_MANAGER, 0, "Category Manager").setIcon(android.R.drawable.ic_menu_manage);
+      menu.add(0, OPTIONS_MENU_SEARCH, 0, "Search").setIcon(android.R.drawable.ic_menu_search);
+      menu.add(0, OPTIONS_MENU_CATMGR, 0, "Category Manager").setIcon(android.R.drawable.ic_menu_manage);
+      menu.add(0, OPTIONS_MENU_PREFS, 0, "Preferences").setIcon(android.R.drawable.ic_menu_preferences);      
       menu.add(0, OPTIONS_MENU_ABOUT, 0, "About").setIcon(android.R.drawable.ic_menu_info_details);
       return true;
    }
@@ -89,14 +105,14 @@ public class MyMovies extends ListActivity {
    @Override
    public boolean onOptionsItemSelected(MenuItem item) {
       switch (item.getItemId()) {
-         case OPTIONS_MENU_SEARCH_FORM:
+         case OPTIONS_MENU_SEARCH:
             startActivity(new Intent(this, MovieSearch.class));
+            break;
+         case OPTIONS_MENU_CATMGR:
+            startActivity(new Intent(this, CategoryManager.class));
             break;
          case OPTIONS_MENU_PREFS:
             startActivity(new Intent(this, Preferences.class));
-            break;
-         case OPTIONS_MENU_CAT_MANAGER:
-            startActivity(new Intent(this, CategoryManager.class));
             break;
          case OPTIONS_MENU_ABOUT:
             AlertDialog dialog =
@@ -106,6 +122,7 @@ public class MyMovies extends ListActivity {
                                  }
                               }).create();
             dialog.show();
+            // make the Linkify'ed aboutString clickable
             ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
             break;
       }

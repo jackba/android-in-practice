@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:gravity="center_horizontal">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
+	<LinearLayout android:orientation="vertical"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:gravity="center_horizontal">
 
-	<TextView android:id="@+id/movie_detail_name"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:textStyle="bold" android:textAppearance="?android:attr/textAppearanceLarge"
-		android:gravity="center_horizontal" />
+		<TextView android:id="@+id/movie_detail_name"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:textStyle="bold" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:gravity="center_horizontal" />
 
-	<TextView android:id="@+id/movie_detail_year"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceMedium" />
+		<TextView android:id="@+id/movie_detail_year"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium" />
 
-	<ImageView android:id="@+id/movie_detail_image"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_margin="5dp" />
+		<ImageView android:id="@+id/movie_detail_image"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_margin="5dp" />
 
-	<TextView android:id="@+id/movie_detail_tagline"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:textStyle="italic" android:textAppearance="?android:attr/textAppearanceSmall"
-		android:gravity="center_horizontal" />
+		<TextView android:id="@+id/movie_detail_tagline"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:textStyle="italic" android:gravity="center_horizontal" />
 
-	<TextView android:id="@+id/movie_detail_rating"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_marginTop="5dp" android:layout_marginBottom="5dp" />
+		<TextView android:id="@+id/movie_detail_rating"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_marginTop="5dp" android:layout_marginBottom="5dp" />
 
-	<ListView android:id="@+id/movie_detail_category_list"
-		android:layout_width="fill_parent" android:layout_height="0dp"
-		android:layout_weight="1" android:cacheColorHint="#00000000"
-		android:choiceMode="none" />
-
-	<TextView android:id="@+id/movie_detail_category_list_empty"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:text="No categories" />
-</LinearLayout>
+		<TextView android:id="@+id/movie_detail_categories"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_marginBottom="5dp" android:textStyle="bold" />
+	</LinearLayout>
+</ScrollView>

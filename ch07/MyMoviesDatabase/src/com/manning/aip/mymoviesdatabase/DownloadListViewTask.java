@@ -16,11 +16,11 @@ public class DownloadListViewTask extends DownloadTask {
    }
 
    @Override
-   protected void onPostExecute(Bitmap result) {
+   protected void onPostExecute(Bitmap bitmap) {
       int forPosition = (Integer) imageView.getTag();
       if (forPosition == this.position) {
-         if (result != null) {
-            this.imageView.setImageBitmap(result);
+         if (bitmap != null) {            
+            this.imageView.setImageBitmap(bitmap);
          }
       }
    }

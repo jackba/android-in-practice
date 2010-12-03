@@ -7,17 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.manning.aip.mymoviesdatabase.model.Category;
 import com.manning.aip.mymoviesdatabase.model.Movie;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 public class MovieDetail extends Activity {
 
@@ -35,10 +32,7 @@ public class MovieDetail extends Activity {
    private ImageView image;
    private TextView tagline;
    private TextView rating;
-
-   private ListView categoriesListView;
-   private ArrayAdapter<Category> adapter;
-   private List<Category> categories;
+   private TextView categories;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +46,7 @@ public class MovieDetail extends Activity {
       image = (ImageView) findViewById(R.id.movie_detail_image);
       tagline = (TextView) findViewById(R.id.movie_detail_tagline);
       rating = (TextView) findViewById(R.id.movie_detail_rating);
-
-      categoriesListView = (ListView) findViewById(R.id.movie_detail_category_list);
-      categoriesListView.setEmptyView(findViewById(R.id.movie_detail_category_list_empty));
-      categories = new ArrayList<Category>();
-      adapter = new ArrayAdapter<Category>(this, android.R.layout.simple_list_item_1, categories);
-      categoriesListView.setAdapter(adapter);
+      categories = (TextView) findViewById(R.id.movie_detail_categories);
 
       Intent intent = this.getIntent();
       long movieId = intent.getLongExtra(MOVIE_ID_KEY, 0);
@@ -102,12 +91,12 @@ public class MovieDetail extends Activity {
       name.setText(movie.getName());
       year.setText(String.valueOf(movie.getYear()));
 
-      String thumbUrl = movie.getThumbUrl();
-      if (thumbUrl != null && !thumbUrl.equals("")) {
-         if (app.getImageCache().get(thumbUrl) == null) {
-            new DownloadTask(app.getImageCache(), image).execute(thumbUrl);
+      String imageUrl = movie.getImageUrl();
+      if (imageUrl != null && !imageUrl.equals("")) {
+         if (app.getImageCache().get(imageUrl) == null) {
+            new DownloadTask(app.getImageCache(), image).execute(imageUrl);
          } else {
-            image.setImageBitmap(app.getImageCache().get(thumbUrl));
+            image.setImageBitmap(app.getImageCache().get(imageUrl));
          }
       }
 
@@ -115,7 +104,22 @@ public class MovieDetail extends Activity {
 
       rating.setText("Rating: " + String.valueOf(movie.getRating()));
 
-      categories.addAll(movie.getCategories());
-      adapter.notifyDataSetChanged();
+      categories.setText(this.getCategoriesString());
+   }
+
+   private String getCategoriesString() {
+      StringBuilder sb = new StringBuilder();
+      Set<Category> cats = movie.getCategories();
+      int size = cats.size();
+      int count = 1;
+      for (Category cat : cats) {
+         if (count == size) {
+            sb.append(cat.getName());
+         } else {
+            sb.append(cat.getName() + ", ");
+         }
+         count++;
+      }
+      return sb.toString();
    }
 }

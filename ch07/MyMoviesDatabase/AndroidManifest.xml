@@ -24,8 +24,7 @@
 
 		<activity android:name=".MovieSearch" />
 
-        <!--  for demo/example we lock to portrait, in reality we want to support that with alt layouts -->
-		<activity android:name=".MovieDetail" android:screenOrientation="portrait"/>
+		<activity android:name=".MovieDetail"/>
 
 		<activity android:name=".CategoryManager" />
 

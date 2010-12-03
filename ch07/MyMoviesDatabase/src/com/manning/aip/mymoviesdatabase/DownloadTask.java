@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.manning.aip.mymoviesdatabase.util.ImageCache;
+import com.manning.aip.mymoviesdatabase.util.ImageUtil;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -49,6 +50,7 @@ public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
          conn.setReadTimeout(5000);         
          bitmap = BitmapFactory.decodeStream(conn.getInputStream());
          if (bitmap != null) {
+            bitmap = ImageUtil.getRoundedCornerBitmap(bitmap, 12);
             cache.put(inputUrls[0], bitmap);
          }
       } catch (MalformedURLException e) {
@@ -60,9 +62,9 @@ public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
    }
 
    @Override
-   protected void onPostExecute(Bitmap result) {
-      if (result != null) {
-         this.imageView.setImageBitmap(result);
+   protected void onPostExecute(Bitmap bitmap) {
+      if (bitmap != null) {
+         this.imageView.setImageBitmap(bitmap);
       }
    }
 }
