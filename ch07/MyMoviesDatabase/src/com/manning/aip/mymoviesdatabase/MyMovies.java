@@ -34,7 +34,7 @@ public class MyMovies extends ListActivity {
    private static final int OPTIONS_MENU_ABOUT = 3;
 
    private static final String ABOUT =
-            "Demo application for the Manning Publications book \"Android in Practice\".\n\nPowered by:\n http://themoviedb.org";
+            "Demo application for the Manning Publications book \"Android in Practice.\"\n\nPowered by:\n http://themoviedb.org";
 
    private SpannableString aboutString;
 
