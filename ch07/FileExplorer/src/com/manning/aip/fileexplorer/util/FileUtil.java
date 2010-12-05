@@ -26,7 +26,8 @@ public final class FileUtil {
 
    // from the Android docs, these are the recommended paths
    private static final String EXT_STORAGE_PATH_PREFIX = "/Android/data/";
-   private static final String EXT_STORAGE_PATH_SUFFIX = "/files/";
+   private static final String EXT_STORAGE_FILES_PATH_SUFFIX = "/files/";
+   private static final String EXT_STORAGE_CACHE_PATH_SUFFIX = "/cache/";
 
    // Object for intrinsic lock (per docs 0 length array "lighter" than a normal Object)
    public static final Object[] DATA_LOCK = new Object[0];
@@ -57,15 +58,29 @@ public final class FileUtil {
 
    /**
     * Return the recommended external files directory, whether using API level 8 or lower.
-    * (Use getExternalStorageDirectory and then append the recommended path.)
+    * (Uses getExternalStorageDirectory and then appends the recommended path.)
     * 
     * @param packageName
     * @return
     */
    public static File getExternalFilesDirAllApiLevels(final String packageName) {
+      return FileUtil.getExternalDirAllApiLevels(packageName, EXT_STORAGE_FILES_PATH_SUFFIX);
+   }
+   
+   /**
+    * Return the recommended external cache directory, whether using API level 8 or lower.
+    * (Uses getExternalStorageDirectory and then appends the recommended path.)
+    * 
+    * @param packageName
+    * @return
+    */
+   public static File getExternalCacheDirAllApiLevels(final String packageName) {
+      return FileUtil.getExternalDirAllApiLevels(packageName, EXT_STORAGE_CACHE_PATH_SUFFIX);
+   }
+
+   private static File getExternalDirAllApiLevels(final String packageName, final String suffixType) {
       File dir =
-               new File(Environment.getExternalStorageDirectory() + EXT_STORAGE_PATH_PREFIX + packageName
-                        + EXT_STORAGE_PATH_SUFFIX);
+               new File(Environment.getExternalStorageDirectory() + EXT_STORAGE_PATH_PREFIX + packageName + suffixType);
       synchronized (FileUtil.DATA_LOCK) {
          try {
             dir.mkdirs();
