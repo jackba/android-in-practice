@@ -52,6 +52,7 @@ public class ExternalStorage extends Activity {
          FileUtil.writeStringAsFile(input.getText().toString(), file);
          Toast.makeText(this, "File written", Toast.LENGTH_SHORT).show();
          input.setText("");
+         output.setText("");
       } else {
          Toast.makeText(this, "External storage not writable", Toast.LENGTH_SHORT).show();
       }

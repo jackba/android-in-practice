@@ -58,8 +58,9 @@ public class InternalStorage extends Activity {
          // note that there are many modes you can use
          fos = openFileOutput("test.txt", Context.MODE_PRIVATE);
          fos.write(input.getText().toString().getBytes());
-         Toast.makeText(this, "File written", Toast.LENGTH_SHORT).show();
+         Toast.makeText(this, "File written", Toast.LENGTH_SHORT).show(); 
          input.setText("");
+         output.setText("");
       } catch (FileNotFoundException e) {
          Log.e(Constants.LOG_TAG, "File not found", e);
       } catch (IOException e) {
@@ -98,7 +99,7 @@ public class InternalStorage extends Activity {
          if (scanner != null) {
             scanner.close();
          }
-      }
+      }      
       output.setText(sb.toString());
    }
 }
