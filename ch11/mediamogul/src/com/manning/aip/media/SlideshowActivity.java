@@ -85,6 +85,7 @@ public class SlideshowActivity extends Activity {
 		if (video != null && video.isPlaying()){
 			video.stopPlayback();
 		}
+		player.release();
 	}
 
 	@Override
