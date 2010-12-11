@@ -22,7 +22,7 @@ public final class MovieTable {
    public static void onCreate(SQLiteDatabase db) {
       StringBuilder sb = new StringBuilder();
 
-      // book table
+      // movie table
       sb.append("CREATE TABLE " + MovieTable.TABLE_NAME + " (");
       sb.append(BaseColumns._ID + " INTEGER PRIMARY KEY, ");
       sb.append(MovieColumns.HOMEPAGE + " TEXT, ");
