@@ -57,6 +57,8 @@ public class DataManager {
          db = SQLiteDatabase.openDatabase(DataConstants.DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
          // since we pass db into DAO, have to recreate DAO if db is re-opened
          categoryDao = new CategoryDao(db);
+         movieDao = new MovieDao(db);
+         movieCategoryDao = new MovieCategoryDao(db);
       }
    }
 
