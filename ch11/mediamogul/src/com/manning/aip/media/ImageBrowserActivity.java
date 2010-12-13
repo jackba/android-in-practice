@@ -159,7 +159,7 @@ public class ImageBrowserActivity extends Activity {
 	private class GridAdapter extends BaseAdapter{
 		private List<File> imageFiles;
 		private List<Bitmap> thumbs;
-		private static final int MAX_DIMENSION = 200;
+		private static final double MAX_DIMENSION = 200.0D;
 		private Activity activity = ImageBrowserActivity.this;
 		
 		public GridAdapter(){
@@ -218,13 +218,14 @@ public class ImageBrowserActivity extends Activity {
 		        	int imgWidth = bm.getWidth();
 		        	int imgHeight = bm.getHeight();
 		        	int max = Math.max(imgWidth, imgHeight);
-		        	double scale = ((double) MAX_DIMENSION) / ((double) max);
+		        	double scale = MAX_DIMENSION / max;
 		        	int width = (int) (scale * imgWidth);
 		        	int height = (int) (scale * imgHeight);
 		        	Log.d(LOG_TAG, "Scaled width=" + width);
 		        	Log.d(LOG_TAG, "Scaled height=" + height);
 		        	Bitmap thumb = 
 		        		ThumbnailUtils.extractThumbnail(bm, width, height);
+		        	bm = null;
 		        	return thumb;
 				}
 			} catch (Exception e) {

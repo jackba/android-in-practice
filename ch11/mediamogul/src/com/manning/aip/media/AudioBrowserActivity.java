@@ -85,8 +85,7 @@ public class AudioBrowserActivity extends Activity {
 			song.title = cursor.getString(cursor.getColumnIndex(TITLE));
 			song.artist = cursor.getString(cursor.getColumnIndex(ARTIST));
 			song.id = cursor.getLong(cursor.getColumnIndex(_ID));
-			song.uri = new Uri.Builder().appendPath(
-					cursor.getString(cursor.getColumnIndex(DATA))).build();
+			song.setUri(cursor.getString(cursor.getColumnIndex(DATA)));
 			return song;
 		}
 
@@ -189,6 +188,10 @@ public class AudioBrowserActivity extends Activity {
 		String artist;
 		long id;
 		Uri uri;
+		
+		public void setUri(String uriString){
+			uri = new Uri.Builder().appendPath(uriString).build();
+		}
 		
 		@Override
 		public String toString(){

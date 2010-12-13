@@ -11,7 +11,6 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -42,15 +41,12 @@ public class SlideshowActivity extends Activity {
 		rightSlide = (ImageView) findViewById(R.id.slide1);
 		song = getIntent().getParcelableExtra("selectedSong");
 		player = MediaPlayer.create(this, song.uri);
-		player.setLooping(false);
 		player.setOnCompletionListener(new OnCompletionListener(){
 			@Override
 			public void onCompletion(MediaPlayer mp) {
 				FrameLayout frame = (FrameLayout) findViewById(R.id.frame);
 				frame.removeAllViews();
 				playingSlides = false;
-//				video = (VideoView) getLayoutInflater().inflate(
-//							R.layout.video_player, frame, false);
 				video = new VideoView(SlideshowActivity.this);
 				video.setLayoutParams(new LayoutParams(
 								LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
@@ -64,7 +60,6 @@ public class SlideshowActivity extends Activity {
 			}
 		});
 	}
-	
 	@Override
 	public void onPause(){
 		super.onPause();
@@ -75,7 +70,6 @@ public class SlideshowActivity extends Activity {
 			video.pause();
 		}
 	}
-
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -91,19 +85,23 @@ public class SlideshowActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		handler.postDelayed(new DissolveTransition(), 100);
+		final DissolveTransition animation = new DissolveTransition();
+		handler.postDelayed(new Runnable(){
+			@Override
+			public void run() {
+				animation.nextSlide();
+			}
+		}, 100);
 		player.start();
 	}
 
-	private class DissolveTransition implements Runnable{
-
+	private class DissolveTransition{
 		private ArrayList<String> images;
 		private int count = 0;
 		private Bitmap currentImage = null;
 		int current = -1;
 		private Bitmap nextImage = null;
 		private Random rnd = new Random(System.currentTimeMillis());
-
 		public DissolveTransition() {
 			images = getIntent().getStringArrayListExtra("imageFileNames");
 			currentImage = getNextImage();			
@@ -112,16 +110,9 @@ public class SlideshowActivity extends Activity {
 			rightSlide.setImageBitmap(nextImage);
 			count = 1;
 		}
-
-		@Override
-		public void run() {
-			nextSlide();
-		}
-		
 		private Bitmap getImage(int index){
 			return BitmapFactory.decodeFile(images.get(index));
 		}
-
 		private void nextSlide() {
 			AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
 			if ((count % 2) == 0) {
@@ -130,14 +121,11 @@ public class SlideshowActivity extends Activity {
 			animation.setStartOffset(TIME_PER_SLIDE);
 			animation.setDuration(TIME_PER_SLIDE);
 			animation.setFillAfter(true);
-			animation.setAnimationListener(new Animation.AnimationListener() {
-				
+			animation.setAnimationListener(new Animation.AnimationListener() {			
 				@Override
 				public void onAnimationStart(Animation animation) {}
-				
 				@Override
 				public void onAnimationRepeat(Animation animation) {}
-				
 				@Override
 				public void onAnimationEnd(Animation animation) {
 					if (playingSlides){
@@ -153,7 +141,6 @@ public class SlideshowActivity extends Activity {
 			rightSlide.startAnimation(animation);
 			currentImage = nextImage;
 		}
-		
 		public Bitmap getNextImage(){
 			int index = rnd.nextInt(images.size());
 			if (current < 0) current = index;
