@@ -15,14 +15,12 @@ import com.manning.aip.dealdroid.model.Section;
 
 public class DealListTest extends ActivityInstrumentationTestCase2<DealList> {
 
-   private Instrumentation instr;
-
    public DealListTest() {
       super("com.manning.aip.dealdroid", DealList.class);
    }
 
    public void testDealListToDetailsUserFlow() throws Exception {
-      instr = getInstrumentation();
+      Instrumentation instr = getInstrumentation();
       DealList dealList = getActivity();
 
       ParseFeedTask task = dealList.getParseFeedTask();
