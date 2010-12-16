@@ -10,17 +10,16 @@ import java.util.List;
 import junit.framework.TestCase;
 import android.test.mock.MockContext;
 
-import com.manning.aip.dealdroid.export.TextFileExporter;
+import com.manning.aip.dealdroid.export.DealExporter;
 import com.manning.aip.dealdroid.model.Item;
 
-public class TextFileExporterTest extends TestCase {
+public class DealExporterTest extends TestCase {
 
    private List<Item> deals = new ArrayList<Item>();
    private int itemsWritten = 0;
 
-   private class MockOutput extends FileOutputStream {
-
-      public MockOutput() throws FileNotFoundException {
+   private class MockOutputStream extends FileOutputStream {
+      public MockOutputStream() throws FileNotFoundException {
          super(FileDescriptor.out);
       }
 
@@ -35,7 +34,7 @@ public class TextFileExporterTest extends TestCase {
       @Override
       public FileOutputStream openFileOutput(String name, int mode)
          throws FileNotFoundException {
-         return new MockOutput();
+         return new MockOutputStream();
       }
    }
 
@@ -53,9 +52,7 @@ public class TextFileExporterTest extends TestCase {
    }
 
    public void testShouldExportItems() throws IOException {
-
-      new TextFileExporter(new MyMockContext(), deals).export();
-
+      new DealExporter(new MyMockContext(), deals).export();
       assertEquals(2, itemsWritten);
    }
 }
