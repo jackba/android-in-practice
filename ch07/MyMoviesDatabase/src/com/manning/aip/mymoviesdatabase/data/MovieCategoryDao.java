@@ -15,7 +15,7 @@ import java.util.List;
 // special DAO in this case, so doesn't implement Dao
 // doesn't return an entity, and key is not long (composite key)
 // this is used for the movie/category mapping table (not for an entity)
-public class MovieCategoryDao implements BaseColumns {
+public class MovieCategoryDao {
 
    private static final String INSERT =
             "insert into " + MovieCategoryTable.TABLE_NAME + "(" + MovieCategoryColumns.MOVIE_ID + ", "
@@ -27,21 +27,21 @@ public class MovieCategoryDao implements BaseColumns {
    public MovieCategoryDao(SQLiteDatabase db) {
       this.db = db;
       insertStatement = db.compileStatement(MovieCategoryDao.INSERT);
-   }
-
-   public void delete(MovieCategoryKey key) {
-      if ((key.getMovieId() > 0) && (key.getCategoryId() > 0)) {
-         db.delete(MovieCategoryTable.TABLE_NAME, MovieCategoryColumns.MOVIE_ID + " = ? and "
-                  + MovieCategoryColumns.CATEGORY_ID + " = ?", new String[] { String.valueOf(key.getMovieId()),
-                  String.valueOf(key.getCategoryId()) });
-      }
-   }
+   }   
 
    public long save(MovieCategoryKey entity) {
       insertStatement.clearBindings();
       insertStatement.bindLong(1, entity.getMovieId());
       insertStatement.bindLong(2, entity.getCategoryId());
       return insertStatement.executeInsert();
+   }
+   
+   public void delete(MovieCategoryKey key) {
+      if ((key.getMovieId() > 0) && (key.getCategoryId() > 0)) {
+         db.delete(MovieCategoryTable.TABLE_NAME, MovieCategoryColumns.MOVIE_ID + " = ? and "
+                  + MovieCategoryColumns.CATEGORY_ID + " = ?", new String[] { String.valueOf(key.getMovieId()),
+                  String.valueOf(key.getCategoryId()) });
+      }
    }
 
    public boolean exists(MovieCategoryKey key) {

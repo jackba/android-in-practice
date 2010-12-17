@@ -2,6 +2,7 @@ package com.manning.aip.mymoviesdatabase.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
@@ -12,7 +13,7 @@ import com.manning.aip.mymoviesdatabase.model.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDao implements Dao<Movie>, BaseColumns {
+public class MovieDao implements Dao<Movie> {
 
    private static final String INSERT =
             "insert into " + MovieTable.TABLE_NAME + "(" + MovieColumns.HOMEPAGE + ", " + MovieColumns.NAME + ", "
@@ -26,6 +27,37 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
    public MovieDao(SQLiteDatabase db) {
       this.db = db;
       insertStatement = db.compileStatement(MovieDao.INSERT);
+   }
+   
+   @Override
+   public long save(Movie entity) {
+      insertStatement.clearBindings();
+      insertStatement.bindString(1, entity.getHomepage());
+      insertStatement.bindString(2, entity.getName());
+      insertStatement.bindDouble(3, entity.getRating());
+      insertStatement.bindString(4, entity.getTagline());
+      insertStatement.bindString(5, entity.getThumbUrl());
+      insertStatement.bindString(6, entity.getImageUrl());
+      insertStatement.bindString(7, entity.getTrailer());
+      insertStatement.bindString(8, entity.getUrl());
+      insertStatement.bindLong(9, entity.getYear());
+      return insertStatement.executeInsert();
+   }   
+
+   @Override
+   public void update(Movie entity) {
+      final ContentValues values = new ContentValues();
+      values.put(MovieColumns.HOMEPAGE, entity.getHomepage());
+      values.put(MovieColumns.NAME, entity.getName());
+      values.put(MovieColumns.RATING, entity.getRating());
+      values.put(MovieColumns.TAGLINE, entity.getTagline());
+      values.put(MovieColumns.THUMB_URL, entity.getThumbUrl());
+      values.put(MovieColumns.IMAGE_URL, entity.getImageUrl());
+      values.put(MovieColumns.TRAILER, entity.getTrailer());
+      values.put(MovieColumns.URL, entity.getUrl());
+      values.put(MovieColumns.YEAR, entity.getYear());
+      db.update(MovieTable.TABLE_NAME, values, BaseColumns._ID + " = ?", new String[] { String
+               .valueOf(entity.getName()) });
    }
 
    @Override
@@ -53,24 +85,6 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
       return movie;
    }
 
-   // as an oversimplification our db requires movie names to be unique
-   // in real-life, we'd need to return multiple results here (if found)
-   // and allow the user to select, or make query use other attributes in combination with name
-   public Movie find(String name) {
-      long movieId = 0L;
-      String sql = "select _id from " + MovieTable.TABLE_NAME + " where movie_name like ? limit 1";
-      Cursor c = db.rawQuery(sql, new String[] { name });
-      if (c.moveToFirst()) {
-         movieId = c.getLong(0);
-      }
-      if (!c.isClosed()) {
-         c.close();
-      }
-      // we make another query here, which is another trip, 
-      // this is a trade off we accept with such a small amount of data
-      return this.get(movieId);
-   }
-
    @Override
    public List<Movie> getAll() {
       List<Movie> list = new ArrayList<Movie>();
@@ -91,37 +105,25 @@ public class MovieDao implements Dao<Movie>, BaseColumns {
          c.close();
       }
       return list;
-   }
-
-   @Override
-   public long save(Movie entity) {
-      insertStatement.clearBindings();
-      insertStatement.bindString(1, entity.getHomepage());
-      insertStatement.bindString(2, entity.getName());
-      insertStatement.bindDouble(3, entity.getRating());
-      insertStatement.bindString(4, entity.getTagline());
-      insertStatement.bindString(5, entity.getThumbUrl());
-      insertStatement.bindString(6, entity.getImageUrl());
-      insertStatement.bindString(7, entity.getTrailer());
-      insertStatement.bindString(8, entity.getUrl());
-      insertStatement.bindLong(9, entity.getYear());
-      return insertStatement.executeInsert();
-   }
-
-   @Override
-   public void update(Movie entity) {
-      final ContentValues values = new ContentValues();
-      values.put(MovieColumns.HOMEPAGE, entity.getHomepage());
-      values.put(MovieColumns.NAME, entity.getName());
-      values.put(MovieColumns.RATING, entity.getRating());
-      values.put(MovieColumns.TAGLINE, entity.getTagline());
-      values.put(MovieColumns.THUMB_URL, entity.getThumbUrl());
-      values.put(MovieColumns.IMAGE_URL, entity.getImageUrl());
-      values.put(MovieColumns.TRAILER, entity.getTrailer());
-      values.put(MovieColumns.URL, entity.getUrl());
-      values.put(MovieColumns.YEAR, entity.getYear());
-      db.update(MovieTable.TABLE_NAME, values, BaseColumns._ID + " = ?", new String[] { String
-               .valueOf(entity.getName()) });
+   }   
+   
+   // as an oversimplification our db requires movie names to be unique
+   // in real-life, we'd need to return multiple results here (if found)
+   // and allow the user to select, or make query use other attributes in combination with name
+   // (also note here we expand on the DAO interface definition for just this class)
+   public Movie find(String name) {
+      long movieId = 0L;
+      String sql = "select _id from " + MovieTable.TABLE_NAME + " where movie_name like ? limit 1";
+      Cursor c = db.rawQuery(sql, new String[] { DatabaseUtils.sqlEscapeString(name) });
+      if (c.moveToFirst()) {
+         movieId = c.getLong(0);
+      }
+      if (!c.isClosed()) {
+         c.close();
+      }
+      // we make another query here, which is another trip, 
+      // this is a trade off we accept with such a small amount of data
+      return this.get(movieId);
    }
 
    private Movie buildMovieFromCursor(Cursor c) {
