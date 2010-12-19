@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class DataManager {
 
-   private static final int DATABASE_VERSION = 1;
+   private static final int DATABASE_VERSION = 2;
 
    private Context context;
 
