@@ -40,7 +40,7 @@ public class CategoryDao implements Dao<Category> {
       db.update(CategoryTable.TABLE_NAME, values, BaseColumns._ID + " = ?", new String[] { String.valueOf(entity
                .getName()) });
    }
-   
+
    @Override
    public void delete(Category entity) {
       if (entity.getId() > 0) {
@@ -83,12 +83,14 @@ public class CategoryDao implements Dao<Category> {
          c.close();
       }
       return list;
-   }    
+   }
 
    public Category find(String name) {
       Category category = null;
-      String sql = "select _id, name from " + CategoryTable.TABLE_NAME + " where name like ? limit 1";
-      Cursor c = db.rawQuery(sql, new String[] { DatabaseUtils.sqlEscapeString(name) });
+      String sql =
+               "select _id, name from " + CategoryTable.TABLE_NAME + " where upper(" + CategoryColumns.NAME
+                        + ") = ? limit 1";
+      Cursor c = db.rawQuery(sql, new String[] { name.toUpperCase() });
       if (c.moveToFirst()) {
          category = new Category();
          category.setId(c.getLong(0));

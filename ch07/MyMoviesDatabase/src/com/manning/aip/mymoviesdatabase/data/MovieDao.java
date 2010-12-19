@@ -28,7 +28,7 @@ public class MovieDao implements Dao<Movie> {
       this.db = db;
       insertStatement = db.compileStatement(MovieDao.INSERT);
    }
-   
+
    @Override
    public long save(Movie entity) {
       insertStatement.clearBindings();
@@ -42,7 +42,7 @@ public class MovieDao implements Dao<Movie> {
       insertStatement.bindString(8, entity.getUrl());
       insertStatement.bindLong(9, entity.getYear());
       return insertStatement.executeInsert();
-   }   
+   }
 
    @Override
    public void update(Movie entity) {
@@ -105,16 +105,16 @@ public class MovieDao implements Dao<Movie> {
          c.close();
       }
       return list;
-   }   
-   
+   }
+
    // as an oversimplification our db requires movie names to be unique
    // in real-life, we'd need to return multiple results here (if found)
    // and allow the user to select, or make query use other attributes in combination with name
    // (also note here we expand on the DAO interface definition for just this class)
    public Movie find(String name) {
       long movieId = 0L;
-      String sql = "select _id from " + MovieTable.TABLE_NAME + " where movie_name like ? limit 1";
-      Cursor c = db.rawQuery(sql, new String[] { DatabaseUtils.sqlEscapeString(name) });
+      String sql = "select _id from " + MovieTable.TABLE_NAME + " where upper(" + MovieColumns.NAME + ") = ? limit 1";
+      Cursor c = db.rawQuery(sql, new String[] { name.toUpperCase() });
       if (c.moveToFirst()) {
          movieId = c.getLong(0);
       }
