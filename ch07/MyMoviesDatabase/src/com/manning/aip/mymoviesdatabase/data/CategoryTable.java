@@ -7,7 +7,7 @@ public final class CategoryTable {
 
    public static final String TABLE_NAME = "category";
 
-   public static class CategoryColumns implements BaseColumns {
+   public static class CategoryColumns {
       public static final String NAME = "name";
    }
 
