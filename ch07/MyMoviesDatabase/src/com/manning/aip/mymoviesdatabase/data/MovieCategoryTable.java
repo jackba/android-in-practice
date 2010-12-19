@@ -7,7 +7,7 @@ public final class MovieCategoryTable {
 
    public static final String TABLE_NAME = "movie_category";
 
-   public static class MovieCategoryColumns implements BaseColumns {
+   public static class MovieCategoryColumns {
       public static final String MOVIE_ID = "movie_id";
       public static final String CATEGORY_ID = "category_id";
    }
