@@ -26,7 +26,7 @@ public class DealListTest extends ActivityInstrumentationTestCase2<DealList> {
       ParseFeedTask task = dealList.getParseFeedTask();
       assertNotNull("task should not be null", task);
 
-      List<Section> taskResult = task.get();
+      List<Section> taskResult = task.waitAndUpdate();
       assertNotNull("task did not return any sections", taskResult);
 
       instr.waitForIdleSync();
@@ -37,8 +37,8 @@ public class DealListTest extends ActivityInstrumentationTestCase2<DealList> {
       View firstItem = dealList.getListView().getChildAt(0);
       TouchUtils.clickView(this, firstItem);
 
-      instr.waitForIdleSync();
-
       assertTrue(instr.checkMonitorHit(monitor, 1));
+
+      instr.removeMonitor(monitor);
    }
 }
