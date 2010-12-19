@@ -17,7 +17,7 @@ public final class MovieCategoryTable {
 
       // movie_category mapping table
       sb.append("CREATE TABLE " + MovieCategoryTable.TABLE_NAME + " (");
-      ;
+      
       sb.append(MovieCategoryColumns.MOVIE_ID + " INTEGER NOT NULL, ");
       sb.append(MovieCategoryColumns.CATEGORY_ID + " INTEGER NOT NULL, ");
       sb.append("FOREIGN KEY(" + MovieCategoryColumns.MOVIE_ID + ") REFERENCES " + MovieTable.TABLE_NAME + "("
