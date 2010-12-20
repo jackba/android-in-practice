@@ -5,7 +5,8 @@
 
 	<Button android:id="@+id/category_add_show_dialog_button"
 		android:layout_width="150dp" android:layout_height="wrap_content"
-		android:text="New Category" android:layout_marginTop="10dp" />
+		android:text="New Category" android:layout_marginTop="10dp" 
+		android:background="@drawable/button_small" style="@style/mainFontSmall" />
 
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="2dp" android:layout_marginTop="10dp"
@@ -14,7 +15,7 @@
 	<TextView android:id="@+id/category_manager_label"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:gravity="center_horizontal" android:text="Categories"
-		android:textAppearance="?android:attr/textAppearanceLarge" />
+		style="@style/mainFontLarge" />
 
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="2dp" android:layout_marginTop="10dp"

@@ -7,12 +7,12 @@
 
 		<TextView android:id="@+id/movie_detail_name"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:textStyle="bold" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textStyle="bold" style="@style/mainFontLarge"
 			android:gravity="center_horizontal" />
 
 		<TextView android:id="@+id/movie_detail_year"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium" />
+			style="@style/mainFontMedium" />
 
 		<ImageView android:id="@+id/movie_detail_image"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"

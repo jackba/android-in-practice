@@ -8,5 +8,6 @@
 
 	<Button android:id="@+id/category_add_submit"
 		android:layout_width="80dp" android:layout_height="wrap_content"
-		android:text="Submit" android:layout_marginBottom="20dp" />
+		android:text="Submit" android:layout_marginBottom="20dp" 
+		android:background="@drawable/button_small" style="@style/mainFontSmall"/>
 </LinearLayout>
