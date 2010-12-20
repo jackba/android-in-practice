@@ -2,8 +2,10 @@ package com.manning.aip.mymoviesdatabase;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +39,8 @@ public class MovieSearch extends Activity {
    private Button search;
    private ListView listView;
 
+   private ProgressDialog progressDialog;
+
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -46,16 +50,18 @@ public class MovieSearch extends Activity {
 
       parser = new TheMovieDBXmlPullFeedParser();
 
+      progressDialog = new ProgressDialog(this);
+      progressDialog.setMax(2);
+      progressDialog.setCancelable(false);
+      progressDialog.setMessage("Retrieving data...");
+
       input = (EditText) findViewById(R.id.search_input);
       search = (Button) findViewById(R.id.search_submit);
       search.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
             if (!isTextViewEmpty(input)) {
-               // TODO move parse to AsyncTask (and check net avail)
-               movies.clear();
-               movies.addAll(parser.search(input.getText().toString()));
-               Log.d(Constants.LOG_TAG, " movies size after parse: " + movies.size());
-               adapter.notifyDataSetChanged();
+               // do network trip/parsing in separate thread
+               new ParseMovieSearchTask().execute(input.getText().toString());
             } else {
                Toast.makeText(MovieSearch.this, "Search term required", Toast.LENGTH_SHORT).show();
             }
@@ -70,36 +76,98 @@ public class MovieSearch extends Activity {
       listView.setOnItemClickListener(new OnItemClickListener() {
          public void onItemClick(final AdapterView<?> parent, final View v, final int index, final long id) {
             final MovieSearchResult movieSearchResult = movies.get(index);
-            // TODO move parse to AsyncTask (and check net avail)
-            final Movie movie = parser.get(movieSearchResult.getProviderId());
-            if (movie != null) {
-               new AlertDialog.Builder(MovieSearch.this).setTitle("Add Movie?").setMessage(movie.getName())
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                           public void onClick(final DialogInterface d, final int i) {
-                              // let the activity check if movie exists, not manager
-                              // (activity has contextual info to know the check is necessary)
-                              Movie exists = app.getDataManager().findMovie(movie.getName());
-                              if (exists == null) {
-                                 app.getDataManager().saveMovie(movie);
-                                 startActivity(new Intent(MovieSearch.this, MyMovies.class));
-                              } else {
-                                 Toast.makeText(MovieSearch.this, "Movie already exists", Toast.LENGTH_SHORT).show();
-                              }
-                           }
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                           public void onClick(final DialogInterface d, final int i) {
-                           }
-                        }).show();
-            } else {
-               Toast.makeText(MovieSearch.this, "Problem parsing movie, no result, please try again later",
-                        Toast.LENGTH_SHORT).show();
-            }
+            // do network trip/parsing in separate thread
+            new ParseMovieTask().execute(movieSearchResult.getProviderId());
          }
       });
+   }
+
+   @Override
+   public void onPause() {
+      if (progressDialog.isShowing()) {
+         progressDialog.dismiss();
+      }
+      super.onPause();
    }
 
    private boolean isTextViewEmpty(final TextView textView) {
       return !((textView != null) && (textView.getText() != null) && (textView.getText().toString() != null) && !textView
                .getText().toString().equals(""));
+   }
+
+   private class ParseMovieSearchTask extends AsyncTask<String, Integer, List<MovieSearchResult>> {
+      @Override
+      protected void onProgressUpdate(Integer... progress) {
+         int currentProgress = progress[0];
+         if ((currentProgress == 1) && !progressDialog.isShowing()) {
+            progressDialog.show();
+         } else if ((currentProgress == 2) && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+         }
+         progressDialog.setProgress(progress[0]);
+      }
+
+      @Override
+      protected List<MovieSearchResult> doInBackground(String... args) {
+         this.publishProgress(1);
+         List<MovieSearchResult> moviesFromTask = parser.search(args[0]);
+         this.publishProgress(2);
+         return moviesFromTask;
+      }
+
+      @Override
+      protected void onPostExecute(List<MovieSearchResult> moviesFromTask) {
+         movies.clear();
+         movies.addAll(moviesFromTask);
+         Log.d(Constants.LOG_TAG, " movies size after parse: " + movies.size());
+         adapter.notifyDataSetChanged();
+      }
+   }
+
+   private class ParseMovieTask extends AsyncTask<String, Integer, Movie> {
+      @Override
+      protected void onProgressUpdate(Integer... progress) {
+         int currentProgress = progress[0];
+         if ((currentProgress == 1) && !progressDialog.isShowing()) {
+            progressDialog.show();
+         } else if ((currentProgress == 2) && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+         }
+         progressDialog.setProgress(progress[0]);
+      }
+
+      @Override
+      protected Movie doInBackground(String... args) {
+         this.publishProgress(1);
+         Movie movie = parser.get(args[0]);
+         this.publishProgress(2);
+         return movie;
+      }
+
+      @Override
+      protected void onPostExecute(final Movie movie) {
+         if (movie != null) {
+            new AlertDialog.Builder(MovieSearch.this).setTitle("Add Movie?").setMessage(movie.getName())
+                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface d, final int i) {
+                           // let the activity check if movie exists, not manager
+                           // (activity has contextual info to know the check is necessary)
+                           Movie exists = app.getDataManager().findMovie(movie.getName());
+                           if (exists == null) {
+                              app.getDataManager().saveMovie(movie);
+                              startActivity(new Intent(MovieSearch.this, MyMovies.class));
+                           } else {
+                              Toast.makeText(MovieSearch.this, "Movie already exists", Toast.LENGTH_SHORT).show();
+                           }
+                        }
+                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface d, final int i) {
+                        }
+                     }).show();
+         } else {
+            Toast.makeText(MovieSearch.this, "Problem parsing movie, no result, please try again later",
+                     Toast.LENGTH_SHORT).show();
+         }
+      }
    }
 }
