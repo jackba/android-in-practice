@@ -56,7 +56,7 @@ public class MovieAdapterDatabase extends ArrayAdapter<Movie> {
       return listItem;
    }
 
-   private class ViewHolder {
+   private static class ViewHolder {
       protected final TextView text;
       protected final ImageView image;
 
