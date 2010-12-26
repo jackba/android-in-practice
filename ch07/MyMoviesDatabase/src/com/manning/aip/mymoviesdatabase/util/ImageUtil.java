@@ -11,20 +11,20 @@ import android.graphics.Bitmap.Config;
 
 public class ImageUtil {
 
+   private static final int COLOR = 0xff424242;
+   
    // source: http://stackoverflow.com/questions/2459916/how-to-make-an-imageview-to-have-rounded-corners
-   public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
+   public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int roundPx) {
       Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
       Canvas canvas = new Canvas(output);
-
-      final int color = 0xff424242;
-      final Paint paint = new Paint();
-      final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-      final RectF rectF = new RectF(rect);
-      final float roundPx = pixels;
+      
+      Paint paint = new Paint();
+      Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+      RectF rectF = new RectF(rect);
 
       paint.setAntiAlias(true);
       canvas.drawARGB(0, 0, 0, 0);
-      paint.setColor(color);
+      paint.setColor(COLOR);
       canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
 
       paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
