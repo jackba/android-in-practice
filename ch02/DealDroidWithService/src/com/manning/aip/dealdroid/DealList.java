@@ -142,8 +142,6 @@ public class DealList extends ListActivity {
                Constants.ALARM_INTERVAL, pendingIntent);
    }
 
-   // TODO use ViewHolder with the "withService" version of DealDroid
-   
    // Use a custom Adapter to control the layout and views
    private class DealsAdapter extends ArrayAdapter<Item> {      
 
