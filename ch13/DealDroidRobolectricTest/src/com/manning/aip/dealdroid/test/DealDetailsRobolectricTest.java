@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import android.content.Intent;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.manning.aip.dealdroid.DealDetails;
@@ -60,13 +59,11 @@ public class DealDetailsRobolectricTest {
 
    @Test
    public void testThatItemCanBeDisplayedInBrowser() {
-      MenuItem browserItem = new TestMenuItem() {
+      activity.onOptionsItemSelected(new TestMenuItem() {
          public int getItemId() {
             return DealDetails.MENU_BROWSE;
          }
-      };
-
-      activity.onOptionsItemSelected(browserItem);
+      });
 
       ShadowActivity shadowActivity = Robolectric.shadowOf(activity);
       Intent startedIntent = shadowActivity.getNextStartedActivity();
