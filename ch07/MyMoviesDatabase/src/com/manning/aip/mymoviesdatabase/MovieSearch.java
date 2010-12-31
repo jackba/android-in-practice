@@ -83,7 +83,7 @@ public class MovieSearch extends Activity {
    }
 
    @Override
-   public void onPause() {
+   protected void onPause() {
       if (progressDialog.isShowing()) {
          progressDialog.dismiss();
       }

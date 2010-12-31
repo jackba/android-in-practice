@@ -12,7 +12,7 @@ public class Preferences extends PreferenceActivity {
    private CheckBoxPreference showSplash;
 
    @Override
-   public void onCreate(final Bundle savedInstanceState) {
+   protected void onCreate(final Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
 
       addPreferencesFromResource(R.layout.preferences);

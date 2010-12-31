@@ -46,7 +46,7 @@ public class MyMovies extends ListActivity {
    private Button backToTop;
 
    @Override
-   public void onCreate(Bundle savedInstanceState) {
+   protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
 
@@ -71,7 +71,7 @@ public class MyMovies extends ListActivity {
    }
 
    @Override
-   public void onResume() {
+   protected void onResume() {
       super.onResume();
       movies.clear();
       movies.addAll(app.getDataManager().getMovieHeaders());
@@ -83,6 +83,7 @@ public class MyMovies extends ListActivity {
       }
    }
 
+   // android:onClick in layout points here
    public void backToTop(View view) {
       getListView().setSelection(0);
    }

@@ -29,7 +29,7 @@ public class SplashScreen extends Activity {
    }
 
    @Override
-   public void onStart() {
+   protected void onStart() {
       super.onStart();
       checkPrefsAndSplash();
    }
