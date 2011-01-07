@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>MavenPoweredAppTest</artifactId>
+  <name>MavenPoweredAppTest</name>
+  <parent>
+    <groupId>com.manning.aip.maven</groupId>
+    <artifactId>MavenPower</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <packaging>apk</packaging>
+
+  <dependencies>
+  
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>android-test</artifactId>
+      <version>${androidVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- This dependency imports the class files from the application projects. -->
+    <!-- Required for the test project to compile. -->
+    <dependency>
+      <groupId>com.manning.aip.maven</groupId>
+      <artifactId>MavenPoweredApp</artifactId>
+      <version>${project.version}</version>
+      <type>jar</type>
+    </dependency>
+
+    <!-- This dependency makes the android plugin install the app APK before -->
+    <!-- test app APK, since the latter needs the former to run. -->
+    <dependency>
+      <groupId>com.manning.aip.maven</groupId>
+      <artifactId>MavenPoweredApp</artifactId>
+      <version>${project.version}</version>
+      <type>apk</type>
+    </dependency>
+
+    <!-- other dependencies, e.g. Robotium -->    
+    <dependency>
+      <groupId>com.jayway.android.robotium</groupId>
+      <artifactId>robotium-solo</artifactId>
+      <version>2.0.2</version>
+    </dependency> 
+        
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+        <artifactId>maven-android-plugin</artifactId>
+        <version>${mavenAndroidPluginVersion}</version>
+        <configuration>
+          <enableIntegrationTest>true</enableIntegrationTest>
+        </configuration>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins><!--
+    
+    <testResources>
+    </testResources>
+    
+    <resources>
+      <resource>
+    	<directory>res/raw</directory>
+      </resource>
+    </resources>
+  --></build>
+  
+</project>
