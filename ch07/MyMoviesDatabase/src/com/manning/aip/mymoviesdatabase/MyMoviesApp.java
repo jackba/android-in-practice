@@ -9,6 +9,7 @@ import android.net.NetworkInfo.State;
 import android.preference.PreferenceManager;
 
 import com.manning.aip.mymoviesdatabase.data.DataManager;
+import com.manning.aip.mymoviesdatabase.data.DataManagerImpl;
 import com.manning.aip.mymoviesdatabase.util.ImageCache;
 
 public class MyMoviesApp extends Application {
@@ -41,7 +42,7 @@ public class MyMoviesApp extends Application {
       super.onCreate();
       cMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
       prefs = PreferenceManager.getDefaultSharedPreferences(this);
-      dataManager = new DataManager(this);
+      dataManager = new DataManagerImpl(this);
       imageCache = new ImageCache();
    }
 
