@@ -210,7 +210,7 @@ public class DataManager {
             // and neither do any version compiled with SQLITE_OMIT_FOREIGN_KEY
             // http://www.sqlite.org/foreignkeys.html#fk_enable
             // 
-            // to enable foreign keys on newer versions that allow it, we have to turn them on            
+            // make sure foreign key support is turned on if it's there (should be already, just a double-checker)          
             db.execSQL("PRAGMA foreign_keys=ON;");
 
             // then we check to make sure they're on 
@@ -220,8 +220,9 @@ public class DataManager {
                int result = c.getInt(0);
                Log.i(Constants.LOG_TAG, "SQLite foreign key support (1 is on, 0 is off): " + result);
             } else {
-               // could use this approach in onCreate, and not set foreign keys it not available, etc.
+               // could use this approach in onCreate, and not rely on foreign keys it not available, etc.
                Log.i(Constants.LOG_TAG, "SQLite foreign key support NOT AVAILABLE");
+               // if you had to here you could fall back to triggers
             }
             if (!c.isClosed()) {
                c.close();
