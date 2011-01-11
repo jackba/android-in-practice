@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.channels.FileChannel;
 
@@ -128,7 +127,7 @@ public final class FileUtil {
     * @param stream
     * @return
     */
-   public static boolean sync(FileOutputStream stream) {
+   public static boolean syncStream(FileOutputStream stream) {
       try {
          if (stream != null) {
             stream.getFD().sync();
