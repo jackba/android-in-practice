@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.channels.FileChannel;
 
@@ -27,6 +28,7 @@ public final class FileUtil {
    private FileUtil() {
    }
 
+   // nio is there too
    /**
     * Copy file.
     * 
@@ -79,9 +81,10 @@ public final class FileUtil {
          synchronized (FileUtil.DATA_LOCK) {
             if (file != null) {
                file.createNewFile(); // ok if returns false, overwrite
-               Writer out = new BufferedWriter(new FileWriter(file), 1024);
+               // can also set encoding with additional fos param, none will use system default
+               Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
                out.write(fileContents);
-               out.close();
+               out.close(); // close will flush and close (no guarantee of sync though)
                result = true;
             }
          }
@@ -114,5 +117,24 @@ public final class FileUtil {
          Log.e(Constants.LOG_TAG, "Error appending string data to file " + e.getMessage(), e);
       }
       return result;
+   }
+
+   /**
+    * Call sync on a FileOutputStream to ensure it is written to disk immediately
+    * (write, flush, close, etc, don't guarantee physical disk write on buffered file systems).
+    * 
+    * @param stream
+    * @return
+    */
+   public static boolean sync(FileOutputStream stream) {
+      try {
+         if (stream != null) {
+            stream.getFD().sync();
+         }
+         return true;
+      } catch (IOException e) {
+         Log.e(Constants.LOG_TAG, "Error syncing stream " + e.getMessage(), e);
+      }
+      return false;
    }
 }
