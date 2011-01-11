@@ -81,8 +81,9 @@ public final class FileUtil {
          synchronized (FileUtil.DATA_LOCK) {
             if (file != null) {
                file.createNewFile(); // ok if returns false, overwrite
-               // can also set encoding with additional fos param, none will use system default
-               Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+               // FileWriter will use default encoding
+               // (could use FileOutputStream to control encoding and guarantee flush, but don't need that here)
+               Writer out = new BufferedWriter(new FileWriter(file), 1024);
                out.write(fileContents);
                out.close(); // close will flush and close (no guarantee of sync though)
                result = true;
@@ -107,6 +108,7 @@ public final class FileUtil {
          synchronized (FileUtil.DATA_LOCK) {
             if ((file != null) && file.canWrite()) {
                file.createNewFile(); // ok if returns false, overwrite
+               // FileWriter will use default encoding, and easy to append
                Writer out = new BufferedWriter(new FileWriter(file, true), 1024);
                out.write(appendContents);
                out.close();
