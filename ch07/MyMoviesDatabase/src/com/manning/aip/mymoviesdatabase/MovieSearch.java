@@ -51,7 +51,7 @@ public class MovieSearch extends Activity {
       parser = new TheMovieDBXmlPullFeedParser();
 
       progressDialog = new ProgressDialog(this);
-      progressDialog.setMax(2);
+      progressDialog.setIndeterminate(true);
       progressDialog.setCancelable(false);
       progressDialog.setMessage("Retrieving data...");
 
@@ -96,27 +96,28 @@ public class MovieSearch extends Activity {
    }
 
    private class ParseMovieSearchTask extends AsyncTask<String, Integer, List<MovieSearchResult>> {
+
       @Override
-      protected void onProgressUpdate(Integer... progress) {
-         int currentProgress = progress[0];
-         if ((currentProgress == 1) && !progressDialog.isShowing()) {
+      protected void onPreExecute() {
+         super.onPreExecute();
+         if (!progressDialog.isShowing()) {
             progressDialog.show();
-         } else if ((currentProgress == 2) && progressDialog.isShowing()) {
-            progressDialog.dismiss();
          }
-         progressDialog.setProgress(progress[0]);
       }
 
       @Override
       protected List<MovieSearchResult> doInBackground(String... args) {
-         this.publishProgress(1);
          List<MovieSearchResult> moviesFromTask = parser.search(args[0]);
-         this.publishProgress(2);
          return moviesFromTask;
       }
 
       @Override
       protected void onPostExecute(List<MovieSearchResult> moviesFromTask) {
+         
+         if (progressDialog.isShowing()) {
+            progressDialog.hide();
+         }
+         
          movies.clear();
          movies.addAll(moviesFromTask);
          Log.d(Constants.LOG_TAG, " movies size after parse: " + movies.size());
@@ -125,27 +126,28 @@ public class MovieSearch extends Activity {
    }
 
    private class ParseMovieTask extends AsyncTask<String, Integer, Movie> {
+
       @Override
-      protected void onProgressUpdate(Integer... progress) {
-         int currentProgress = progress[0];
-         if ((currentProgress == 1) && !progressDialog.isShowing()) {
+      protected void onPreExecute() {
+         super.onPreExecute();
+         if (!progressDialog.isShowing()) {
             progressDialog.show();
-         } else if ((currentProgress == 2) && progressDialog.isShowing()) {
-            progressDialog.dismiss();
          }
-         progressDialog.setProgress(progress[0]);
       }
 
       @Override
       protected Movie doInBackground(String... args) {
-         this.publishProgress(1);
          Movie movie = parser.get(args[0]);
-         this.publishProgress(2);
          return movie;
       }
 
       @Override
       protected void onPostExecute(final Movie movie) {
+
+         if (progressDialog.isShowing()) {
+            progressDialog.hide();
+         }
+
          if (movie != null) {
             new AlertDialog.Builder(MovieSearch.this).setTitle("Add Movie?").setMessage(movie.getName())
                      .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
