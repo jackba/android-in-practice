@@ -1,7 +1,5 @@
 package com.manning.aip.mymoviesdatabase.data;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import com.manning.aip.mymoviesdatabase.model.Category;
 import com.manning.aip.mymoviesdatabase.model.Movie;
 
@@ -13,16 +11,7 @@ import java.util.List;
  * @author ccollins
  *
  */
-public interface DataManager {
-
-   // common db   
-   public SQLiteDatabase getDb();
-
-   public void openDb();
-
-   public void closeDb();
-
-   public void resetDb();
+public interface DataManager {  
    
    // movie
    public Movie getMovie(long movieId);

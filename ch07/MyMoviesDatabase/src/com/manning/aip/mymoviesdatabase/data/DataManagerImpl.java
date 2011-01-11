@@ -52,7 +52,7 @@ public class DataManagerImpl implements DataManager {
       return db;
    }
 
-   public void openDb() {
+   private void openDb() {
       if (!db.isOpen()) {
          db = SQLiteDatabase.openDatabase(DataConstants.DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
          // since we pass db into DAO, have to recreate DAO if db is re-opened
@@ -62,13 +62,13 @@ public class DataManagerImpl implements DataManager {
       }
    }
 
-   public void closeDb() {
+   private void closeDb() {
       if (db.isOpen()) {
          db.close();
       }
    }
 
-   public void resetDb() {
+   private void resetDb() {
       Log.i(Constants.LOG_TAG, "Resetting database connection (close and re-open).");
       closeDb();
       SystemClock.sleep(500);
