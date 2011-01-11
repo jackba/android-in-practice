@@ -113,7 +113,7 @@ public class MovieSearch extends Activity {
 
       @Override
       protected void onPostExecute(List<MovieSearchResult> moviesFromTask) {
-         
+         super.onPostExecute(moviesFromTask);
          if (progressDialog.isShowing()) {
             progressDialog.hide();
          }
@@ -136,14 +136,14 @@ public class MovieSearch extends Activity {
       }
 
       @Override
-      protected Movie doInBackground(String... args) {
+      protected Movie doInBackground(String... args) {         
          Movie movie = parser.get(args[0]);
          return movie;
       }
 
       @Override
       protected void onPostExecute(final Movie movie) {
-
+         super.onPostExecute(movie);
          if (progressDialog.isShowing()) {
             progressDialog.hide();
          }
