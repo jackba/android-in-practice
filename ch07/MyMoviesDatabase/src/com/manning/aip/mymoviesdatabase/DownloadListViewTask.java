@@ -10,6 +10,7 @@ public class DownloadListViewTask extends DownloadTask {
    private final long id;
 
    // pass in the cache so we can populate it as we go
+   // (using long as id/position so we can use it from both MovieAdapter and MovieCursorAdapter)
    public DownloadListViewTask(ImageCache cache, long id, ImageView imageView) {
       super(cache, imageView);
       this.id = id;
