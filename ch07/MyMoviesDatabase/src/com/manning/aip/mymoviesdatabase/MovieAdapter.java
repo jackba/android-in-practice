@@ -43,7 +43,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
       text.setText(movie.getName());
 
       image.setImageDrawable(null);
-      image.setTag(position);
+      image.setTag(Long.valueOf(position));
       String thumbUrl = movie.getThumbUrl();
       if ((thumbUrl != null) && !thumbUrl.equals("")) {
          if (cache.get(thumbUrl) == null) {
