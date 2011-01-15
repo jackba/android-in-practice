@@ -127,10 +127,10 @@ public final class FileUtil {
     * @param stream
     * @return
     */
-   public static boolean syncStream(FileOutputStream stream) {
+   public static boolean syncStream(FileOutputStream fos) {
       try {
-         if (stream != null) {
-            stream.getFD().sync();
+         if (fos != null) {
+            fos.getFD().sync();
          }
          return true;
       } catch (IOException e) {
