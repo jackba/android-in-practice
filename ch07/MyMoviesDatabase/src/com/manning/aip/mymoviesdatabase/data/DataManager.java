@@ -1,5 +1,7 @@
 package com.manning.aip.mymoviesdatabase.data;
 
+import android.database.Cursor;
+
 import com.manning.aip.mymoviesdatabase.model.Category;
 import com.manning.aip.mymoviesdatabase.model.Movie;
 
@@ -23,6 +25,9 @@ public interface DataManager {
    public long saveMovie(Movie movie);
    
    public boolean deleteMovie(long movieId);
+   
+   // optional -- used for CursorAdapter
+   public Cursor getMovieCursor();
    
    // category
    public Category getCategory(long categoryId);

@@ -9,15 +9,14 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.manning.aip.mymoviesdatabase.model.Movie;
 
@@ -39,9 +38,13 @@ public class MyMovies extends ListActivity {
    private SpannableString aboutString;
 
    private MyMoviesApp app;
-
-   private MovieAdapterDatabase adapter;
-   private List<Movie> movies;
+   
+   // uncomment all lines with /// in front and comment all lines with /// at end, to use CursorAdapter
+   ///private Cursor cursor;
+   ///private MovieCursorAdapter adapter;
+   
+   private MovieAdapter adapter; ///
+   private List<Movie> movies;   ///
 
    private Button backToTop;
 
@@ -58,10 +61,18 @@ public class MyMovies extends ListActivity {
       backToTop.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(android.R.drawable.ic_menu_upload),
                null, null, null);
       // must add to ListView BEFORE setting adapter
-      listView.addFooterView(backToTop, null, true);
-
-      movies = new ArrayList<Movie>();
-      adapter = new MovieAdapterDatabase(this, app.getImageCache(), movies);
+      listView.addFooterView(backToTop, null, true);      
+      
+      ///cursor = app.getDataManager().getMovieCursor();
+      ///if (cursor != null) {
+      ///   startManagingCursor(cursor);
+      ///   adapter = new MovieCursorAdapter(this, app.getImageCache(), cursor);
+      ///   listView.setAdapter(adapter);         
+      ///}
+      
+      movies = new ArrayList<Movie>(); ///
+      adapter = new MovieAdapter(this, app.getImageCache(), movies); ///
+      
       listView.setAdapter(this.adapter);
       listView.setItemsCanFocus(false);
       listView.setEmptyView(findViewById(R.id.main_list_empty));
@@ -70,6 +81,8 @@ public class MyMovies extends ListActivity {
       Linkify.addLinks(aboutString, Linkify.ALL);
    }
 
+
+   /// comment out entire onResume to use CursorAdapter
    @Override
    protected void onResume() {
       super.onResume();
@@ -90,8 +103,11 @@ public class MyMovies extends ListActivity {
 
    @Override
    protected void onListItemClick(ListView l, View v, int position, long id) {
+      ///cursor.moveToPosition(position);
+      ///long movieId = cursor.getInt(cursor.getColumnIndex("_id"));
       Intent intent = new Intent(this, MovieDetail.class);
-      intent.putExtra(MovieDetail.MOVIE_ID_KEY, movies.get(position).getId());
+      ///intent.putExtra(MovieDetail.MOVIE_ID_KEY, movieId);
+      intent.putExtra(MovieDetail.MOVIE_ID_KEY, position); ///
       startActivity(intent);
    }
 
@@ -141,19 +157,20 @@ public class MyMovies extends ListActivity {
    @Override
    public boolean onContextItemSelected(final MenuItem item) {
       AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-      final Movie movie = movies.get(info.position);
+      
+      ///cursor.moveToPosition(info.position);
+      ///final long movieId = cursor.getInt(cursor.getColumnIndex("_id"));
+      ///Movie movie = app.getDataManager().getMovie(movieId);
+      
+      final long movieId = movies.get(info.position).getId();  ///
+      final Movie movie = movies.get(info.position); ///
+      
       switch (item.getItemId()) {
          case CONTEXT_MENU_DELETE:
             new AlertDialog.Builder(MyMovies.this).setTitle("Delete Movie?").setMessage(movie.getName())
                      .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {
-                           if (app.getDataManager().deleteMovie(movie.getId())) {
-                              adapter.remove(movie);
-                           } else {
-                              // should never get this, but just in case
-                              Toast.makeText(MyMovies.this, "Unable to delete movie, please check logs",
-                                       Toast.LENGTH_SHORT).show();
-                           }
+                           app.getDataManager().deleteMovie(movieId);
                         }
                      }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface d, final int i) {

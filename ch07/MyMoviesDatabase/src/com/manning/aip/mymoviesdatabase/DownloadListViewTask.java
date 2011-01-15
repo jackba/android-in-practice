@@ -7,18 +7,18 @@ import com.manning.aip.mymoviesdatabase.util.ImageCache;
 
 public class DownloadListViewTask extends DownloadTask {
 
-   private final int position;
+   private final long id;
 
    // pass in the cache so we can populate it as we go
-   public DownloadListViewTask(ImageCache cache, int position, ImageView imageView) {
+   public DownloadListViewTask(ImageCache cache, long id, ImageView imageView) {
       super(cache, imageView);
-      this.position = position;
+      this.id = id;
    }
 
    @Override
    protected void onPostExecute(Bitmap bitmap) {
-      int forPosition = (Integer) imageView.getTag();
-      if (forPosition == this.position) {
+      long forPosition = (Long) imageView.getTag();
+      if (forPosition == this.id) {
          if (bitmap != null) {
             this.imageView.setImageBitmap(bitmap);
          }

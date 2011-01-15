@@ -12,11 +12,11 @@ import com.manning.aip.mymoviesdatabase.util.ImageCache;
 
 import java.util.List;
 
-public class MovieAdapterDatabase extends ArrayAdapter<Movie> {
+public class MovieAdapter extends ArrayAdapter<Movie> {
 
    private final ImageCache cache;
 
-   public MovieAdapterDatabase(Context context, ImageCache cache, List<Movie> movies) {
+   public MovieAdapter(Context context, ImageCache cache, List<Movie> movies) {
       super(context, R.layout.movie_item, android.R.id.text1, movies);
       this.cache = cache;
    }

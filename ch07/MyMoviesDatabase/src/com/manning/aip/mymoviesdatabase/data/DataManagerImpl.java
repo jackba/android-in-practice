@@ -1,6 +1,7 @@
 package com.manning.aip.mymoviesdatabase.data;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -8,6 +9,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.manning.aip.mymoviesdatabase.Constants;
+import com.manning.aip.mymoviesdatabase.data.MovieTable.MovieColumns;
 import com.manning.aip.mymoviesdatabase.model.Category;
 import com.manning.aip.mymoviesdatabase.model.Movie;
 
@@ -21,7 +23,7 @@ import java.util.List;
  * @author ccollins
  *
  */
-public class DataManagerImpl implements DataManager {  
+public class DataManagerImpl implements DataManager {
 
    private Context context;
 
@@ -79,6 +81,7 @@ public class DataManagerImpl implements DataManager {
    //  
 
    // movie
+   @Override
    public Movie getMovie(long movieId) {
       Movie movie = movieDao.get(movieId);
       if (movie != null) {
@@ -87,11 +90,13 @@ public class DataManagerImpl implements DataManager {
       return movie;
    }
 
+   @Override
    public List<Movie> getMovieHeaders() {
       // these movies don't have categories, but they're really used as "headers" anyway, it's ok
       return movieDao.getAll();
    }
 
+   @Override
    public Movie findMovie(String name) {
       Movie movie = movieDao.find(name);
       if (movie != null) {
@@ -100,6 +105,7 @@ public class DataManagerImpl implements DataManager {
       return movie;
    }
 
+   @Override
    public long saveMovie(Movie movie) {
       // NOTE could wrap entity manip functions in DataManagerImpl, make "manager" for each entity
       // here though, to keep it simpler, we use the DAOs directly (even when multiple are involved)
@@ -142,6 +148,7 @@ public class DataManagerImpl implements DataManager {
       return movieId;
    }
 
+   @Override
    public boolean deleteMovie(long movieId) {
       boolean result = false;
       // NOTE switch this order around to see constraint error (foreign keys work)
@@ -165,26 +172,37 @@ public class DataManagerImpl implements DataManager {
       return result;
    }
 
+   @Override
+   public Cursor getMovieCursor() {
+      // note that query MUST have a column named _id
+      return db.rawQuery("select " + MovieColumns._ID + ", " + MovieColumns.NAME + ", " + MovieColumns.THUMB_URL
+               + " from " + MovieTable.TABLE_NAME, null);
+   }
+
    // category
+   @Override
    public Category getCategory(long categoryId) {
       return categoryDao.get(categoryId);
    }
 
+   @Override
    public List<Category> getAllCategories() {
       return categoryDao.getAll();
    }
 
+   @Override
    public Category findCategory(String name) {
       return categoryDao.find(name);
    }
 
+   @Override
    public long saveCategory(Category category) {
       return categoryDao.save(category);
    }
 
+   @Override
    public void deleteCategory(Category category) {
       categoryDao.delete(category);
    }
 
-  
 }
