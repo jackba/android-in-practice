@@ -34,6 +34,8 @@ import com.manning.aip.portfolio.service.IStockService;
  */
 public class PortfolioManagerService extends Service {	
 	
+	private static final String TAG = "PortfolioManagerService";
+
 	// This is a data access object used for persisting stock information.
 	private StocksDb db;
 	
@@ -61,8 +63,7 @@ public class PortfolioManagerService extends Service {
 		try {
 			updateStockData();
 		} catch (IOException e) {
-			Log.e("PortfolioManagerService", 
-					"Exception updating stock data", e);
+			Log.e(TAG, "Exception updating stock data", e);
 		}
 		return Service.START_STICKY;
 	}
@@ -81,12 +82,19 @@ public class PortfolioManagerService extends Service {
 		// implement the IStockService interface defined in AIDL 
 		return new IStockService.Stub() {
 			public Stock addToPortfolio(Stock stock) throws RemoteException {
+				Log.d(TAG, "Adding stock="+stock);
 				Stock s = db.addStock(stock);
+				Log.d(TAG, "Stock added to db");
 				try {
 					updateStockData();
+					for (Stock x:db.getStocks()){
+						if (x.getSymbol().equalsIgnoreCase(stock.getSymbol())){
+							s = x;
+						}
+					}
+					Log.d(TAG, "Stock data updated");
 				} catch (IOException e) {
-					Log.e("PortfolioManagerService", 
-							"Exception updating stock data", e);
+					Log.e(TAG, "Exception updating stock data", e);
 					throw new RemoteException();
 				}
 				return s;
@@ -98,15 +106,15 @@ public class PortfolioManagerService extends Service {
 				if (currTime - timestamp <= MAX_CACHE_AGE){
 					return stocks;
 				}
+				// else cache is stale, refresh it
 				Stock[] currStocks = new Stock[stocks.size()];
 				stocks.toArray(currStocks);
 				try {
 					ArrayList<Stock> newStocks = fetchStockData(currStocks);
-					updateStockData(newStocks);
+					updateCachedStocks(newStocks);
 					return newStocks;
 				} catch (Exception e) {
-					Log.e("PortfolioManagerService", 
-							"Exception getting stock data",e);
+					Log.e(TAG, "Exception getting stock data",e);
 					throw new RemoteException();
 				}
 			}
@@ -118,10 +126,10 @@ public class PortfolioManagerService extends Service {
 		Stock[] currStocks = new Stock[stocks.size()];
 		currStocks = stocks.toArray(currStocks);
 		stocks = fetchStockData(currStocks);
-		updateStockData(stocks);
+		updateCachedStocks(stocks);
 	}
 	
-	private void updateStockData(ArrayList<Stock> stocks){
+	private void updateCachedStocks(ArrayList<Stock> stocks){
 		timestamp = System.currentTimeMillis();
 		Stock[] currStocks = new Stock[stocks.size()];
 		currStocks = stocks.toArray(currStocks);
@@ -132,6 +140,7 @@ public class PortfolioManagerService extends Service {
 	}
 	
 	private ArrayList<Stock> fetchStockData(Stock[] stocks) throws IOException{
+		Log.d(TAG, "Fetching stock data from Yahoo");
 		ArrayList<Stock> newStocks = new ArrayList<Stock>(stocks.length);
 		if (stocks.length > 0){
 			StringBuilder sb = new StringBuilder();
@@ -150,12 +159,14 @@ public class PortfolioManagerService extends Service {
 					new InputStreamReader(response.getEntity().getContent()));
 			String line = reader.readLine();
 			int i = 0;
-			
+			Log.d(TAG, "Parsing stock data from Yahoo");
 			while (line != null){
+				Log.d(TAG, "Parsing: " + line);
 				String[] values = line.split(",");
 				Stock stock = new Stock(stocks[i], stocks[i].getId());
 				stock.setCurrentPrice(Double.parseDouble(values[1]));
 				stock.setName(values[2]);
+				Log.d(TAG, "Parsed Stock: " + stock);
 				newStocks.add(stock);
 				line = reader.readLine();
 				i++;

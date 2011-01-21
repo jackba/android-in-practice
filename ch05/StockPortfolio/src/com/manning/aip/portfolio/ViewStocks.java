@@ -52,6 +52,20 @@ public class ViewStocks extends ListActivity {
 				IBinder service) {
 			stockService = IStockService.Stub.asInterface(service);
 			Log.d(LOGGING_TAG,"Connected to service");
+			try {
+				stocks = (ArrayList<Stock>) stockService.getPortfolio();
+				if (stocks == null){
+					stocks = new ArrayList<Stock>(0);
+					Log.d(LOGGING_TAG, "No stocks returned from service");
+				} else {
+					Log.d(LOGGING_TAG, "Got "+ stocks.size() +" stocks from service");
+					for (Stock s : stocks){
+						Log.d(LOGGING_TAG, "Stock from service: " + s);
+					}
+				}
+			} catch (RemoteException e) {
+				Log.e(LOGGING_TAG, "Exception retrieving portfolio from service",e);
+			}
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -75,71 +89,49 @@ public class ViewStocks extends ListActivity {
 			Log.e(LOGGING_TAG, "Failed to bind to service");
 			throw new RuntimeException("Failed to find to service");
 		}
-		// Retrieve stocks from service on a separate thread
-        new AsyncTask<Void,Void,ArrayList<Stock>>(){
-			@Override
-			protected ArrayList<Stock> doInBackground(Void... params) {
-				try {
-					assert(stockService != null);
-					return (ArrayList<Stock>) stockService.getPortfolio();
-				} catch (RemoteException e) {
-					Log.e(LOGGING_TAG, "Exception retrieving stocks", e);
+		setListAdapter(new BaseAdapter(){
+
+			public int getCount() {
+				if (stocks == null){
+					return 0;
 				}
-				return null;
+				return stocks.size();
 			}
-			@Override
-			protected void onPostExecute(ArrayList<Stock> dbStocks){
-				if (dbStocks == null){
-					dbStocks = new ArrayList<Stock>(0);
+
+			public Object getItem(int position) {
+				if (stocks == null){
+					return null;
 				}
-				stocks = dbStocks;
-				setListAdapter(new BaseAdapter(){
-
-					public int getCount() {
-						if (stocks == null){
-							return 0;
-						}
-						return stocks.size();
-					}
-
-					public Object getItem(int position) {
-						if (stocks == null){
-							return null;
-						}
-						return stocks.get(position);
-					}
-
-					public long getItemId(int position) {
-						if (stocks == null){
-							return 0L;
-						}
-						return stocks.get(position).getId();
-					}
-
-					public View getView(int position, View convertView, 
-							ViewGroup parent) {
-						if (convertView == null){
-							LayoutInflater inflater = (LayoutInflater) 
-								ViewStocks.this.getSystemService(
-										Context.LAYOUT_INFLATER_SERVICE);
-							convertView = 
-								inflater.inflate(R.layout.stock, parent, false);
-						}
-						TextView rowTxt = 
-							(TextView) convertView.findViewById(R.id.rowTxt);
-						rowTxt.setText(stocks.get(position).toString());
-						return convertView;
-					}
-
-					@Override
-					public boolean hasStableIds() {
-						return true;
-					}
-		        	
-		        });
-				refreshStockData();
+				return stocks.get(position);
 			}
-        }.execute();
+
+			public long getItemId(int position) {
+				if (stocks == null){
+					return 0L;
+				}
+				return stocks.get(position).getId();
+			}
+
+			public View getView(int position, View convertView, 
+					ViewGroup parent) {
+				if (convertView == null){
+					LayoutInflater inflater = getLayoutInflater();
+					convertView = 
+						inflater.inflate(R.layout.stock, parent, false);
+				}
+				TextView rowTxt = 
+					(TextView) convertView.findViewById(R.id.rowTxt);
+				rowTxt.setText(stocks.get(position).toString());
+				return convertView;
+			}
+
+			@Override
+			public boolean hasStableIds() {
+				return true;
+			}
+        	
+        });
+		refreshStockData();
 	}
 	
 	@Override
@@ -197,7 +189,8 @@ public class ViewStocks extends ListActivity {
 					}
 					@Override
 					protected void onPostExecute(Stock s){
-						if (s == null || s.getId() == 0){
+						Log.d(LOGGING_TAG, "Stock returned from service: " + s);
+						if (s == null){
 							Log.w(LOGGING_TAG, "Stock returned from Service " +
 									"was null or invalid");
 							Toast.makeText(ViewStocks.this, "Stock not found", 
@@ -224,28 +217,30 @@ public class ViewStocks extends ListActivity {
 
     // Update stock data from the service and refresh the UI
 	private void refreshStockData() {
-		new AsyncTask<Stock, Void, ArrayList<Stock>>(){
-			@Override
-			protected void onPostExecute(ArrayList<Stock> result) {
-				if (result != null){
-					ViewStocks.this.stocks = result;
-					refresh();
-				} else {
-					Toast.makeText(ViewStocks.this, "Exception getting " +
-							"latest stock data", Toast.LENGTH_SHORT);
+		if (stocks != null && stocks.size() > 0){
+			new AsyncTask<Stock, Void, ArrayList<Stock>>(){
+				@Override
+				protected void onPostExecute(ArrayList<Stock> result) {
+					if (result != null){
+						stocks = result;
+						refresh();
+					} else {
+						Toast.makeText(ViewStocks.this, "Exception getting " +
+								"latest stock data", Toast.LENGTH_SHORT);
+					}
 				}
-			}
-
-			@Override
-			protected ArrayList<Stock> doInBackground(Stock... stocks){
-				try {
-					return (ArrayList<Stock>) stockService.getPortfolio();
-				} catch (Exception e) {
-					Log.e(LOGGING_TAG, "Exception getting stock data", e);
+	
+				@Override
+				protected ArrayList<Stock> doInBackground(Stock... stocks){
+					try {
+						return (ArrayList<Stock>) stockService.getPortfolio();
+					} catch (Exception e) {
+						Log.e(LOGGING_TAG, "Exception getting stock data", e);
+					}
+					return null;
 				}
-				return null;
-			}
-    	}.execute(stocks.toArray(new Stock[stocks.size()]));
+	    	}.execute(stocks.toArray(new Stock[stocks.size()]));
+		}
 	}
     
     private void refresh(){

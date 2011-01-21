@@ -90,11 +90,12 @@ public class Stock implements Parcelable{
 	}
 	@Override
 	public String toString() {
-		if (name != null && name.trim().length() > 0){
-			return name + '(' + symbol + ')';
-		} else {
-			return symbol;
+		StringBuilder sb = new StringBuilder();
+		if (name != null){
+			sb.append(name);
 		}
+		sb.append('(').append(symbol).append(')').append("::").append(id);
+		return sb.toString();
 	}
 	/**
 	 * Any <code>Parcelable</code> needs a static field called CREATOR that
