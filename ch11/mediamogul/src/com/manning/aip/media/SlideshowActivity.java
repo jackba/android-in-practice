@@ -21,6 +21,11 @@ import android.widget.VideoView;
 
 import com.manning.aip.media.AudioBrowserActivity.Song;
 
+/**
+ * Show the slideshow created from the pics, song, and video the user selected
+ * @author Michael Galpin
+ *
+ */
 public class SlideshowActivity extends Activity {
 
 	private ImageView leftSlide;
@@ -37,10 +42,14 @@ public class SlideshowActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.slideshow);
+		// create the UI
+		// this is two images in a frame being swapped in and out
 		leftSlide = (ImageView) findViewById(R.id.slide0);
 		rightSlide = (ImageView) findViewById(R.id.slide1);
+		// play the song the user picked
 		song = getIntent().getParcelableExtra("selectedSong");
 		player = MediaPlayer.create(this, song.uri);
+		// when the song finishes, clear the UI and play the video
 		player.setOnCompletionListener(new OnCompletionListener(){
 			@Override
 			public void onCompletion(MediaPlayer mp) {
@@ -49,9 +58,11 @@ public class SlideshowActivity extends Activity {
 				playingSlides = false;
 				video = new VideoView(SlideshowActivity.this);
 				video.setLayoutParams(new LayoutParams(
-								LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+								LayoutParams.FILL_PARENT, 
+								LayoutParams.FILL_PARENT));
 				frame.addView(video);
-				video.setVideoURI((Uri) getIntent().getExtras().get("videoUri")); 
+				video.setVideoURI(
+						(Uri) getIntent().getExtras().get("videoUri")); 
 				videoPlayer = new MediaController(SlideshowActivity.this);
 				videoPlayer.setMediaPlayer(video);
 				video.setMediaController(videoPlayer);
@@ -95,6 +106,9 @@ public class SlideshowActivity extends Activity {
 		player.start();
 	}
 
+	/**
+	 * Simple dissolve animation used to transition between slides
+	 */
 	private class DissolveTransition{
 		private ArrayList<String> images;
 		private int count = 0;

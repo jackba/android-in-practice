@@ -28,24 +28,32 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+/**
+ * Queries MediaStore ContentProvider to find all of the songs on the device
+ * @author Michael Galpin
+ *
+ */
 public class AudioBrowserActivity extends Activity {
 
+	// the song the user picked
 	private Song selectedSong;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.audio_browser);
+		// setup UI
 		AudioListAdapter adapter = new AudioListAdapter();
 		ListView songList = (ListView) findViewById(R.id.list);
 		songList.setAdapter(adapter);
+		// button for going to next
 		Button next = (Button) findViewById(R.id.nxtBtn2);
 		next.setOnClickListener(new OnClickListener(){
-
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(AudioBrowserActivity.this, 
 						VideoChooserActivity.class);
+				// copy data sent in
 				intent.putExtras(getIntent());
 				intent.putExtra("selectedSong", selectedSong);
 				startActivity(intent);
@@ -54,15 +62,22 @@ public class AudioBrowserActivity extends Activity {
 		});
 	}
 
+	/**
+	 * Custom adapter backed by a Cursor created by querying for all of the
+	 * music on the device
+	 */
 	private class AudioListAdapter extends BaseAdapter{
 		private Cursor cursor;
 		private Activity activity = AudioBrowserActivity.this;
+		// the row in the list of the song the user picked
 		private RadioButton selectedRow;
+		// songs that are currently playing
 		private final HashSet<Long> playingSongs = new HashSet<Long>();
 		
 		public AudioListAdapter(){
 			super();
 			String[] columns = {TITLE,ARTIST,_ID, DATA};
+			// where clause so we don't get ringtones, podcasts, etc.
 			String whereClause = IS_MUSIC + " = ?";
 			String[] whereValues = {"1"};
 			cursor = managedQuery(EXTERNAL_CONTENT_URI,
@@ -78,6 +93,7 @@ public class AudioBrowserActivity extends Activity {
 			return cursor.getCount();
 		}
 
+		// reads the data out of the Cursor and constructs a Song
 		@Override
 		public Object getItem(int position) {
 			Song song = new Song();
@@ -114,6 +130,7 @@ public class AudioBrowserActivity extends Activity {
 			} else {
 				playBtn.setText(R.string.play);
 			}
+			// preview the song, listen to the first 15 seconds
 			playBtn.setOnClickListener(new OnClickListener(){
 				private Handler handler = new Handler();
 				MediaPlayer player = null;
@@ -125,9 +142,11 @@ public class AudioBrowserActivity extends Activity {
 					if (player == null){
 						player = MediaPlayer.create(activity, song.uri);
 					}
+					// handle pausing/resume
 					if (!playingSongs.contains(song.id)){
 						player.start();
 						playingSongs.add(song.id);
+						// timer so you can only listen to 15 seconds
 						autoStop = new Runnable(){
 							@Override
 							public void run() {
@@ -143,6 +162,8 @@ public class AudioBrowserActivity extends Activity {
 					} else {
 						player.pause();
 						playingSongs.remove(song.id);
+						// keep track of where they paused and how much time 
+						// left on the timer
 						timeLeft = maxTime - player.getCurrentPosition();
 						playBtn.setText(R.string.play);
 						handler.removeCallbacks(autoStop);
@@ -150,9 +171,9 @@ public class AudioBrowserActivity extends Activity {
 				}
 				
 			});
+			// radio button for selecting the song to be used
 			final RadioButton radio = holder.radio;
 			radio.setOnClickListener(new OnClickListener(){
-
 				@Override
 				public void onClick(View v) {
 					if (selectedRow != null){
@@ -161,8 +182,8 @@ public class AudioBrowserActivity extends Activity {
 					selectedRow = radio;
 					selectedSong = song;
 				}
-				
 			});
+			// remember the state as view is recycled
 			if (selectedSong != null && song.id == selectedSong.id){
 				radio.setChecked(true);
 			} else {
@@ -172,6 +193,9 @@ public class AudioBrowserActivity extends Activity {
 		}		
 	}
 	
+	/**
+	 * View holder pattern for the list adapter
+	 */
 	private static class RowViewHolder{
 		final TextView songLabel;
 		final Button playBtn;
@@ -183,6 +207,10 @@ public class AudioBrowserActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Simple data structure representing a song. This is a Parcelable so we
+	 * can pass it to the next Activity.
+	 */
 	public static class Song implements Parcelable{
 		String title;
 		String artist;

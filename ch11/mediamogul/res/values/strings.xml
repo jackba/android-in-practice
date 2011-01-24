@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="empty_pics_msg">Sorry but you have no pictures in your public pictures folder</string>
+    <string name="no_pics_err_msg">This application requires you to have images in your public images directory</string>
     <string name="hello">Hello World, MediaBrowserActivity!</string>
     <string name="app_name">MediaMogul</string>
     <string name="step0">Step 0: Slideshow metadata</string>
