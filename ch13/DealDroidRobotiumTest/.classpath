@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/DealDroid"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DealDroidWithExport"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="robotium-solo-2.0.2.jar" sourcepath="/robotium"/>
 	<classpathentry kind="output" path="bin"/>
