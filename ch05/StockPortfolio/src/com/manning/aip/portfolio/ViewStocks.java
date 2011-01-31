@@ -59,10 +59,8 @@ public class ViewStocks extends ListActivity {
 					Log.d(LOGGING_TAG, "No stocks returned from service");
 				} else {
 					Log.d(LOGGING_TAG, "Got "+ stocks.size() +" stocks from service");
-					for (Stock s : stocks){
-						Log.d(LOGGING_TAG, "Stock from service: " + s);
-					}
 				}
+				refresh();
 			} catch (RemoteException e) {
 				Log.e(LOGGING_TAG, "Exception retrieving portfolio from service",e);
 			}
@@ -131,7 +129,6 @@ public class ViewStocks extends ListActivity {
 			}
         	
         });
-		refreshStockData();
 	}
 	
 	@Override
@@ -195,7 +192,9 @@ public class ViewStocks extends ListActivity {
 									"was null or invalid");
 							Toast.makeText(ViewStocks.this, "Stock not found", 
 									Toast.LENGTH_SHORT);
-						} else addStockAndRefresh(s);
+						} else { 
+							refreshStockData();
+						}
 					}
 				}.execute(stock);
 			}
@@ -208,19 +207,14 @@ public class ViewStocks extends ListActivity {
 		// disconnect from the stock service
 		unbindService(connection);
 	}
-    
-	// Add the stock to the internal list and refresh the UI
-    private void addStockAndRefresh(Stock stock){
-    	stocks.add(stock);
-    	refreshStockData();
-    }
 
     // Update stock data from the service and refresh the UI
 	private void refreshStockData() {
 		if (stocks != null && stocks.size() > 0){
-			new AsyncTask<Stock, Void, ArrayList<Stock>>(){
+			new AsyncTask<Void, Void, ArrayList<Stock>>(){
 				@Override
 				protected void onPostExecute(ArrayList<Stock> result) {
+					Log.d(LOGGING_TAG, "Got new stock data from service");
 					if (result != null){
 						stocks = result;
 						refresh();
@@ -231,7 +225,7 @@ public class ViewStocks extends ListActivity {
 				}
 	
 				@Override
-				protected ArrayList<Stock> doInBackground(Stock... stocks){
+				protected ArrayList<Stock> doInBackground(Void... nada){
 					try {
 						return (ArrayList<Stock>) stockService.getPortfolio();
 					} catch (Exception e) {
@@ -239,11 +233,15 @@ public class ViewStocks extends ListActivity {
 					}
 					return null;
 				}
-	    	}.execute(stocks.toArray(new Stock[stocks.size()]));
+	    	}.execute();
 		}
 	}
     
     private void refresh(){
+    	Log.d(LOGGING_TAG, "Refreshing UI with new data");
+		for (Stock s : stocks){
+			Log.d(LOGGING_TAG, "Got stock: " + s.toString());
+		}
     	BaseAdapter adapter = (BaseAdapter) this.getListAdapter();
     	adapter.notifyDataSetChanged();
     }

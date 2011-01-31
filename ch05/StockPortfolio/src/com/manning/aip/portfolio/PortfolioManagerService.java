@@ -101,16 +101,20 @@ public class PortfolioManagerService extends Service {
 			}
 
 			public List<Stock> getPortfolio() throws RemoteException {
+				Log.d(TAG, "Getting portfolio");
 				ArrayList<Stock> stocks = db.getStocks();
 				long currTime = System.currentTimeMillis();
 				if (currTime - timestamp <= MAX_CACHE_AGE){
+					Log.d(TAG, "Fresh cache, returning it");
 					return stocks;
 				}
 				// else cache is stale, refresh it
 				Stock[] currStocks = new Stock[stocks.size()];
 				stocks.toArray(currStocks);
 				try {
+					Log.d(TAG, "Stale cache, refreshing it");
 					ArrayList<Stock> newStocks = fetchStockData(currStocks);
+					Log.d(TAG, "Got new stock data, updating cache");
 					updateCachedStocks(newStocks);
 					return newStocks;
 				} catch (Exception e) {
@@ -130,12 +134,15 @@ public class PortfolioManagerService extends Service {
 	}
 	
 	private void updateCachedStocks(ArrayList<Stock> stocks){
+		Log.d(TAG, "Got new stock data to update cache with");
 		timestamp = System.currentTimeMillis();
 		Stock[] currStocks = new Stock[stocks.size()];
 		currStocks = stocks.toArray(currStocks);
 		for (Stock stock : currStocks){
+			Log.d(TAG, "Updating cache with stock=" + stock.toString());
 			db.updateStockPrice(stock);
 		}
+		Log.d(TAG, "Cache updated, checking for alerts");
 		checkForAlerts(stocks);
 	}
 	

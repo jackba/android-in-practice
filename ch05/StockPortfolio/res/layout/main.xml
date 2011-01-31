@@ -5,28 +5,42 @@
     android:layout_height="fill_parent"
     >
     <LinearLayout android:orientation="horizontal" 
-    	android:layout_width="fill_parent" android:layout_height="wrap_content">
+    	android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content"
+    	android:layout_gravity="top|left">
     	<EditText android:layout_width="wrap_content" 
-    		android:layout_height="wrap_content" android:hint="@string/hintSymbol"
+    		android:layout_height="wrap_content" 
+    		android:hint="@string/hintSymbol"
+    		android:inputType="textNoSuggestions"
     		android:id="@+id/inputSymbol"
     	/>
     	<EditText android:layout_width="wrap_content" 
-    		android:layout_height="wrap_content" android:hint="@string/hintMin"
+    		android:layout_height="wrap_content"
+    		android:inputType="numberDecimal" 
+    		android:hint="@string/hintMin"
     		android:id="@+id/inputMin"
     	/>
     	<EditText android:layout_width="wrap_content" 
-    		android:layout_height="wrap_content" android:hint="@string/hintMax"
+    		android:layout_height="wrap_content" 
+    		android:inputType="numberDecimal"
+    		android:hint="@string/hintMax"
     		android:id="@+id/inputMax"
     	/>    	
     </LinearLayout>
     <LinearLayout android:orientation="horizontal" 
-    	android:layout_width="fill_parent" android:layout_height="wrap_content">
+    	android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content"
+    	android:layout_gravity="bottom|right">
     	<EditText android:layout_width="wrap_content" 
-    		android:layout_height="wrap_content" android:hint="@string/hintPrice"
+    		android:layout_height="wrap_content" 
+    		android:inputType="numberDecimal"
+    		android:hint="@string/hintPrice"
     		android:id="@+id/inputPrice"
     	/>    	
     	<EditText android:layout_width="wrap_content" 
-    		android:layout_height="wrap_content" android:hint="@string/hintQuant"
+    		android:layout_height="wrap_content"
+    		android:inputType="number" 
+    		android:hint="@string/hintQuant"
     		android:id="@+id/inputQuant"
     	/>    	    	    	
     	<Button android:layout_width="wrap_content" 
@@ -35,6 +49,7 @@
     	/>    	
     </LinearLayout>
     <ListView android:layout_width="fill_parent" 
-    	android:layout_height="wrap_content" android:id="@android:id/list"
+    	android:layout_height="wrap_content" 
+    	android:id="@android:id/list"
     />
 </LinearLayout>

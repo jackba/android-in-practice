@@ -92,9 +92,10 @@ public class Stock implements Parcelable{
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		if (name != null){
-			sb.append(name);
+			sb.append(name).append(' ');
 		}
-		sb.append('(').append(symbol).append(')').append("::").append(id);
+		sb.append('(').append(symbol.toUpperCase()).append(')')
+			.append(" $").append(currentPrice);
 		return sb.toString();
 	}
 	/**

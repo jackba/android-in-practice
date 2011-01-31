@@ -17,6 +17,7 @@ import android.util.Log;
  *
  */
 public class StocksDb {
+	private static final String TAG = "StocksDb";
 	// database metadata
 	private static final String DB_NAME = "stocks.db";
 	private static final int DB_VERSION = 1;
@@ -73,7 +74,7 @@ public class StocksDb {
 			@Override
 			public void onCreate(SQLiteDatabase db) {
 				db.execSQL(CREATE_TABLE);
-				Log.d("StocksDb", "Created table: \n" + CREATE_TABLE);
+				Log.d(TAG, "Created table: \n" + CREATE_TABLE);
 			}
 
 			@Override
@@ -100,6 +101,7 @@ public class StocksDb {
 	 * 			database, including its database-assigned ID.
 	 */
 	public Stock addStock(Stock stock){
+		Log.d(TAG, "Adding stock to db, stock="+stock);
 		stmt.bindString(1, stock.getSymbol());
 		stmt.bindDouble(2, stock.getMaxPrice());
 		stmt.bindDouble(3, stock.getMinPrice());
@@ -118,6 +120,7 @@ public class StocksDb {
 	 * @param 	stock			The <code>Stock</code> being updated.
 	 */
 	public void updateStockPrice(Stock stock){
+		Log.d(TAG, "Updating stock price in DB stock="+stock.toString());
 		updateStmt.bindDouble(1, stock.getCurrentPrice());
 		updateStmt.bindLong(2, stock.getId());
 		updateStmt.execute();
@@ -129,6 +132,7 @@ public class StocksDb {
 	 * @return	List of all of the Stocks stored in the database.
 	 */
 	public ArrayList<Stock> getStocks() {
+		Log.d(TAG, "Getting stocks form DB");
 		Cursor results = db.rawQuery(READ_SQL, null);
 		ArrayList<Stock> stocks = new ArrayList<Stock>(results.getCount());
 		if (results.moveToFirst()){
@@ -148,6 +152,7 @@ public class StocksDb {
 				stock.setMinPrice(results.getDouble(minCol));
 				stock.setCurrentPrice(results.getDouble(currentPriceCol));
 				stock.setName(results.getString(nameCol));
+				Log.d(TAG, "Stock from db = " + stock.toString());
 				stocks.add(stock);
 			} while (results.moveToNext());
 		}
