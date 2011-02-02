@@ -13,15 +13,19 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.List;
-
-public class Main extends Activity {
+public class Main extends Activity implements OnItemClickListener {
 
    private NotificationManager nMgr;
    private LocationManager lMgr;
-   private TextView providers;
+   private ListView providersList;
 
    private long lastLocationMillis;
    private Location lastLocation;
@@ -34,14 +38,13 @@ public class Main extends Activity {
       nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
       lMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-      providers = (TextView) findViewById(R.id.location_providers);
+      ArrayAdapter<String> adapter =
+               new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lMgr.getAllProviders());
+      providersList = (ListView) findViewById(R.id.location_providers);
+      providersList.setAdapter(adapter);
 
-      List<String> p = lMgr.getAllProviders();
-      StringBuilder sb = new StringBuilder();
-      for (String s : p) {
-         sb.append(s + "\n");
-      }
-      providers.setText(p.toString());
+      providersList.setOnItemClickListener(this);
+
       //lMgr.getLastKnownLocation(provider);
       //lMgr.getGpsStatus(status);
       //lMgr.getBestProvider(criteria, enabledOnly)
@@ -57,6 +60,12 @@ public class Main extends Activity {
    // http://stackoverflow.com/questions/2021176/android-gps-status
 
    //isGPSFix = (SystemClock.elapsedRealtime() - mLastLocationMillis) < 3000;
+
+   @Override
+   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+      Toast.makeText(this, "Clicked item: " + ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+
+   }
 
    public class LocListener implements LocationListener {
 
