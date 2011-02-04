@@ -11,5 +11,6 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".ProviderDetail" />
+		<activity android:name=".GetLocation" />
 	</application>
 </manifest> 

@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
-// NOTE this is not anywhere near done, just committing for safe keeping
 
 public class Main extends Activity implements OnItemClickListener {
 
@@ -20,6 +20,8 @@ public class Main extends Activity implements OnItemClickListener {
    
    private LocationManager lMgr;
    private ListView providersList;
+   
+   private Button getLoc;
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,13 @@ public class Main extends Activity implements OnItemClickListener {
       providersList.setAdapter(adapter);
 
       providersList.setOnItemClickListener(this);
+      
+      getLoc = (Button) findViewById(R.id.getloc_button);
+      getLoc.setOnClickListener(new OnClickListener() {
+         public void onClick(View v) {
+            startActivity(new Intent(Main.this, GetLocation.class));
+         }
+      });
    }
 
    @Override
