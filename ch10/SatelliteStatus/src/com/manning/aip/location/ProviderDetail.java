@@ -11,14 +11,12 @@ import android.os.Bundle;
 import android.util.Printer;
 import android.util.StringBuilderPrinter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class ProviderDetail extends Activity {
 
    private LocationManager lMgr;
-   private LocationProvider provider;
 
    private TextView title;
    private TextView detail;
@@ -29,16 +27,19 @@ public class ProviderDetail extends Activity {
       setContentView(R.layout.provider_detail);
 
       title = (TextView) findViewById(R.id.title);
-      detail = (TextView) findViewById(R.id.detail);
-
-      String providerName = getIntent().getStringExtra("PROVIDER_NAME");
+      detail = (TextView) findViewById(R.id.detail);      
 
       lMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-      Location lastLocation = lMgr.getLastKnownLocation(providerName);
-
-      provider = lMgr.getProvider(providerName);
-
+   }
+   
+   @Override 
+   public void onResume() {
+      super.onResume();      
+            
+      String providerName = getIntent().getStringExtra("PROVIDER_NAME");      
+      Location lastLocation = lMgr.getLastKnownLocation(providerName);      
+      LocationProvider provider = lMgr.getProvider(providerName);      
+      
       StringBuilder sb = new StringBuilder();
 
       sb.append("location manager data");
@@ -48,7 +49,7 @@ public class ProviderDetail extends Activity {
          Printer printer = new StringBuilderPrinter(sb);
          lastLocation.dump(printer, "last location: ");
       } else {
-         sb.append("\nlast location: null");
+         sb.append("\nlast location: null\n");
       }
       
       if (providerName.equalsIgnoreCase(LocationManager.GPS_PROVIDER)) {
@@ -86,8 +87,5 @@ public class ProviderDetail extends Activity {
 
       title.setText("Provider: " + providerName);
       detail.setText(sb.toString());
-
-      Toast.makeText(this, "Clicked item: " + providerName, Toast.LENGTH_SHORT).show();
    }
-
 }
