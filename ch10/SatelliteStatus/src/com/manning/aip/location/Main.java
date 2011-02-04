@@ -1,4 +1,4 @@
-package com.manning.aip.satellite;
+package com.manning.aip.location;
 
 import android.app.Activity;
 import android.content.Context;
