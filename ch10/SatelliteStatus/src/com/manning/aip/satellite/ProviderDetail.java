@@ -2,34 +2,76 @@ package com.manning.aip.satellite;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.GpsSatellite;
+import android.location.GpsStatus;
+import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import android.util.Printer;
+import android.util.StringBuilderPrinter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class ProviderDetail extends Activity {
 
    private LocationManager lMgr;
    private LocationProvider provider;
-   
+
    private TextView title;
    private TextView detail;
-   
+
    @Override
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.provider_detail);
 
-      String providerName = getIntent().getStringExtra("PROVIDER_NAME");
-      lMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-      provider = lMgr.getProvider(providerName);      
-      
       title = (TextView) findViewById(R.id.title);
       detail = (TextView) findViewById(R.id.detail);
-      
+
+      String providerName = getIntent().getStringExtra("PROVIDER_NAME");
+
+      lMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+      Location lastLocation = lMgr.getLastKnownLocation(providerName);
+
+      provider = lMgr.getProvider(providerName);
+
       StringBuilder sb = new StringBuilder();
-      sb.append("provider class: " + provider.getClass());
+
+      sb.append("location manager data");
+      sb.append("\n--------------------------");
+      if (lastLocation != null) {
+         sb.append("\n");
+         Printer printer = new StringBuilderPrinter(sb);
+         lastLocation.dump(printer, "last location: ");
+      } else {
+         sb.append("\nlast location: null");
+      }
+      
+      if (providerName.equalsIgnoreCase(LocationManager.GPS_PROVIDER)) {
+         GpsStatus gpsStatus = lMgr.getGpsStatus(null);
+         sb.append("\ngps status");
+         sb.append("\n--------------");
+         sb.append("\ntime to first fix: " + gpsStatus.getTimeToFirstFix());
+         sb.append("\nmax satellites: " + gpsStatus.getMaxSatellites());
+         ArrayList<GpsSatellite> satellites = new ArrayList<GpsSatellite>();         
+         for (GpsSatellite satellite : gpsStatus.getSatellites()) {
+            satellites.add(satellite);           
+         }  
+         sb.append("\ncurrent satellites: " + satellites.size());
+         if (satellites.size() > 0) {
+            for (GpsSatellite satellite : satellites) {
+               sb.append("\nsatellite: " + satellite.getPrn());
+               sb.append("\n   azimuth " + satellite.getAzimuth());
+               sb.append("\n   elevation " + satellite.getElevation());
+               sb.append("\n   signal to noise ratio " + satellite.getSnr());
+            }
+         }
+      }
+      
       sb.append("\n");
       sb.append("\nprovider properties");
       sb.append("\n--------------------");
@@ -40,12 +82,9 @@ public class ProviderDetail extends Activity {
       sb.append("\nsupports bearing: " + provider.supportsBearing());
       sb.append("\nsupports speed: " + provider.supportsSpeed());
       sb.append("\nrequires cell: " + provider.requiresCell());
-      sb.append("\nrequires network: " + provider.requiresNetwork());
-      sb.append("\nrequires satellite: " + provider.requiresSatellite());
-      sb.append("\nprovider data");
-      sb.append("\n--------------");    
-      
-      title.setText("Provider: " + providerName);      
+      sb.append("\nrequires network: " + provider.requiresNetwork());    
+
+      title.setText("Provider: " + providerName);
       detail.setText(sb.toString());
 
       Toast.makeText(this, "Clicked item: " + providerName, Toast.LENGTH_SHORT).show();
