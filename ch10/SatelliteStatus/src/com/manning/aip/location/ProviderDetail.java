@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+// NOTE that "network" provider will always return null for getLastKnownLocation
+// if settings->location and security->Use wireless networks is NOT CHECKED (very often it's not)
+
 public class ProviderDetail extends Activity {
 
    private LocationManager lMgr;
