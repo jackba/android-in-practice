@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 public class GetLocation extends Activity implements OnItemClickListener {
 
+   public static final String LOC_DATA = "LOC_DATA";
+
    private LocationManager locationMgr;
    private NotificationManager notificationMgr;
 
@@ -92,46 +94,29 @@ public class GetLocation extends Activity implements OnItemClickListener {
       @Override
       public void onStatusChanged(String provider, int status, Bundle extras) {
          Log.d("LocationListener", "Status changed to " + status);
-
-         Notification notification =
-                  new Notification(android.R.drawable.ic_menu_compass, "Status Change", System.currentTimeMillis());
-         notification.setLatestEventInfo(GetLocation.this, "Location Status Change", "Status changed to " + status,
-                  PendingIntent.getActivity(GetLocation.this, 0, new Intent(GetLocation.this, GetLocation.class), 0));
-         notificationMgr.notify(0, notification);
+         fireNotification("Status Change", "Status changed to: " + status);
       }
 
       @Override
       public void onLocationChanged(Location location) {
          Log.d("LocationListener", "Location changed to " + location);
-
          if (location == null) {
             return;
          }
-
          lastLocationMillis = SystemClock.elapsedRealtime();
-
-         // Do something.
-
          lastLocation = location;
-
-         Notification notification =
-                  new Notification(android.R.drawable.ic_menu_compass, "Location Change", System.currentTimeMillis());
-         notification.setLatestEventInfo(GetLocation.this, "Location Status Change",
-                  "Location changed to " + location.toString(),
-                  PendingIntent.getActivity(GetLocation.this, 0, new Intent(GetLocation.this, GetLocation.class), 0));
-         notificationMgr.notify(0, notification);
+         fireNotification("Location Change",
+                  "lat/long: " + lastLocation.getLatitude() + " / " + lastLocation.getLongitude());
       }
 
       @Override
       public void onProviderDisabled(String provider) {
-         // TODO Auto-generated method stub
-
+         Toast.makeText(GetLocation.this, "provider disabled", Toast.LENGTH_SHORT).show();
       }
 
       @Override
       public void onProviderEnabled(String provider) {
-         // TODO Auto-generated method stub
-
+         Toast.makeText(GetLocation.this, "provider enabled", Toast.LENGTH_SHORT).show();
       }
    }
 
@@ -158,5 +143,17 @@ public class GetLocation extends Activity implements OnItemClickListener {
                break;
          }
       }
+   }
+
+   private void fireNotification(String title, String message) {
+      Intent intent = new Intent(GetLocation.this, LocationDetail.class);
+      intent.putExtra(LOC_DATA, message);
+      Notification notification =
+               new Notification(android.R.drawable.ic_menu_compass, "Location Listener Update",
+                        System.currentTimeMillis());
+      notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+      notification.setLatestEventInfo(GetLocation.this, title, message,
+               PendingIntent.getActivity(GetLocation.this, 0, intent, 0));
+      notificationMgr.notify(0, notification);
    }
 }
