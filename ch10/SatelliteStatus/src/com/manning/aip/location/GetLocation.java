@@ -96,6 +96,8 @@ public class GetLocation extends Activity {
    // LocationListener impl
    public class LocListener implements LocationListener {
 
+      // there are reports of this not working on 2.1 and 2.2? 
+      // seems to work fine for me on a Nexus One with 2.2 
       @Override
       public void onStatusChanged(String provider, int status, Bundle extras) {
          Log.d("LocationListener", "Status changed to " + status);
@@ -136,8 +138,9 @@ public class GetLocation extends Activity {
       }
    }
 
-   // can take several minutes to get a "fix" after GPS is enabled   
-   //GpsStatus.Listener impl
+   // combine onLocationChanged and GpsStatus to be certain you have a good current GPS fix
+   // can take several minutes to get a "fix" after GPS is enabled (icon at top blinking vs solid)
+   // GpsStatus.Listener impl
    private class GpsListener implements GpsStatus.Listener {
       protected GpsStatus gpsStatus;
       protected boolean gpsFix;
