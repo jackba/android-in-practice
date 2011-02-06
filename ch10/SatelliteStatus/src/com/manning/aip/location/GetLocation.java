@@ -11,6 +11,7 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -18,6 +19,10 @@ import android.widget.Toast;
 
 //TODO make this return current location easiest way?
 //http://stackoverflow.com/questions/3145089/what-is-the-simplest-and-most-robust-way-to-get-the-users-current-location-in-an/3145655#3145655
+
+// cover frequent questions -- and note relevant issues
+// http://code.google.com/p/android/issues/detail?id=9433
+// http://stackoverflow.com/questions/2021176/android-gps-status
 
 public class GetLocation extends Activity {
 
@@ -27,6 +32,7 @@ public class GetLocation extends Activity {
    private NotificationManager notificationMgr;
 
    private LocationListener locationListener;
+   private GpsStatus.Listener gpsListener;
 
    private Location lastLocation;
 
@@ -41,31 +47,28 @@ public class GetLocation extends Activity {
       locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
       notificationMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-      // create LocationListener as an instance var so we can "removeUpdates" in onPause
-      // (it's very important to removeUpdates when done, if you don't the Activity can't be cleaned up)
+      // create listener as an instance vars so we can "removeUpdates"/"removeGpsStatusListener" in onPause
+      // (it's very important to remove listeners when done, if you don't the Activity can't be cleaned up)
       locationListener = new LocListener();
+      gpsListener = new GpsListener();
 
-      // there is also a listener specifically for GPS
-      locationMgr.addGpsStatusListener(new GpsListener());
-
-      title = (TextView) findViewById(R.id.title);
-      detail = (TextView) findViewById(R.id.detail);
-   }
-
-   @Override
-   protected void onResume() {
-      super.onResume();
-
+      // get provider and request location updates
       Criteria criteria = new Criteria();
-      criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+      criteria.setAccuracy(Criteria.ACCURACY_FINE); // can use Criteria
       criteria.setCostAllowed(false);
       String providerName = locationMgr.getBestProvider(criteria, true);
       if (providerName != null) {
          locationMgr.requestLocationUpdates(providerName, 3000, 100, new LocListener());
       } else {
-         Toast.makeText(this, "Viable location provider not available, cannot establish current location",
-                  Toast.LENGTH_SHORT).show();
+         Toast.makeText(this, "ACCURACY FINE location provider not available (is GPS enabled?)", Toast.LENGTH_SHORT)
+                  .show();
       }
+
+      // there is also a listener specifically for GPS status changes
+      locationMgr.addGpsStatusListener(gpsListener);
+
+      title = (TextView) findViewById(R.id.title);
+      detail = (TextView) findViewById(R.id.detail);
 
       title.setText("Get Location");
       detail.setText("Checking for location using provider: " + providerName);
@@ -75,6 +78,7 @@ public class GetLocation extends Activity {
    protected void onPause() {
       super.onPause();
       locationMgr.removeUpdates(locationListener);
+      locationMgr.removeGpsStatusListener(gpsListener);
    }
 
    private void fireNotification(String title, String message) {
@@ -95,7 +99,19 @@ public class GetLocation extends Activity {
       @Override
       public void onStatusChanged(String provider, int status, Bundle extras) {
          Log.d("LocationListener", "Status changed to " + status);
-         fireNotification("Status Change", "Status changed to: " + status);
+         String message = "Status changed to: ";
+         switch (status) {
+            case LocationProvider.AVAILABLE:
+               message += status + " " + "AVAILABLE";
+               break;
+            case LocationProvider.TEMPORARILY_UNAVAILABLE:
+               message += status + " " + "TEMPORARILY_UNAVAILABLE";
+               break;
+            case LocationProvider.OUT_OF_SERVICE:
+               message += status + " " + "OUT_OF_SERVICE";
+               break;
+         }
+         fireNotification("Status Change", message);
       }
 
       @Override
@@ -106,7 +122,7 @@ public class GetLocation extends Activity {
          }
          lastLocation = location;
          fireNotification("Location Change",
-                  "lat/long: " + lastLocation.getLatitude() + " / " + lastLocation.getLongitude());
+                  "lat / long:\n" + lastLocation.getLatitude() + " / " + lastLocation.getLongitude());
       }
 
       @Override
@@ -120,30 +136,41 @@ public class GetLocation extends Activity {
       }
    }
 
+   // can take several minutes to get a "fix" after GPS is enabled   
    //GpsStatus.Listener impl
    private class GpsListener implements GpsStatus.Listener {
-      private boolean gpsFix;
+      protected GpsStatus gpsStatus;
+      protected boolean gpsFix;
 
       public void onGpsStatusChanged(int event) {
+         Log.d("GpsListener", "Status changed to " + event);
+
          switch (event) {
+            case GpsStatus.GPS_EVENT_STARTED:
+               break;
+            case GpsStatus.GPS_EVENT_STOPPED:
+               break;
+            // GPS_EVENT_SATELLITE_STATUS will be called frequently
+            // all satellites in use will invoke it, don't rely on ONLY it
+            // make sure 
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+               // if lastLocation (established by onLocationChanged
                if (lastLocation != null && (System.currentTimeMillis() - lastLocation.getTime()) < 3000) {
                   gpsFix = true;
                } else {
                   gpsFix = false;
                }
 
-               Toast.makeText(GetLocation.this, "EVENT_SATELLITE_STATUS: " + gpsFix, Toast.LENGTH_SHORT).show();
                if (gpsFix) {
-                  // TODO                  
-               } else {
-                  // TODO
+                  Toast.makeText(GetLocation.this, "EVENT_SATELLITE_STATUS: got GPS fix", Toast.LENGTH_SHORT).show();
                }
+
+               GetLocation.this.locationMgr.getGpsStatus(gpsStatus);
 
                break;
             case GpsStatus.GPS_EVENT_FIRST_FIX:
                gpsFix = true;
-               Toast.makeText(GetLocation.this, "EVENT_FIRST_FIX: " + gpsFix, Toast.LENGTH_SHORT).show();
+               Toast.makeText(GetLocation.this, "EVENT_FIRST_FIX: first GPS fix", Toast.LENGTH_SHORT).show();
                // TODO (use fix)
                break;
          }
