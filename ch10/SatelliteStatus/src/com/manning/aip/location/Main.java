@@ -17,26 +17,26 @@ import android.widget.TextView;
 public class Main extends Activity implements OnItemClickListener {
 
    public static final String PROVIDER_NAME = "PROVIDER_NAME";
-   
-   private LocationManager lMgr;
+
+   private LocationManager locationMgr;
    private ListView providersList;
-   
+
    private Button getLoc;
 
    @Override
-   public void onCreate(Bundle savedInstanceState) {
+   protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
 
-      lMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+      locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
       ArrayAdapter<String> adapter =
-               new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lMgr.getAllProviders());
+               new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locationMgr.getAllProviders());
       providersList = (ListView) findViewById(R.id.location_providers);
       providersList.setAdapter(adapter);
 
       providersList.setOnItemClickListener(this);
-      
+
       getLoc = (Button) findViewById(R.id.getloc_button);
       getLoc.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
@@ -48,9 +48,9 @@ public class Main extends Activity implements OnItemClickListener {
    @Override
    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
       TextView textView = (TextView) view;
-      String providerName = textView.getText().toString();     
+      String providerName = textView.getText().toString();
       Intent intent = new Intent(Main.this, ProviderDetail.class);
       intent.putExtra(PROVIDER_NAME, providerName);
       startActivity(intent);
-   }   
+   }
 }

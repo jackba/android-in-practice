@@ -19,30 +19,30 @@ import java.util.ArrayList;
 
 public class ProviderDetail extends Activity {
 
-   private LocationManager lMgr;
+   private LocationManager locationMgr;
 
    private TextView title;
    private TextView detail;
 
    @Override
-   public void onCreate(Bundle savedInstanceState) {
+   protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      setContentView(R.layout.provider_detail);
+      setContentView(R.layout.title_detail);
+
+      locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
       title = (TextView) findViewById(R.id.title);
-      detail = (TextView) findViewById(R.id.detail);      
-
-      lMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+      detail = (TextView) findViewById(R.id.detail);
    }
-   
-   @Override 
-   public void onResume() {
-      super.onResume();      
-            
-      String providerName = getIntent().getStringExtra("PROVIDER_NAME");      
-      Location lastLocation = lMgr.getLastKnownLocation(providerName);      
-      LocationProvider provider = lMgr.getProvider(providerName);      
-      
+
+   @Override
+   protected void onResume() {
+      super.onResume();
+
+      String providerName = getIntent().getStringExtra("PROVIDER_NAME");
+      Location lastLocation = locationMgr.getLastKnownLocation(providerName);
+      LocationProvider provider = locationMgr.getProvider(providerName);
+
       StringBuilder sb = new StringBuilder();
 
       sb.append("location manager data");
@@ -54,17 +54,17 @@ public class ProviderDetail extends Activity {
       } else {
          sb.append("\nlast location: null\n");
       }
-      
+
       if (providerName.equalsIgnoreCase(LocationManager.GPS_PROVIDER)) {
-         GpsStatus gpsStatus = lMgr.getGpsStatus(null);
+         GpsStatus gpsStatus = locationMgr.getGpsStatus(null);
          sb.append("\ngps status");
          sb.append("\n--------------");
          sb.append("\ntime to first fix: " + gpsStatus.getTimeToFirstFix());
          sb.append("\nmax satellites: " + gpsStatus.getMaxSatellites());
-         ArrayList<GpsSatellite> satellites = new ArrayList<GpsSatellite>();         
+         ArrayList<GpsSatellite> satellites = new ArrayList<GpsSatellite>();
          for (GpsSatellite satellite : gpsStatus.getSatellites()) {
-            satellites.add(satellite);           
-         }  
+            satellites.add(satellite);
+         }
          sb.append("\ncurrent satellites: " + satellites.size());
          if (satellites.size() > 0) {
             for (GpsSatellite satellite : satellites) {
@@ -75,7 +75,7 @@ public class ProviderDetail extends Activity {
             }
          }
       }
-      
+
       sb.append("\n");
       sb.append("\nprovider properties");
       sb.append("\n--------------------");
@@ -86,7 +86,7 @@ public class ProviderDetail extends Activity {
       sb.append("\nsupports bearing: " + provider.supportsBearing());
       sb.append("\nsupports speed: " + provider.supportsSpeed());
       sb.append("\nrequires cell: " + provider.requiresCell());
-      sb.append("\nrequires network: " + provider.requiresNetwork());    
+      sb.append("\nrequires network: " + provider.requiresNetwork());
 
       title.setText("Provider: " + providerName);
       detail.setText(sb.toString());
