@@ -152,6 +152,7 @@ public class GetCurrentLocation extends Activity {
 
       @Override
       public void onProviderDisabled(String provider) {
+         endListenForLocation("Location provider DISABLED, unable to determine location at the current time.");
          Toast.makeText(GetCurrentLocation.this, "provider disabled", Toast.LENGTH_SHORT).show();
       }
 
