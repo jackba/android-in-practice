@@ -1,0 +1,19 @@
+Wikipedia API notes
+-------------------
+
+Uses MediaWiki
+http://en.wikipedia.org/w/api.php
+
+Observatories:
+http://en.wikipedia.org/wiki/List_of_astronomical_observatories
+
+Export all of them:
+http://en.wikipedia.org/w/api.php?format=json&action=query&export=true&titles=List_of_astronomical_observatories
+
+Get details on specific observatory by title:
+http://en.wikipedia.org/w/api.php?format=json&action=query&export=true&titles=Apollo_Observatory
+
+TODO export as XML/JSON without the Wiki markup crap?
+
+Also, build local XML data files, and better a process to update those files (but don't parse real time).
+
