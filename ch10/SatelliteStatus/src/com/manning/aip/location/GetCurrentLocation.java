@@ -112,9 +112,7 @@ public class GetCurrentLocation extends Activity {
    }
 
    private void endListenForLocation(String message) {
-      if (progressDialog.isShowing()) {
-         progressDialog.hide();
-      }
+      progressDialog.hide();
       locationMgr.removeUpdates(locationListener);
       handler.removeCallbacks(handlerCallback);
       detail.setText(message);
@@ -135,10 +133,7 @@ public class GetCurrentLocation extends Activity {
                message += status + " " + "TEMPORARILY_UNAVAILABLE";
                break;
             case LocationProvider.OUT_OF_SERVICE:
-               message += status + " " + "OUT_OF_SERVICE";
-               if (progressDialog.isShowing()) {
-                  progressDialog.hide();
-               }
+               message += status + " " + "OUT_OF_SERVICE";               
                endListenForLocation("Location provider OUT OF SERVICE, unable to determine location at the current time.");
          }
          Log.d("GetCurrentLocation", "Status Change " + message);
