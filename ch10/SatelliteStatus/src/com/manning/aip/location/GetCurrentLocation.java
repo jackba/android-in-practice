@@ -102,7 +102,7 @@ public class GetCurrentLocation extends Activity {
             listenForLocation(providerName, LOCATION_LISTEN_WAIT_TIME);
          }
       } else {
-         detail.setText("ACCURACY_FINE location provider not available, unable to determine current location.");
+         detail.setText("ACCURACY_COARSE (or above) location provider not available, unable to determine current location.");
       }      
    }
 
