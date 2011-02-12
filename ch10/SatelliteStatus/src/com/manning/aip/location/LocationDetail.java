@@ -21,7 +21,7 @@ public class LocationDetail extends Activity {
       detail = (TextView) findViewById(R.id.detail);
       
       title.setText("Location Listener Change");
-      String message = getIntent().getStringExtra(GetLocation.LOC_DATA);
+      String message = getIntent().getStringExtra(GetCurrentLocation.LOC_DATA);
       detail.setText(message);
    }
 }

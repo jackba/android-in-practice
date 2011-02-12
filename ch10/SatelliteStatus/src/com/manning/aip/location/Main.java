@@ -22,6 +22,7 @@ public class Main extends Activity implements OnItemClickListener {
    private ListView providersList;
 
    private Button getLoc;
+   private Button getGps;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,14 @@ public class Main extends Activity implements OnItemClickListener {
       getLoc = (Button) findViewById(R.id.getloc_button);
       getLoc.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
-            startActivity(new Intent(Main.this, GetLocation.class));
+            startActivity(new Intent(Main.this, GetCurrentLocation.class));
+         }
+      });
+      
+      getGps = (Button) findViewById(R.id.getgps_button);
+      getGps.setOnClickListener(new OnClickListener() {
+         public void onClick(View v) {
+            startActivity(new Intent(Main.this, GetGpsDetails.class));
          }
       });
    }

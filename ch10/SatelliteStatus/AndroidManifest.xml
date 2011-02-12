@@ -12,6 +12,7 @@
 		</activity>
 		<activity android:name=".ProviderDetail" />
 		<activity android:name=".LocationDetail" />
-		<activity android:name=".GetLocation" />
+		<activity android:name=".GetCurrentLocation" />
+		<activity android:name=".GetGpsDetails" />
 	</application>
 </manifest> 
