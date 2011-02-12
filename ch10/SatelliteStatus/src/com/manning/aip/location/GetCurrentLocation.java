@@ -1,7 +1,6 @@
 package com.manning.aip.location;
 
 import android.app.Activity;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Criteria;
@@ -14,13 +13,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
-
-//TODO make this return current location easiest way?
-//http://stackoverflow.com/questions/3145089/what-is-the-simplest-and-most-robust-way-to-get-the-users-current-location-in-an/3145655#3145655
-
-// cover frequent questions -- and note relevant issues
-// http://code.google.com/p/android/issues/detail?id=9433
-// http://stackoverflow.com/questions/2021176/android-gps-status
 
 public class GetCurrentLocation extends Activity {
 
@@ -63,11 +55,13 @@ public class GetCurrentLocation extends Activity {
 
       // 2. get provider 
       Criteria criteria = new Criteria();
-      // use Criteria to get provider (and could use COARSE, but doesn't work in emulator, FINE means GPS)
+      // use Criteria to get provider (and could use COARSE, but doesn't work in emulator)
+      // (FINE will use EITHER network/gps, whichever is the best enabled match, except in emulator must be gps)
       criteria.setAccuracy(Criteria.ACCURACY_FINE);
       String providerName = locationMgr.getBestProvider(criteria, true);
-      // TODO fine provider still comes up as network on emulator?
       providerName = LocationManager.GPS_PROVIDER;
+      
+      detail.setText("Checking for location using provider: " + providerName);
 
       // 3. get handle on loc listener
       locationListener = new LocationListenerImpl();
@@ -91,9 +85,7 @@ public class GetCurrentLocation extends Activity {
          }
       } else {
          detail.setText("ACCURACY_FINE location provider not available, unable to determine current location.");
-      }
-
-      detail.setText("Checking for location using provider: " + providerName);
+      }      
    }
 
    @Override
