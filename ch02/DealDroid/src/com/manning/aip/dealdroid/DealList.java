@@ -36,6 +36,7 @@ public class DealList extends ListActivity {
    private List<Item> items;  
    private DealsAdapter dealsAdapter;
    private ArrayAdapter<Section> spinnerAdapter;
+   private Spinner sectionSpinner;
    private int currentSelectedSection;
    private ProgressDialog progressDialog;
 
@@ -71,7 +72,7 @@ public class DealList extends ListActivity {
       }      
 
       // Spinner for choosing a Section
-      Spinner sectionSpinner = (Spinner) findViewById(R.id.section_spinner);
+      sectionSpinner = (Spinner) findViewById(R.id.section_spinner);
       spinnerAdapter =
                new ArrayAdapter<Section>(DealList.this, android.R.layout.simple_spinner_item, app.getSectionList());
       spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -209,10 +210,16 @@ public class DealList extends ListActivity {
       protected void onPostExecute(List<Section> taskSectionList) {
          if (!taskSectionList.isEmpty()) {
             app.getSectionList().clear();
-            app.getSectionList().addAll(taskSectionList);
-            spinnerAdapter.notifyDataSetChanged();            
+            app.getSectionList().addAll(taskSectionList);            
+            resetListItems(taskSectionList.get(0).getItems());            
             
-            resetListItems(app.getSectionList().get(0).getItems());
+            // for the "reparse" button, we also need to reset the spinner data and put selection on 0 (Daily Deals)
+            // (and since we don't have a member variable for the spinnerAdapter's data, we just reset one by one)
+            sectionSpinner.setSelection(0);
+            spinnerAdapter.clear();
+            for (Section s : taskSectionList) {
+               spinnerAdapter.add(s);
+            }            
          } else {
             Toast.makeText(DealList.this, getString(R.string.deal_list_missing_data), Toast.LENGTH_LONG).show();
          }
