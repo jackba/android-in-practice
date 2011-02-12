@@ -78,7 +78,6 @@ public class GetCurrentLocation extends Activity {
       // (FINE will use EITHER network/gps, whichever is the best enabled match, except in emulator must be gps)
       criteria.setAccuracy(Criteria.ACCURACY_FINE);
       String providerName = locationMgr.getBestProvider(criteria, true);
-      providerName = LocationManager.GPS_PROVIDER;
       
       detail.setText("Checking for location using provider: " + providerName);
 
@@ -162,7 +161,7 @@ public class GetCurrentLocation extends Activity {
 
       @Override
       public void onProviderDisabled(String provider) {
-         endListenForLocation("Location provider DISABLED, unable to determine location at the current time.");
+         endListenForLocation("No suitable location provider available, chosen provider is DISABLED (" + provider + ").");
          Toast.makeText(GetCurrentLocation.this, "provider disabled", Toast.LENGTH_SHORT).show();
       }
 
