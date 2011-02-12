@@ -76,7 +76,7 @@ public class GetCurrentLocation extends Activity {
       Criteria criteria = new Criteria();
       // use Criteria to get provider (and could use COARSE, but doesn't work in emulator)
       // (FINE will use EITHER network/gps, whichever is the best enabled match, except in emulator must be gps)
-      criteria.setAccuracy(Criteria.ACCURACY_FINE);
+      criteria.setAccuracy(Criteria.ACCURACY_COARSE);
       String providerName = locationMgr.getBestProvider(criteria, true);
       
       detail.setText("Checking for location using provider: " + providerName);
