@@ -66,6 +66,7 @@ public class GetCurrentLocation extends Activity {
       // use Criteria to get provider (and could use COARSE, but doesn't work in emulator, FINE means GPS)
       criteria.setAccuracy(Criteria.ACCURACY_FINE);
       String providerName = locationMgr.getBestProvider(criteria, true);
+      // TODO fine provider still comes up as network on emulator?
       providerName = LocationManager.GPS_PROVIDER;
 
       // 3. get handle on loc listener
@@ -75,13 +76,11 @@ public class GetCurrentLocation extends Activity {
       if (providerName != null) {
          // first check last KNOWN location
          Location lastKnown = locationMgr.getLastKnownLocation(providerName);
-         // if the lastKnownLocation is present (often WON'T BE) and within the last X seconds, just use it
-         if (lastKnown != null) {
-            System.out.println("*** lastKnown time - " + lastKnown.getTime());
-            System.out.println("*** System - 20000 - " + (System.currentTimeMillis() - 20000));
-         } else {
-            System.out.println("*** lastKnown NULL");
-         }
+         // if the lastKnownLocation is present (often WON'T BE) and within the last X seconds, just use it         
+         // NOTE -- this does NOT WORK in the Emulator
+         // if you send a DDMS "manual" time or geo fix, you get correct DATE, but fix time starts at 00:00 and increments by 1 second each time sent
+         // to test this section (getLastLocation being recent enough), you need to use a real device
+         // http://stackoverflow.com/questions/4889487/android-emulators-gps-location-gives-wrong-time
          if (lastKnown != null && lastKnown.getTime() >= (System.currentTimeMillis() - 20000)) {
             detail.setText("Current location (taken from last known using " + providerName + " provider): "
                      + lastKnown.getLatitude() + " / " + lastKnown.getLongitude());
@@ -105,6 +104,7 @@ public class GetCurrentLocation extends Activity {
       }
    }
 
+   // TODO leaks ProgressDialog
    private void listenForLocation(String providerName, int duration) {
       progressDialog.show();
       locationMgr.requestLocationUpdates(providerName, 0, 0, locationListener);
