@@ -14,9 +14,28 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Sample of getting the current Location with Android.
+ * Tries to get "last known" location from a best match provider first. 
+ * If this is present, and recent enough (20 seconds in this example), it is used. 
+ * If last known location is not available, sets up a LocationListener and 
+ * listens for updates for 20 seconds. If an update is obtained, uses that as location
+ * and removes update listener. 
+ * <p/>
+ * NOTE: The emulator has several location related oddities, it doesn't support the network
+ * provider, and it doesn't provide the correct time on mock GPS fixes. For a more 
+ * accurate view of how this works use it on a real device. 
+ * 
+ * 
+ * @author ccollins
+ *
+ */
 public class GetCurrentLocation extends Activity {
 
    public static final String LOC_DATA = "LOC_DATA";
+   
+   private static final int LOCATION_LISTEN_WAIT_TIME = 20000; 
+   private static final int FIX_RECENT_BUFFER_TIME = 30000; 
 
    private LocationManager locationMgr;
 
@@ -75,13 +94,13 @@ public class GetCurrentLocation extends Activity {
          // if you send a DDMS "manual" time or geo fix, you get correct DATE, but fix time starts at 00:00 and increments by 1 second each time sent
          // to test this section (getLastLocation being recent enough), you need to use a real device
          // http://stackoverflow.com/questions/4889487/android-emulators-gps-location-gives-wrong-time
-         if (lastKnown != null && lastKnown.getTime() >= (System.currentTimeMillis() - 20000)) {
+         if (lastKnown != null && lastKnown.getTime() >= (System.currentTimeMillis() - FIX_RECENT_BUFFER_TIME)) {
             detail.setText("Current location (taken from last known using " + providerName + " provider): "
                      + lastKnown.getLatitude() + " / " + lastKnown.getLongitude());
          } else {
             // last known is relatively old, or doesn't exist, use a LocationListener 
             // wait for a good location update for X seconds
-            listenForLocation(providerName, 20000);
+            listenForLocation(providerName, LOCATION_LISTEN_WAIT_TIME);
          }
       } else {
          detail.setText("ACCURACY_FINE location provider not available, unable to determine current location.");
@@ -112,7 +131,6 @@ public class GetCurrentLocation extends Activity {
 
    // LocationListener impl
    private class LocationListenerImpl implements LocationListener {
-
       @Override
       public void onStatusChanged(String provider, int status, Bundle extras) {
          Log.d("LocationListener", "Status changed to " + status);
