@@ -1,4 +1,4 @@
-package com.manning.aip.astromap;
+package com.manning.aip.brewmap;
 
 import android.app.Activity;
 import android.os.Bundle;
