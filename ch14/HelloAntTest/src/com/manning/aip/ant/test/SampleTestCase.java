@@ -14,7 +14,7 @@ public class SampleTestCase extends ActivityUnitTestCase<HelloAnt> {
 
    public void testHelloViewExists() {
       startActivity(new Intent(), null, null);
-      assertNull(getActivity().findViewById(R.id.hello));
+      assertNotNull(getActivity().findViewById(R.id.hello));
    }
 
 }
