@@ -56,6 +56,8 @@ public class DailyDealsXmlPullFeedParser implements DailyDealsFeedParser {
 
    protected InputStream getInputStream() {
       try {
+         // TODO never use openConnection.getInputStream -- it will block indefinitely
+         // (switch to using connection with setConnectTimeout and setReadTimeout)
          return feedUrl.openConnection().getInputStream();
       } catch (IOException e) {
          throw new RuntimeException(e);
