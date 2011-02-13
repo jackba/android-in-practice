@@ -1,0 +1,346 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!--  view-source:http://beermapping.com/webservice/locstate/a58b9c5e468fe57d35710364dd0b1c71/ri -->
+<bmp_locations>
+	<location>
+		<id>6120</id>
+		<name>Aidan's Pub</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=6120
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=6120&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=6120&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>11 John St</street>
+		<city>Bristol</city>
+		<state>RI</state>
+		<zip>02809</zip>
+		<country>United States</country>
+		<phone>(401) 254-1375</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>6581</id>
+		<name>Another Liquor Store</name>
+		<status>Beer Store</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=6581
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=6581&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=6581&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>311 Warwick Ave</street>
+		<city>Cranston</city>
+		<state>RI</state>
+		<zip>02905</zip>
+		<country>United States</country>
+		<phone>(401) 785-0171</phone>
+		<overall>76.6667</overall>
+		<imagecount>1</imagecount>
+	</location>
+	<location>
+		<id>6117</id>
+		<name>B and C Liquors</name>
+		<status>Beer Store</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=6117
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=6117&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=6117&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>253 Putnam Ave</street>
+		<city>Smithfield</city>
+		<state>RI</state>
+		<zip>02917</zip>
+		<country>United States</country>
+		<phone>(401) 231-8220</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>6115</id>
+		<name>Blackstone Valley Brewing Supplies</name>
+		<status>Homebrew</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=6115
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=6115&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=6115&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>403 Park Ave</street>
+		<city>Woonsocket</city>
+		<state>RI</state>
+		<zip>02895</zip>
+		<country>United States</country>
+		<phone>(401) 765-3830</phone>
+		<overall>95</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>302</id>
+		<name>Coastal Extreme Brewing Co.</name>
+		<status>Brewery</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=302
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=302&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=302&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>307 Oliphant Lane</street>
+		<city>Middletown</city>
+		<state>RI</state>
+		<zip>2842</zip>
+		<country>United States</country>
+		<phone>(401) 849-5232</phone>
+		<overall>80</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>305</id>
+		<name>Coddington Brewing Co.</name>
+		<status>Brewpub</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=305
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=305&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=305&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>210 Coddington Highway</street>
+		<city>Middletown</city>
+		<state>RI</state>
+		<zip>2840</zip>
+		<country>United States</country>
+		<phone>(401) 847-6690</phone>
+		<overall>100</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>6582</id>
+		<name>Doherty's East Ave Irish Pub</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=6582
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=6582&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=6582&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>342 East Ave</street>
+		<city>Pawtucket</city>
+		<state>RI</state>
+		<zip>02860</zip>
+		<country>United States</country>
+		<phone>(401) 725-9520</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>12074</id>
+		<name>English Cellar Alehouse</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=12074
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=12074&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=12074&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>165 Angell St </street>
+		<city>Providence</city>
+		<state>RI</state>
+		<zip>02906</zip>
+		<country>United States</country>
+		<phone>(401) 454-3434</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>12443</id>
+		<name>I.M. Gan</name>
+		<status>Beer Store</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=12443
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=12443&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=12443&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>380 Warwick Avenue</street>
+		<city>Warwick</city>
+		<state>RI</state>
+		<zip>02888</zip>
+		<country>United States</country>
+		<phone>(401) 467-5558</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>11061</id>
+		<name>Julian's</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=11061
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=11061&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=11061&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>318 Broadway</street>
+		<city>Providence</city>
+		<state>RI</state>
+		<zip>02909</zip>
+		<country>United States</country>
+		<phone>(401) 861-1770</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>3104</id>
+		<name>Mews Tavern</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=3104
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=3104&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=3104&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>456 Main Street</street>
+		<city>Wakefield</city>
+		<state>RI</state>
+		<zip>02879-7408</zip>
+		<country>United States</country>
+		<phone>401-783-9370</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>868</id>
+		<name>Mohegan Cafe and Brewery</name>
+		<status>Brewpub</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=868
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=868&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=868&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>213 Water St.</street>
+		<city>Block Island</city>
+		<state>RI</state>
+		<zip>2807</zip>
+		<country>United States</country>
+		<phone>(401) 466-5911 </phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>6116</id>
+		<name>Nikki's Liquors</name>
+		<status>Beer Store</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=6116
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=6116&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=6116&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>33 Smithfield Rd</street>
+		<city>North Providence</city>
+		<state>RI</state>
+		<zip>02904</zip>
+		<country>United States</country>
+		<phone>(401) 861-9006</phone>
+		<overall>93.3334</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>5470</id>
+		<name>Pitcher's Pub</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=5470
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=5470&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=5470&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>80 Manville Hill Road</street>
+		<city>Cumberland</city>
+		<state>RI</state>
+		<zip>02864</zip>
+		<country>United States</country>
+		<phone>401.658.0058</phone>
+		<overall>0</overall>
+		<imagecount>2</imagecount>
+	</location>
+	<location>
+		<id>6580</id>
+		<name>Spiritus Fermenti</name>
+		<status>Beer Store</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=6580
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=6580&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=6580&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>220 Meeting Street</street>
+		<city>Providence</city>
+		<state>RI</state>
+		<zip>02906</zip>
+		<country>United States</country>
+		<phone>(401) 273-1999</phone>
+		<overall>88.3334</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>6118</id>
+		<name>Track 84</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=6118
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=6118&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=6118&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>84 Kilvert St</street>
+		<city>Warwick</city>
+		<state>RI</state>
+		<zip>02886</zip>
+		<country>United States</country>
+		<phone>(401) 739-8484</phone>
+		<overall>96.6667</overall>
+		<imagecount>1</imagecount>
+	</location>
+	<location>
+		<id>1341</id>
+		<name>Trinity Brewhouse</name>
+		<status>Brewpub</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=1341
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=1341&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=1341&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>186 Fountain Street</street>
+		<city>Providence</city>
+		<state>RI</state>
+		<zip>2903</zip>
+		<country>United States</country>
+		<phone>(401) 453-2337</phone>
+		<overall>82.9167</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>1371</id>
+		<name>Union Station Brewery</name>
+		<status>Brewpub</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=1371
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=1371&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=1371&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>36 Exchange Terrace</street>
+		<city>Providence</city>
+		<state>RI</state>
+		<zip>2903</zip>
+		<country>United States</country>
+		<phone>(401) 274-2739</phone>
+		<overall>81.66655</overall>
+		<imagecount>0</imagecount>
+	</location>
+</bmp_locations>

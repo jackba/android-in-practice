@@ -1,7 +1,11 @@
 
-Project: http://beermapping.com/
+Project: 
+http://beermapping.com/
+http://beermapping.com/api/
 
 API key: a58b9c5e468fe57d35710364dd0b1c71
+
+also use locscore/locimage?
 
 ICON taken from:
 Michael Thomas -- Creative Commons

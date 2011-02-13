@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!--  http://beermapping.com/webservice/locmap/a58b9c5e468fe57d35710364dd0b1c71/58 -->
+<bmp_locations>
+	<location>
+		<name>Atlanta Brewing Company</name>
+		<status>Brewery</status>
+		<lat>33.816952</lat>
+		<lng>-84.435071</lng>
+		<map>southeastern</map>
+		<altmap>atlanta</altmap>
+	</location>
+</bmp_locations>

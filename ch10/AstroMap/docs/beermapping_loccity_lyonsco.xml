@@ -1,0 +1,37 @@
+
+<?xml version='1.0' encoding='utf-8' ?>
+<!--  http://beermapping.com/webservice/loccity/a58b9c5e468fe57d35710364dd0b1c71/lyons,co -->
+<bmp_locations>
+	<location>
+		<id>972</id>
+		<name>Oskar Blues Grill and Brewery</name>
+		<status>Brewpub</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=972</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=972&amp;d=5</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=972&amp;d=1&amp;type=norm</blogmap>
+		<street>303 Main Street</street>
+		<city>Lyons</city>
+		<state>CO</state>
+		<zip>80540</zip>
+		<country>United States</country>
+		<phone>(303) 823-6685</phone>
+		<overall>90.5555</overall>
+		<imagecount>13</imagecount>
+	</location>
+	<location>
+		<id>12458</id>
+		<name>Cilantro Mary</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=12458</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=12458&amp;d=5</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=12458&amp;d=1&amp;type=norm</blogmap>
+		<street>450 Main St.</street>
+		<city>Lyons</city>
+		<state>CO</state>
+		<zip>80540</zip>
+		<country>United States</country>
+		<phone>(303) 823-5014</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+</bmp_locations>

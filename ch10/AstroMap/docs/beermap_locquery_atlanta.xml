@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!--  http://beermapping.com/webservice/locquery/a58b9c5e468fe57d35710364dd0b1c71/atlanta -->
+<!--  uses location "name or ID" -->
+<bmp_locations>
+	<location>
+		<id>58</id>
+		<name>Atlanta Brewing Company</name>
+		<status>Brewery</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=58
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=58&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=58&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>2323 Defoor Hills Road NW</street>
+		<city>Atlanta</city>
+		<state>GA</state>
+		<zip>30318</zip>
+		<country>United States</country>
+		<phone>(404) 892-4436</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>500</id>
+		<name>Gordon Biersch - Atlanta Midtown</name>
+		<status>Brewpub</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=500
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=500&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=500&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>848 Peachtree Street</street>
+		<city>Atlanta</city>
+		<state>GA</state>
+		<zip>30308</zip>
+		<country>United States</country>
+		<phone>(404) 870-0805</phone>
+		<overall>69.999775</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>1088</id>
+		<name>Rock Bottom - Atlanta</name>
+		<status>Brewpub</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=1088
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=1088&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=1088&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>3242 Peachtree Road</street>
+		<city>Atlanta</city>
+		<state>GA</state>
+		<zip>30305</zip>
+		<country>United States</country>
+		<phone>(404) 264-0253 </phone>
+		<overall>70</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>1295</id>
+		<name>Sweetwater Brewing Company - Atlanta</name>
+		<status>Brewery</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=1295
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=1295&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=1295&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>195 Ottley Drive NE</street>
+		<city>Atlanta</city>
+		<state>GA</state>
+		<zip>30324</zip>
+		<country>United States</country>
+		<phone>(404) 691-ALES</phone>
+		<overall>75.00005</overall>
+		<imagecount>3</imagecount>
+	</location>
+	<location>
+		<id>3609</id>
+		<name>Fado Irish Pub - Atlanta</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=3609
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=3609&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=3609&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>3035 Peachtree Road</street>
+		<city>Atlanta</city>
+		<state>GA</state>
+		<zip>30305</zip>
+		<country>United States</country>
+		<phone>(404) 841-0066</phone>
+		<overall>39.166675</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>3610</id>
+		<name>Fox and Hounds - Atlanta</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=3610
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=3610&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=3610&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>1193 Collier Rd NW</street>
+		<city>Atlanta</city>
+		<state>GA</state>
+		<zip>30318</zip>
+		<country>United States</country>
+		<phone>(404) 352-1007</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>4110</id>
+		<name>East Atlanta Restaurant and Lounge</name>
+		<status>Beer Bar</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=4110
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=4110&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=4110&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>488 Flat Shoals Ave.</street>
+		<city>Atlanta</city>
+		<state>GA</state>
+		<zip>30316</zip>
+		<country>United States</country>
+		<phone>(404)522-3950 </phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>5149</id>
+		<name>Wine Craft of Atlanta</name>
+		<status>Homebrew</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=5149
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=5149&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=5149&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>5920 Roswell Road</street>
+		<city>Atlanta</city>
+		<state>GA</state>
+		<zip>30328</zip>
+		<country>United States</country>
+		<phone>(404)252-5606</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+	<location>
+		<id>10922</id>
+		<name>Gordon Biersch - Atlanta Buckhead</name>
+		<status>Brewpub</status>
+		<reviewlink>http://beermapping.com/maps/reviews/reviews.php?locid=10922
+		</reviewlink>
+		<proxylink>http://beermapping.com/maps/proxymaps.php?locid=10922&amp;d=5
+		</proxylink>
+		<blogmap>http://beermapping.com/maps/blogproxy.php?locid=10922&amp;d=1&amp;type=norm
+		</blogmap>
+		<street>3242 Peachtree Road NE</street>
+		<city>Atlanta</city>
+		<state>GA</state>
+		<zip>30305</zip>
+		<country>United States</country>
+		<phone>(404) 264-0253</phone>
+		<overall>0</overall>
+		<imagecount>0</imagecount>
+	</location>
+</bmp_locations>

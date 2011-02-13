@@ -5,4 +5,12 @@
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="TODO"
 		style="@style/mainFontMedium" />
+	<EditText android:id="@+id/input" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:hint="query here" />
+	<Button android:id="@+id/button_city" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="CITY" />
+	<Button android:id="@+id/button_state" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="STATE" />
+	<Button android:id="@+id/button_piece" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="PIECE" />
 </LinearLayout>
