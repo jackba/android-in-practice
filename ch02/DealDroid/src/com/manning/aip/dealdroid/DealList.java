@@ -46,7 +46,6 @@ public class DealList extends ListActivity {
       setContentView(R.layout.deallist);
       
       progressDialog = new ProgressDialog(this);
-      progressDialog.setMax(2);
       progressDialog.setCancelable(false);
       progressDialog.setMessage(getString(R.string.deal_list_retrieving_data));
 
@@ -182,32 +181,20 @@ public class DealList extends ListActivity {
 
       @Override
       protected void onPreExecute() {
-         if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
-         }
+         progressDialog.show();
       }
 
       @Override
       protected List<Section> doInBackground(Void... args) {
-         publishProgress(1);
          List<Section> sections = app.getParser().parse();
-         publishProgress(2);
          return sections;
       }
 
       @Override
-      protected void onProgressUpdate(Integer... progress) {
-         int currentProgress = progress[0];
-         if ((currentProgress == 1) && !progressDialog.isShowing()) {
-            progressDialog.show();
-         } else if ((currentProgress == 2) && progressDialog.isShowing()) {
+      protected void onPostExecute(List<Section> taskSectionList) {
+         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
          }
-         progressDialog.setProgress(progress[0]);
-      }
-
-      @Override
-      protected void onPostExecute(List<Section> taskSectionList) {
          if (!taskSectionList.isEmpty()) {
             app.getSectionList().clear();
             app.getSectionList().addAll(taskSectionList);            
