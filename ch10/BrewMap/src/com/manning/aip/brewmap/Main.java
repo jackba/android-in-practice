@@ -29,17 +29,22 @@ public class Main extends Activity {
    private static final String STATE = "STATE";
    private static final String PIECE = "PIECE";
 
+   private BrewMapApp app;
+   
    private ProgressDialog progressDialog;
 
    private Geocoder geocoder;
 
-   private BeerMappingParser parser;
+   private BeerMappingParser parser; 
+   
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
 
+      app = (BrewMapApp) getApplication();
+      
       progressDialog = new ProgressDialog(this);
       progressDialog.setCancelable(false);
       progressDialog.setMessage("Retrieving data...");
@@ -76,15 +81,10 @@ public class Main extends Activity {
       });
    }
 
-   private void forwardResults(List<Pub> pubs) {
+   private void handleResults(List<Pub> pubs) {
       if (pubs != null && !pubs.isEmpty()) {
-         StringBuilder sb = new StringBuilder();
-         for (Pub p : pubs) {
-            sb.append("\n\n" + p);
-         }
-         Intent i = new Intent(this, QueryResults.class);
-         i.putExtra("RESULTS", sb.toString());
-         startActivity(i);
+         app.setPubs(pubs);
+         startActivity(new Intent(this, MapResults.class));
       } else {
          Toast.makeText(this, "Pubs empty!", Toast.LENGTH_SHORT).show();
       }
@@ -114,17 +114,20 @@ public class Main extends Activity {
          }
 
          // geocode the city/state/zip form addresses in the task too
-         for (Pub p : result) {
-            try {
-               List<android.location.Address> addresses =
-                        geocoder.getFromLocationName(p.getAddress().getLocationName(), 1);
-               if (addresses != null && !addresses.isEmpty()) {
-                  android.location.Address a = addresses.get(0);
-                  p.setLatitude(a.getLatitude());
-                  p.setLongitude(a.getLongitude());
+         if (result != null) {
+            for (Pub p : result) {
+               try {
+                  List<android.location.Address> addresses =
+                           geocoder.getFromLocationName(p.getAddress().getLocationName(), 1);
+                  if (addresses != null && !addresses.isEmpty()) {
+                     android.location.Address a = addresses.get(0);
+                     p.setLatitude(a.getLatitude());
+                     p.setLongitude(a.getLongitude());
+                     System.out.println("*** GEOCODED ADDRESS: " + a);
+                  }
+               } catch (IOException e) {
+                  Log.e(Constants.LOG_TAG, "Error geocoding location name", e);
                }
-            } catch (IOException e) {
-               Log.e(Constants.LOG_TAG, "Error geocoding location name", e);
             }
          }
 
@@ -136,7 +139,7 @@ public class Main extends Activity {
          if (progressDialog.isShowing()) {
             progressDialog.hide();
          }
-         forwardResults(pubs);
+         handleResults(pubs);
       }
    }
 }

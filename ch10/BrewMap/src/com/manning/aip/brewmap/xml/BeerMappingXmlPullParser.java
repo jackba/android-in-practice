@@ -61,7 +61,8 @@ public class BeerMappingXmlPullParser implements BeerMappingParser {
          conn.setReadTimeout(3000);
          return conn.getInputStream();
       } catch (IOException e) {
-         throw new RuntimeException(e);
+         Log.e(Constants.LOG_TAG, "Error getting input stream for url: " + url, e);
+         return null;
       }
    }
 
@@ -88,7 +89,11 @@ public class BeerMappingXmlPullParser implements BeerMappingParser {
          Pub currentPub = null;
 
          // auto-detect the encoding from the stream
-         parser.setInput(this.getInputStream(url), null);
+         InputStream is = this.getInputStream(url);
+         if (is == null) {
+            return pubs;
+         }
+         parser.setInput(is, null);
          int eventType = parser.getEventType();
 
          while (eventType != XmlPullParser.END_DOCUMENT) {
