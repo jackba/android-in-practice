@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="wrap_content" android:layout_width="fill_parent">
-	<LinearLayout android:orientation="vertical"
-		android:layout_width="fill_parent" android:layout_height="fill_parent">
-		<TextView android:id="@+id/results" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:text="EMPTY"
-			style="@style/mainFontMedium" />
-	</LinearLayout>
-</ScrollView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<!-- THIS MUST BE CHANGED BY USER WHEN RUN IN EMUL OR DEVICE FROM SOURCE -->
+	<!-- http://code.google.com/android/add-ons/google-apis/mapkey.html -->
+	<com.google.android.maps.MapView
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:clickable="true" android:apiKey="05lSygx-ttd_fA5RrOT6pjpd8HvxfBm5GXIzwxQ" />
+
+</LinearLayout>

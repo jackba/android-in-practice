@@ -1,18 +1,23 @@
 package com.manning.aip.brewmap;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class QueryResults extends Activity {
+import com.google.android.maps.MapActivity;
+
+public class QueryResults extends MapActivity {
    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.query_results);
         
-        TextView results = (TextView) findViewById(R.id.results);
         String resultString = getIntent().getStringExtra("RESULTS");
-        results.setText(resultString);
     }
+
+   @Override
+   protected boolean isRouteDisplayed() {
+      // TODO Auto-generated method stub
+      return false;
+   }    
 }
