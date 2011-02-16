@@ -12,6 +12,10 @@ public class Pub {
 
    private double longitude;
    private double latitude;
+   
+   public Pub() {
+      this.address = new Address();
+   }
 
    public int getId() {
       return this.id;
@@ -83,6 +87,79 @@ public class Pub {
 
    public void setLatitude(double latitude) {
       this.latitude = latitude;
+   }   
+   
+   @Override
+   public String toString() {
+      return "Pub [id=" + this.id + ", name=" + this.name + ", status=" + this.status + ", reviewLink="
+               + this.reviewLink + ", proxyLink=" + this.proxyLink + ", address=" + this.address + ", phone="
+               + this.phone + ", longitude=" + this.longitude + ", latitude=" + this.latitude + "]";
    }
 
+   @Override
+   public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + ((this.address == null) ? 0 : this.address.hashCode());
+      result = prime * result + this.id;
+      long temp;
+      temp = Double.doubleToLongBits(this.latitude);
+      result = prime * result + (int) (temp ^ (temp >>> 32));
+      temp = Double.doubleToLongBits(this.longitude);
+      result = prime * result + (int) (temp ^ (temp >>> 32));
+      result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+      result = prime * result + ((this.phone == null) ? 0 : this.phone.hashCode());
+      result = prime * result + ((this.proxyLink == null) ? 0 : this.proxyLink.hashCode());
+      result = prime * result + ((this.reviewLink == null) ? 0 : this.reviewLink.hashCode());
+      result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
+      return result;
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      if (this == obj)
+         return true;
+      if (obj == null)
+         return false;
+      if (!(obj instanceof Pub))
+         return false;
+      Pub other = (Pub) obj;
+      if (this.address == null) {
+         if (other.address != null)
+            return false;
+      } else if (!this.address.equals(other.address))
+         return false;
+      if (this.id != other.id)
+         return false;
+      if (Double.doubleToLongBits(this.latitude) != Double.doubleToLongBits(other.latitude))
+         return false;
+      if (Double.doubleToLongBits(this.longitude) != Double.doubleToLongBits(other.longitude))
+         return false;
+      if (this.name == null) {
+         if (other.name != null)
+            return false;
+      } else if (!this.name.equals(other.name))
+         return false;
+      if (this.phone == null) {
+         if (other.phone != null)
+            return false;
+      } else if (!this.phone.equals(other.phone))
+         return false;
+      if (this.proxyLink == null) {
+         if (other.proxyLink != null)
+            return false;
+      } else if (!this.proxyLink.equals(other.proxyLink))
+         return false;
+      if (this.reviewLink == null) {
+         if (other.reviewLink != null)
+            return false;
+      } else if (!this.reviewLink.equals(other.reviewLink))
+         return false;
+      if (this.status == null) {
+         if (other.status != null)
+            return false;
+      } else if (!this.status.equals(other.status))
+         return false;
+      return true;
+   }   
 }

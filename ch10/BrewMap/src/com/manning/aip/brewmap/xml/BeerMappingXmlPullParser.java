@@ -4,6 +4,7 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.manning.aip.brewmap.Constants;
+import com.manning.aip.brewmap.model.Address;
 import com.manning.aip.brewmap.model.Pub;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -104,12 +105,55 @@ public class BeerMappingXmlPullParser implements BeerMappingParser {
                   if (name.equalsIgnoreCase(BeerMappingXmlPullParser.LOCATION)) {
                      currentPub = new Pub();
                   }
-
+                
+                  if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.ID)) {
+                     String value = parser.nextText();
+                     try {
+                        currentPub.setId(Integer.valueOf(value));
+                     } catch (NumberFormatException e) {                        
+                        Log.e(Constants.LOG_TAG, "Error parsing ID for pub", e);
+                     }
+                  }
                   if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.NAME)) {
                      String value = parser.nextText();
                      currentPub.setName(value);
                   }
-
+                  if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.STATUS)) {
+                     String value = parser.nextText();
+                     currentPub.setStatus(value);
+                  }
+                  if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.REVIEW_LINK)) {
+                     String value = parser.nextText();
+                     currentPub.setReviewLink(value);
+                  }
+                  if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.PROXY_LINK)) {
+                     String value = parser.nextText();
+                     currentPub.setProxyLink(value);
+                  }                  
+                  if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.STREET)) {
+                     String value = parser.nextText();
+                     currentPub.getAddress().setStreet(value);
+                  }
+                  if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.CITY)) {
+                     String value = parser.nextText();
+                     currentPub.getAddress().setCity(value);
+                  }
+                  if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.STATE)) {
+                     String value = parser.nextText();
+                     currentPub.getAddress().setState(value);
+                  }
+                  if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.ZIP)) {
+                     String value = parser.nextText();
+                     currentPub.getAddress().setPostalCode(value);
+                  }
+                  if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.COUNTRY)) {
+                     String value = parser.nextText();
+                     currentPub.getAddress().setCountry(value);
+                  }
+                  if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.PHONE)) {
+                     String value = parser.nextText();
+                     currentPub.setPhone(value);
+                  }
                   break;
                case XmlPullParser.END_TAG:
                   name = parser.getName();
