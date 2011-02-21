@@ -34,8 +34,8 @@ public class PubOverlay extends ItemizedOverlay<OverlayItem> {
    }  
 
    @Override
-   public boolean onTap(int index) {
-      final Pub pub = pubs.get(index);
+   public boolean onTap(final int index) {
+      Pub pub = pubs.get(index);
       AlertDialog.Builder builder = new AlertDialog.Builder(context);
       builder.setTitle("Pub")
                .setMessage(
@@ -44,7 +44,7 @@ public class PubOverlay extends ItemizedOverlay<OverlayItem> {
                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int id) {
                      Intent i = new Intent(context, PubDetails.class);
-                     i.putExtra("LOC_ID", pub.getId());
+                     i.putExtra("PUB_INDEX", index);
                      context.startActivity(i);
                   }
                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
