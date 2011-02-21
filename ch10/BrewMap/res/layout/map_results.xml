@@ -7,6 +7,8 @@
 	<!-- http://code.google.com/android/add-ons/google-apis/mapkey.html -->
 	<com.google.android.maps.MapView android:id="@+id/map"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:clickable="true" android:apiKey="05lSygx-ttd_fA5RrOT6pjpd8HvxfBm5GXIzwxQ" />
+		android:clickable="true" 
+		android:apiKey="05lSygx-ttd-pOq19IV8jyohzoCmbgK-pYgBTaA" />
+		<!-- android:apiKey="05lSygx-ttd_fA5RrOT6pjpd8HvxfBm5GXIzwxQ" -->		
 
 </LinearLayout>

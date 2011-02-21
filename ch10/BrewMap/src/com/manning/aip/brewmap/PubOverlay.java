@@ -1,5 +1,12 @@
 package com.manning.aip.brewmap;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 import com.google.android.maps.GeoPoint;
@@ -7,16 +14,15 @@ import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 import com.manning.aip.brewmap.model.Pub;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PubOverlay extends ItemizedOverlay {
 
    private List<Pub> pubs;
    private List<OverlayItem> items;
+   private Context context;
 
-   public PubOverlay(List<Pub> pubs, Drawable marker) {
+   public PubOverlay(Context context, List<Pub> pubs, Drawable marker) {
       super(boundCenterBottom(marker));
+      this.context = context;
       this.pubs = pubs;
       items = new ArrayList<OverlayItem>();
       populate();
@@ -27,7 +33,31 @@ public class PubOverlay extends ItemizedOverlay {
       Pub pub = pubs.get(i);
       // GeoPoint uses lat/long in microdegrees format (1e6)
       GeoPoint point = new GeoPoint((int) (pub.getLatitude() * 1e6), (int) (pub.getLongitude() * 1e6));
-      return new OverlayItem(point, pub.getName(), "");
+      return new OverlayItem(point, pub.getName(), "TODO snippet");
+   }  
+
+   @Override
+   public boolean onTap(int index) {
+      Pub pub = pubs.get(index);
+      AlertDialog.Builder builder = new AlertDialog.Builder(context);
+      builder.setTitle("Pub")
+               .setMessage(
+                        pub.getName() + "\nLatitude:" + pub.getLatitude() + "\nLongitude:" + +pub.getLongitude()
+                                 + "\nVisit the pub detail page for more info?").setCancelable(true)
+               .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int id) {
+                     // TODO pass pub details to detail intent (or index)
+                     context.startActivity(new Intent(context, PubDetails.class));
+                  }
+               }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int id) {
+                     dialog.cancel();
+                  }
+               });
+      AlertDialog alert = builder.create();
+      alert.show();
+
+      return true; // we'll handle the event here (true) not pass to another overlay (false)
    }
 
    @Override

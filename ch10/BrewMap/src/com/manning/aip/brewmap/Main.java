@@ -1,11 +1,20 @@
 package com.manning.aip.brewmap;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,11 +26,9 @@ import com.manning.aip.brewmap.model.Pub;
 import com.manning.aip.brewmap.xml.BeerMappingParser;
 import com.manning.aip.brewmap.xml.BeerMappingXmlPullParser;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 // NOTE -- this is far from complete, just an interim checkin
+
+// 2.2 emulator fails geocoding -- http://code.google.com/p/android/issues/detail?id=8816
 
 public class Main extends Activity {
 
@@ -30,13 +37,12 @@ public class Main extends Activity {
    private static final String PIECE = "PIECE";
 
    private BrewMapApp app;
-   
+
    private ProgressDialog progressDialog;
 
    private Geocoder geocoder;
 
-   private BeerMappingParser parser; 
-   
+   private BeerMappingParser parser;
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +50,27 @@ public class Main extends Activity {
       setContentView(R.layout.main);
 
       app = (BrewMapApp) getApplication();
-      
+
+      // determine if GPS is enabled or not, if not prompt user to enable it
+      LocationManager lMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+      if (!lMgr.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+         builder.setTitle("GPS Settings are not enabled")
+                  .setMessage("Would you like to go the location settings and enable GPS?").setCancelable(true)
+                  .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                     public void onClick(DialogInterface dialog, int id) {
+                        startActivity(new Intent(Settings.ACTION_SECURITY_SETTINGS));
+                     }
+                  }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                     public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        finish();
+                     }
+                  });
+         AlertDialog alert = builder.create();
+         alert.show();
+      }
+
       progressDialog = new ProgressDialog(this);
       progressDialog.setCancelable(false);
       progressDialog.setMessage("Retrieving data...");
