@@ -1,6 +1,5 @@
 package com.manning.aip.brewmap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -14,17 +13,15 @@ import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 import com.manning.aip.brewmap.model.Pub;
 
-public class PubOverlay extends ItemizedOverlay {
+public class PubOverlay extends ItemizedOverlay<OverlayItem> {
 
    private List<Pub> pubs;
-   private List<OverlayItem> items;
    private Context context;
 
    public PubOverlay(Context context, List<Pub> pubs, Drawable marker) {
       super(boundCenterBottom(marker));
       this.context = context;
       this.pubs = pubs;
-      items = new ArrayList<OverlayItem>();
       populate();
    }
 
@@ -38,7 +35,7 @@ public class PubOverlay extends ItemizedOverlay {
 
    @Override
    public boolean onTap(int index) {
-      Pub pub = pubs.get(index);
+      final Pub pub = pubs.get(index);
       AlertDialog.Builder builder = new AlertDialog.Builder(context);
       builder.setTitle("Pub")
                .setMessage(
@@ -46,8 +43,9 @@ public class PubOverlay extends ItemizedOverlay {
                                  + "\nVisit the pub detail page for more info?").setCancelable(true)
                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int id) {
-                     // TODO pass pub details to detail intent (or index)
-                     context.startActivity(new Intent(context, PubDetails.class));
+                     Intent i = new Intent(context, PubDetails.class);
+                     i.putExtra("LOC_ID", pub.getId());
+                     context.startActivity(i);
                   }
                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int id) {
