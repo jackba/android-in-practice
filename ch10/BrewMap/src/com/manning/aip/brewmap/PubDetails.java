@@ -19,6 +19,9 @@ public class PubDetails extends Activity {
       
       text = (TextView) findViewById(R.id.details_text);
       
+      String locId = getIntent().getStringExtra("LOC_ID");
+      text.setText("Location ID - " + locId);
+      
    }
 
   
