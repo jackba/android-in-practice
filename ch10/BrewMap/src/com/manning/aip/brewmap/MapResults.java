@@ -2,11 +2,10 @@ package com.manning.aip.brewmap;
 
 import java.util.List;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.manning.aip.brewmap.model.Pub;
@@ -14,7 +13,6 @@ import com.manning.aip.brewmap.model.Pub;
 public class MapResults extends MapActivity {
 
    private MapView map;
-   private MapController controller;
    private List<Overlay> overlays;
 
    private BrewMapApp app;
@@ -33,9 +31,13 @@ public class MapResults extends MapActivity {
       PubOverlay pubOverlay = new PubOverlay(this, pubs, this.getResources().getDrawable(R.drawable.beer_icon));
       overlays = map.getOverlays();
       overlays.add(pubOverlay);
-      
-      // zoom to the span (without having to calculate bounding box rectangle ourselves, nice for the people Android)
-      controller.zoomToSpan(pubOverlay.getLatSpanE6(), pubOverlay.getLonSpanE6());
+
+      // TODO determine the exact center of the set of coords (now being lazy, just using first point in set)
+      map.getController().setCenter(
+               new GeoPoint((int) (pubs.get(0).getLatitude() * 1e6), (int) (pubs.get(0).getLongitude() * 1e6)));
+
+      // zoom to the span (without having to calculate bounding box rectangle ourselves, nice for the people Android)      
+      map.getController().zoomToSpan(pubOverlay.getLatSpanE6(), pubOverlay.getLonSpanE6());
    }
 
    @Override

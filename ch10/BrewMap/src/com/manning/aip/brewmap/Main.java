@@ -51,6 +51,7 @@ public class Main extends Activity {
 
       app = (BrewMapApp) getApplication();
 
+      // TODO not sure we need the GPS at all? (if not move this little checker to another example to show people how to do this)
       // determine if GPS is enabled or not, if not prompt user to enable it
       LocationManager lMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
       if (!lMgr.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
