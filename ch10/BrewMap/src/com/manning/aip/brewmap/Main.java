@@ -1,9 +1,5 @@
 package com.manning.aip.brewmap;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -14,6 +10,8 @@ import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -26,9 +24,16 @@ import com.manning.aip.brewmap.model.Pub;
 import com.manning.aip.brewmap.xml.BeerMappingParser;
 import com.manning.aip.brewmap.xml.BeerMappingXmlPullParser;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 // NOTE -- this is far from complete, just an interim checkin
 
 // 2.2 emulator fails geocoding -- http://code.google.com/p/android/issues/detail?id=8816
+
+// TODO for main page have entry form, and button to get pubs near me
+// TODO try to skip geocoding, or do it in a batch?
 
 public class Main extends Activity {
 
@@ -43,14 +48,16 @@ public class Main extends Activity {
    private Geocoder geocoder;
 
    private BeerMappingParser parser;
-
+   
+   private Handler handler;
+   
    @Override
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
 
-      app = (BrewMapApp) getApplication();
-
+      app = (BrewMapApp) getApplication();      
+      
       // TODO not sure we need the GPS at all? (if not move this little checker to another example to show people how to do this)
       // determine if GPS is enabled or not, if not prompt user to enable it
       LocationManager lMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -74,33 +81,39 @@ public class Main extends Activity {
 
       progressDialog = new ProgressDialog(this);
       progressDialog.setCancelable(false);
-      progressDialog.setMessage("Retrieving data...");
-
+      progressDialog.setMessage("Retrieving data...");      
+      
       geocoder = new Geocoder(this);
       // note that API level 9 added the "isPresent" method which could be checked here
 
       parser = new BeerMappingXmlPullParser();
 
+      handler = new Handler() {
+         public void handleMessage(Message m) {
+            if (progressDialog.isShowing()) {
+               progressDialog.hide();
+               Toast.makeText(Main.this, "HANDLER RETURNED -- lat:" + m.arg1 + " lon:" + m.arg2, Toast.LENGTH_SHORT).show();
+               // TODO parse and center map using lat/lon returned
+            }
+         }
+      };
+      
+      // TODO rename LocationUtil (or make static util-ish method or such?)
+      final LocationUtil locUtil = new LocationUtil(lMgr, handler);       
+      
       final EditText input = (EditText) findViewById(R.id.input);
 
-      Button city = (Button) findViewById(R.id.button_city);
-      city.setOnClickListener(new OnClickListener() {
+      Button near = (Button) findViewById(R.id.button_nearby);
+      near.setOnClickListener(new OnClickListener() {
          @Override
          public void onClick(View v) {
-            new ParseFeedTask().execute(new String[] { CITY, input.getText().toString() });
+            progressDialog.show();
+            locUtil.getLocation(); // fire off async call to get current location, which will use handler    
          }
       });
-
-      Button state = (Button) findViewById(R.id.button_state);
-      state.setOnClickListener(new OnClickListener() {
-         @Override
-         public void onClick(View v) {
-            new ParseFeedTask().execute(new String[] { STATE, input.getText().toString() });
-         }
-      });
-
-      Button piece = (Button) findViewById(R.id.button_piece);
-      piece.setOnClickListener(new OnClickListener() {
+      
+      Button search = (Button) findViewById(R.id.button_search);
+      search.setOnClickListener(new OnClickListener() {
          @Override
          public void onClick(View v) {
             new ParseFeedTask().execute(new String[] { PIECE, input.getText().toString() });
