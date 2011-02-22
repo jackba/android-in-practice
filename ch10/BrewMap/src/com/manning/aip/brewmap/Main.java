@@ -35,6 +35,8 @@ import java.util.List;
 // TODO for main page have entry form, and button to get pubs near me
 // TODO try to skip geocoding, or do it in a batch?
 
+// TODO filter out results that don't geocode
+// TODO show progressdialog with each address as they are being geocoded (separate from parsing XML)
 public class Main extends Activity {
 
    private static final String CITY = "CITY";
