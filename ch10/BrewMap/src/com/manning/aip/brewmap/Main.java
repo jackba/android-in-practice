@@ -108,7 +108,13 @@ public class Main extends Activity {
       search.setOnClickListener(new OnClickListener() {
          @Override
          public void onClick(View v) {
-            new ParseFeedTask().execute(new String[] { PIECE, input.getText().toString() });
+            if (input.getText() != null && !input.getText().toString().trim().equals("")) {               
+               new ParseFeedTask().execute(new String[] { PIECE, input.getText().toString() });
+               input.setText("");
+            } else {
+               Toast.makeText(Main.this, "Search criteria required", Toast.LENGTH_SHORT).show();
+            }
+            
          }
       });
    }
@@ -186,6 +192,8 @@ public class Main extends Activity {
          progressDialog2.dismiss();
          if (brewLocations != null && !brewLocations.isEmpty()) {
             new GeocodeAddressesTask().execute(brewLocations);
+         } else {
+            Toast.makeText(Main.this, "Nothing found for that location, please try again", Toast.LENGTH_SHORT).show();
          }
       }
    }
@@ -228,11 +236,11 @@ public class Main extends Activity {
                      bl.setLatitude(a.getLatitude());
                      bl.setLongitude(a.getLongitude());
                      Log.d(Constants.LOG_TAG, "Geocoded BrewLocation Address: " + bl.getName() + " " + a);
-                     if (bl.getLatitude() > 0 && bl.getLongitude() > 0) {
-                        result.add(bl);
-                     } else {
+                     if (bl.getLatitude() == 0 || bl.getLongitude() == 0) {
                         Log.d(Constants.LOG_TAG, "Skipping BrewLocation: " + bl.getName()
                                  + " because address was not geocoded.");
+                     } else {
+                        result.add(bl);
                      }
                   }
                } catch (IOException e) {
