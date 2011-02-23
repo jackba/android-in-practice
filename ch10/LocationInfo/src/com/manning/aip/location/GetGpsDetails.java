@@ -17,6 +17,9 @@ public class GetGpsDetails extends Activity {
    private TextView title;
    private TextView detail;
 
+   // To demonstrate how this works, disable GPS, then enable it and go to this activity
+   // (should see first fix happen)
+   
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
