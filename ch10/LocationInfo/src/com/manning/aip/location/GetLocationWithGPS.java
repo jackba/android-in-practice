@@ -49,11 +49,11 @@ public class GetLocationWithGPS extends Activity {
          public void handleMessage(Message m) {
             Log.d("GetLocationWithGPS", "Handler returned with message: " + m.toString());
             if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
-               detail.setText("HANDLER RETURNED: lat:" + m.arg1 + " lon:" + m.arg2);
+               detail.setText("HANDLER RETURNED\n   lat:" + m.arg1 + " lon:" + m.arg2);
             } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
-               detail.setText("HANDLER RETURNED: unable to get location");
+               detail.setText("HANDLER RETURNED\n   unable to get location");
             } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
-               detail.setText("HANDLER RETURNED: provider not present");
+               detail.setText("HANDLER RETURNED\n   provider not present");
             }
          }
       };

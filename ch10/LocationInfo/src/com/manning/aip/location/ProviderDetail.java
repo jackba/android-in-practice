@@ -46,7 +46,7 @@ public class ProviderDetail extends Activity {
       StringBuilder sb = new StringBuilder();
 
       sb.append("location manager data");
-      sb.append("\n--------------------------");
+      sb.append("\n--------------------------------");
       if (lastLocation != null) {
          sb.append("\n");
          Printer printer = new StringBuilderPrinter(sb);
@@ -58,7 +58,7 @@ public class ProviderDetail extends Activity {
       if (providerName.equalsIgnoreCase(LocationManager.GPS_PROVIDER)) {
          GpsStatus gpsStatus = locationMgr.getGpsStatus(null);
          sb.append("\ngps status");
-         sb.append("\n--------------");
+         sb.append("\n--------------------------------");
          sb.append("\ntime to first fix: " + gpsStatus.getTimeToFirstFix());
          sb.append("\nmax satellites: " + gpsStatus.getMaxSatellites());
          ArrayList<GpsSatellite> satellites = new ArrayList<GpsSatellite>();
@@ -78,7 +78,7 @@ public class ProviderDetail extends Activity {
 
       sb.append("\n");
       sb.append("\nprovider properties");
-      sb.append("\n--------------------");
+      sb.append("\n--------------------------------");
       sb.append("\naccuracy: " + provider.getAccuracy());
       sb.append("\npower requirement: " + provider.getPowerRequirement());
       sb.append("\nhas monetary cost: " + provider.hasMonetaryCost());
