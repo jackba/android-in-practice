@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -85,10 +86,22 @@ public class Main extends Activity {
             if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
                Toast.makeText(Main.this, "HANDLER RETURNED -- lat:" + m.arg1 + " lon:" + m.arg2, Toast.LENGTH_SHORT)
                         .show();
+               List<Address> addresses = null;
+               try {
+                  addresses = geocoder.getFromLocation(m.arg1 / 1e6, m.arg2 / 1e6, 1);
+               } catch (IOException e) {
+               }
+               if (addresses != null && !addresses.isEmpty()) {
+                  Address a = addresses.get(0);
+                  new ParseFeedTask().execute(a.getLocality() + ", " + a.getCountryName());
+               } else {
+                  Toast.makeText(Main.this, "Current location unavailable, please try again later", Toast.LENGTH_SHORT)
+                           .show();
+               }
             } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
-               Toast.makeText(Main.this, "HANDLER RETURNED -- unable to get location", Toast.LENGTH_SHORT).show();
+               Toast.makeText(Main.this, "Unable to get location, please try again later", Toast.LENGTH_SHORT).show();
             } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
-               Toast.makeText(Main.this, "HANDLER RETURNED -- provider not present", Toast.LENGTH_SHORT).show();
+               Toast.makeText(Main.this, "GPS provider not present, cannot get current location", Toast.LENGTH_SHORT).show();
             }
          }
       };
@@ -108,13 +121,13 @@ public class Main extends Activity {
       search.setOnClickListener(new OnClickListener() {
          @Override
          public void onClick(View v) {
-            if (input.getText() != null && !input.getText().toString().trim().equals("")) {               
+            if (input.getText() != null && !input.getText().toString().trim().equals("")) {
                new ParseFeedTask().execute(new String[] { PIECE, input.getText().toString() });
                input.setText("");
             } else {
                Toast.makeText(Main.this, "Search criteria required", Toast.LENGTH_SHORT).show();
             }
-            
+
          }
       });
    }
