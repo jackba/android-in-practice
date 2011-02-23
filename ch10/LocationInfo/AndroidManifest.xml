@@ -11,8 +11,6 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".ProviderDetail" />
-		<activity android:name=".LocationDetail" />
-		<activity android:name=".GetCurrentLocation" />
-		<activity android:name=".GetGpsDetails" />
+		<activity android:name=".GetLocationWithGPS" />
 	</application>
 </manifest> 

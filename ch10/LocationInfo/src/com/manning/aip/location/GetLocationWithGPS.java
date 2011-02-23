@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.GpsStatus;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,15 +15,15 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.TextView;
 
-public class GetCurrentLocation extends Activity {
+public class GetLocationWithGPS extends Activity {
 
    public static final String LOC_DATA = "LOC_DATA";
 
    private LocationManager locationMgr;
-
+   private GpsListener gpsListener;
    private Handler handler;
 
-   private TextView title;
+   private TextView title; 
    private TextView detail;
    private ProgressDialog progressDialog;
 
@@ -42,10 +43,11 @@ public class GetCurrentLocation extends Activity {
       detail.setText("getting current location...");
 
       locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+      gpsListener = new GpsListener();   
 
       handler = new Handler() {
          public void handleMessage(Message m) {
-            Log.d("GetCurrentLocation", "Handler returned with message: " + m.toString());
+            Log.d("GetLocationWithGPS", "Handler returned with message: " + m.toString());
             progressDialog.dismiss();
             if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
                detail.setText("Current location -- lat:" + m.arg1 + " lon:" + m.arg2);
@@ -84,11 +86,38 @@ public class GetCurrentLocation extends Activity {
          progressDialog.show();
          locationHelper.getCurrentLocation();
       }
+      
+      locationMgr.addGpsStatusListener(gpsListener);
    }
 
    @Override
    protected void onPause() {
       super.onPause();
       progressDialog.dismiss();
+      locationMgr.removeGpsStatusListener(gpsListener);
+   }
+   
+   // you can also use a GpsListener to be notified when the GPS is started/stopped, and when first "fix" is obtained
+   private class GpsListener implements GpsStatus.Listener {
+      public void onGpsStatusChanged(int event) {
+         Log.d("GpsListener", "Status changed to " + event);
+         switch (event) {
+            case GpsStatus.GPS_EVENT_STARTED:
+               detail.setText("GPS_EVENT_STARTED: GPS started");
+               break;
+            case GpsStatus.GPS_EVENT_STOPPED:
+               detail.setText("GPS_EVENT_STOPPED: GPS stopped");
+               break;
+            // GPS_EVENT_SATELLITE_STATUS will be called frequently
+            // all satellites in use will invoke it, don't rely on it alone
+            case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+               // this is *very* chatty, you probably don't want to listen for this
+               ///detail.setText("GPS_EVENT_STATELLITE_STATUS: " + event);           
+               break;
+            case GpsStatus.GPS_EVENT_FIRST_FIX:
+               detail.setText("GPS_EVENT_FIRST_FIX: first GPS fix obtained");
+               break;
+         }
+      }
    }
 }
