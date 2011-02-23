@@ -30,9 +30,7 @@ import android.util.Log;
  *     Handler handler = new Handler() {
  *        public void handleMessage(Message m) {
  *           Log.d("LocationHandler", "Handler returned with message: " + m.toString());
- *           if (progressDialog.isShowing()) {
- *              progressDialog.hide();
- *           }
+ *           progressDialog.dismiss();
  *           if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
  *              Toast.makeText(Activity.this, "HANDLER RETURNED -- lat:" + m.arg1 + " lon:" + m.arg2, Toast.LENGTH_SHORT)
  *                       .show();

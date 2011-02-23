@@ -10,7 +10,7 @@
 		android:layout_width="fill_parent" android:layout_height="wrap_content" />
 	<Button android:id="@+id/getloc_button" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginTop="20dp"
-		android:layout_marginBottom="10dp" android:text="Get current location"
+		android:layout_marginBottom="10dp" android:text="Get current location via GPS"
 		android:textAppearance="?android:attr/textAppearanceMedium" />
 	<Button android:id="@+id/getgps_button" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginTop="10dp"
