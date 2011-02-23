@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -21,10 +22,13 @@ public class GetLocationWithGPS extends Activity {
 
    private LocationManager locationMgr;
    private GpsListener gpsListener;
+   private GpsStatus gpsStatus;
    private Handler handler;
 
    private TextView title; 
    private TextView detail;
+   private TextView gpsEvents;
+   private TextView satelliteStatus;
    private ProgressDialog progressDialog;
 
    @Override
@@ -38,6 +42,8 @@ public class GetLocationWithGPS extends Activity {
 
       title = (TextView) findViewById(R.id.title);
       detail = (TextView) findViewById(R.id.detail);
+      gpsEvents = (TextView) findViewById(R.id.gps_events);
+      satelliteStatus = (TextView) findViewById(R.id.satellite_status);
 
       title.setText("Get Location");
       detail.setText("getting current location...");
@@ -103,19 +109,25 @@ public class GetLocationWithGPS extends Activity {
          Log.d("GpsListener", "Status changed to " + event);
          switch (event) {
             case GpsStatus.GPS_EVENT_STARTED:
-               detail.setText("GPS_EVENT_STARTED: GPS started");
+               gpsEvents.setText("GPS_EVENT_STARTED");
                break;
             case GpsStatus.GPS_EVENT_STOPPED:
-               detail.setText("GPS_EVENT_STOPPED: GPS stopped");
+               gpsEvents.setText("GPS_EVENT_STOPPED");
                break;
             // GPS_EVENT_SATELLITE_STATUS will be called frequently
             // all satellites in use will invoke it, don't rely on it alone
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                // this is *very* chatty, you probably don't want to listen for this
-               ///detail.setText("GPS_EVENT_STATELLITE_STATUS: " + event);           
+               gpsStatus = locationMgr.getGpsStatus(gpsStatus);
+               Iterable<GpsSatellite> sats = gpsStatus.getSatellites();
+               StringBuilder sb = new StringBuilder();
+               for (GpsSatellite sat : sats) {
+                  sb.append("\nSatellite NUM:" + sat.getPrn() + " AZIMUTH:" + sat.getAzimuth() + " ELEVATION:" + sat.getElevation() + " SIG/NOISE:" + sat.getSnr());
+               }
+               satelliteStatus.setText(sb.toString());           
                break;
             case GpsStatus.GPS_EVENT_FIRST_FIX:
-               detail.setText("GPS_EVENT_FIRST_FIX: first GPS fix obtained");
+               gpsEvents.setText("GPS_EVENT_FIRST_FIX");
                break;
          }
       }

@@ -9,7 +9,25 @@
 		android:layout_height="wrap_content" android:layout_margin="5dp"
 		android:orientation="vertical">
 		<TextView android:id="@+id/detail" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:layout_marginBottom="3dp"
+			android:layout_height="wrap_content" android:layout_marginBottom="5dp"
 			android:layout_marginTop="30dp" android:textAppearance="?android:attr/textAppearanceSmall" />
+
+		<TextView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_marginBottom="2dp"
+			android:layout_marginTop="10dp" android:textAppearance="?android:attr/textAppearanceSmall"
+			android:text="GPS Events:" />
+		<TextView android:id="@+id/gps_events"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_marginBottom="10dp" android:layout_marginTop="1dp"
+			android:textAppearance="?android:attr/textAppearanceSmall" />
+
+		<TextView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_marginBottom="2dp"
+			android:layout_marginTop="10dp" android:textAppearance="?android:attr/textAppearanceSmall"
+			android:text="GPS Satellite Status:" />
+		<TextView android:id="@+id/satellite_status"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_marginBottom="10dp" android:layout_marginTop="1dp"
+			android:textAppearance="?android:attr/textAppearanceSmall" />
 	</ScrollView>
 </LinearLayout>
