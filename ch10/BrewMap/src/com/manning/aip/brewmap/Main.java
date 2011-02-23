@@ -166,7 +166,7 @@ public class Main extends Activity {
 
    private void handleResults(List<BrewLocation> brewLocations) {
       if (brewLocations != null && !brewLocations.isEmpty()) {
-         app.setPubs(brewLocations);
+         app.setBrewLocations(brewLocations);
          startActivity(new Intent(this, MapResults.class));
       } else {
          Toast.makeText(this, "Brew locations empty!", Toast.LENGTH_SHORT).show();

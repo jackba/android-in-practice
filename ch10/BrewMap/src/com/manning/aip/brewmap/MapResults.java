@@ -27,7 +27,7 @@ public class MapResults extends MapActivity {
       map = (MapView) findViewById(R.id.map);
       map.setBuiltInZoomControls(true);
 
-      List<BrewLocation> brewLocations = app.getPubs();
+      List<BrewLocation> brewLocations = app.getBrewLocations();
       BrewLocationOverlay brewLocationOverlay = new BrewLocationOverlay(this, brewLocations, this.getResources().getDrawable(R.drawable.beer_icon));
       overlays = map.getOverlays();
       overlays.add(brewLocationOverlay);

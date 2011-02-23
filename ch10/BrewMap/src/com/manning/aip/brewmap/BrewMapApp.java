@@ -8,13 +8,15 @@ import java.util.List;
 
 public class BrewMapApp extends Application {
 
+   public static final String PUB_INDEX = "PUB_INDEX";
+   
    private List<BrewLocation> brewLocations;
 
-   public List<BrewLocation> getPubs() {
+   public List<BrewLocation> getBrewLocations() {
       return this.brewLocations;
    }
 
-   public void setPubs(List<BrewLocation> brewLocations) {
+   public void setBrewLocations(List<BrewLocation> brewLocations) {
       this.brewLocations = brewLocations;
    }
    

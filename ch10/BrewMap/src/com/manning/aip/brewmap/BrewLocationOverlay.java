@@ -29,22 +29,21 @@ public class BrewLocationOverlay extends ItemizedOverlay<OverlayItem> {
    protected OverlayItem createItem(int i) {
       BrewLocation brewLocation = brewLocations.get(i);
       // GeoPoint uses lat/long in microdegrees format (1e6)
-      GeoPoint point = new GeoPoint((int) (brewLocation.getLatitude() * 1e6), (int) (brewLocation.getLongitude() * 1e6));
-      return new OverlayItem(point, brewLocation.getName(), "TODO snippet");
-   }  
+      GeoPoint point =
+               new GeoPoint((int) (brewLocation.getLatitude() * 1e6), (int) (brewLocation.getLongitude() * 1e6));
+      return new OverlayItem(point, brewLocation.getName(), null);
+   }
 
    @Override
    public boolean onTap(final int index) {
       BrewLocation brewLocation = brewLocations.get(index);
       AlertDialog.Builder builder = new AlertDialog.Builder(context);
       builder.setTitle("BrewLocation")
-               .setMessage(
-                        brewLocation.getName() + "\nLatitude:" + brewLocation.getLatitude() + "\nLongitude:" + +brewLocation.getLongitude()
-                                 + "\nVisit the pub detail page for more info?").setCancelable(true)
+               .setMessage(brewLocation.getName() + "\n\nVisit the pub detail page for more info?").setCancelable(true)
                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int id) {
                      Intent i = new Intent(context, BrewLocationDetails.class);
-                     i.putExtra("PUB_INDEX", index);
+                     i.putExtra(BrewMapApp.PUB_INDEX, index);
                      context.startActivity(i);
                   }
                }).setNegativeButton("No", new DialogInterface.OnClickListener() {

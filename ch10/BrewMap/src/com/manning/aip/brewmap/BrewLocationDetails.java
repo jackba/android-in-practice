@@ -22,13 +22,13 @@ public class BrewLocationDetails extends Activity {
 
       text = (TextView) findViewById(R.id.details_text);
 
-      int pubIndex = getIntent().getIntExtra("PUB_INDEX", -1);
+      int pubIndex = getIntent().getIntExtra(BrewMapApp.PUB_INDEX, -1);
 
-      if (pubIndex != -1 && pubIndex <= app.getPubs().size()) {
-         BrewLocation brewLocation = app.getPubs().get(pubIndex);
+      if (pubIndex != -1 && pubIndex <= app.getBrewLocations().size()) {
+         BrewLocation brewLocation = app.getBrewLocations().get(pubIndex);
          text.setText("PUB DETAILS - " + brewLocation.getName());
       } else {
-         Toast.makeText(this, "Invalid pub index, cannot display detail info.", Toast.LENGTH_SHORT).show();
+         Toast.makeText(this, "Invalid pub data, cannot display detail info.", Toast.LENGTH_SHORT).show();
         
       }
       
