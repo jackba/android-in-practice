@@ -41,7 +41,6 @@ public class BeerMappingXmlPullParser implements BeerMappingParser {
    static final String IMAGECOUNT = "imagecount";
 
    public BeerMappingXmlPullParser() {
-
       Log.d(Constants.LOG_TAG, "BeerMappingXmlPullParser instantiated");
    }
 
@@ -177,5 +176,5 @@ public class BeerMappingXmlPullParser implements BeerMappingParser {
          throw new RuntimeException(e);
       }
       return brewLocations;
-   }
+   }   
 }
