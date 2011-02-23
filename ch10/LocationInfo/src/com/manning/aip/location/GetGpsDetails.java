@@ -63,7 +63,8 @@ public class GetGpsDetails extends Activity {
             // GPS_EVENT_SATELLITE_STATUS will be called frequently
             // all satellites in use will invoke it, don't rely on it alone
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-               // ignore              
+               // this is *very* chatty, you probably don't want to listen for this
+               ///detail.setText("GPS_EVENT_STATELLITE_STATUS: " + event);           
                break;
             case GpsStatus.GPS_EVENT_FIRST_FIX:
                detail.setText("GPS_EVENT_FIRST_FIX: first GPS fix obtained");
