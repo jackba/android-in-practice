@@ -29,16 +29,17 @@ import android.util.Log;
  *     
  *     Handler handler = new Handler() {
  *        public void handleMessage(Message m) {
+ *           Log.d("LocationHandler", "Handler returned with message: " + m.toString());
  *           if (progressDialog.isShowing()) {
  *              progressDialog.hide();
- *              if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
- *                 Toast.makeText(Main.this, "HANDLER RETURNED -- lat:" + m.arg1 + " lon:" + m.arg2, Toast.LENGTH_SHORT)
- *                          .show();
- *              } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
- *                 Toast.makeText(Main.this, "HANDLER RETURNED -- unable to get location", Toast.LENGTH_SHORT).show();
- *              } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
- *                 Toast.makeText(Main.this, "HANDLER RETURNED -- provider not present", Toast.LENGTH_SHORT).show();
- *              }
+ *           }
+ *           if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
+ *              Toast.makeText(Activity.this, "HANDLER RETURNED -- lat:" + m.arg1 + " lon:" + m.arg2, Toast.LENGTH_SHORT)
+ *                       .show();
+ *           } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
+ *              Toast.makeText(Activity.this, "HANDLER RETURNED -- unable to get location", Toast.LENGTH_SHORT).show();
+ *           } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
+ *              Toast.makeText(Activity.this, "HANDLER RETURNED -- provider not present", Toast.LENGTH_SHORT).show();
  *           }
  *        }
  *     };
@@ -75,6 +76,12 @@ public class LocationHelper {
    public LocationHelper(LocationManager locationMgr, Handler handler) {
       this.locationMgr = locationMgr;
       this.handler = handler;
+      
+      handlerCallback = new Thread() {
+         public void run() {
+            endListenForLocation(null);
+         }
+      };
 
       // setup listener
       locationListener = new LocationListenerImpl();

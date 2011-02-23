@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.TextView;
 
 public class GetCurrentLocation extends Activity {
@@ -38,29 +39,33 @@ public class GetCurrentLocation extends Activity {
       detail = (TextView) findViewById(R.id.detail);
 
       title.setText("Get Location");
-      detail.setText("getting current location...");      
+      detail.setText("getting current location...");
 
       locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
       handler = new Handler() {
          public void handleMessage(Message m) {
-            if (progressDialog.isShowing()) {
-               progressDialog.hide();
-               if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {                  
-                  detail.setText("Current location -- lat:" + m.arg1 + " lon:" + m.arg2);
-               } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
-                  detail.setText("HANDLER RETURNED -- unable to get location");
-               } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
-                  detail.setText("HANDLER RETURNED -- provider not present");
-               }
+            Log.d("GetCurrentLocation", "Handler returned with message: " + m.toString());
+            progressDialog.dismiss();
+            if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
+               detail.setText("Current location -- lat:" + m.arg1 + " lon:" + m.arg2);
+            } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
+               detail.setText("HANDLER RETURNED -- unable to get location");
+            } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
+               detail.setText("HANDLER RETURNED -- provider not present");
             }
          }
-      };      
-      
+      };
+   }
+
+   @Override
+   protected void onResume() {
+      super.onResume();
+
       // determine if GPS is enabled or not, if not prompt user to enable it
       if (!locationMgr.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
          AlertDialog.Builder builder = new AlertDialog.Builder(this);
-         builder.setTitle("GPS Settings are not enabled")
+         builder.setTitle("GPS is not enabled")
                   .setMessage("Would you like to go the location settings and enable GPS?").setCancelable(true)
                   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                      public void onClick(DialogInterface dialog, int id) {
@@ -74,22 +79,16 @@ public class GetCurrentLocation extends Activity {
                   });
          AlertDialog alert = builder.create();
          alert.show();
+      } else {
+         LocationHelper locationHelper = new LocationHelper(locationMgr, handler);
+         progressDialog.show();
+         locationHelper.getCurrentLocation();
       }
-   }
-   
-   @Override
-   protected void onResume() {
-      super.onResume();
-      LocationHelper locationHelper = new LocationHelper(locationMgr, handler);
-      progressDialog.show();
-      locationHelper.getCurrentLocation();
    }
 
    @Override
    protected void onPause() {
       super.onPause();
-      if (progressDialog.isShowing()) {
-         progressDialog.hide();
-      }
-   }   
+      progressDialog.dismiss();
+   }
 }
