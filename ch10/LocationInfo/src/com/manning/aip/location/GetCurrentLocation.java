@@ -79,6 +79,7 @@ public class GetCurrentLocation extends Activity {
    
    @Override
    protected void onResume() {
+      super.onResume();
       LocationHelper locationHelper = new LocationHelper(locationMgr, handler);
       progressDialog.show();
       locationHelper.getCurrentLocation();
