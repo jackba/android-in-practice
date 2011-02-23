@@ -1,16 +1,16 @@
 package com.manning.aip.brewmap.xml;
 
-import com.manning.aip.brewmap.model.Pub;
+import com.manning.aip.brewmap.model.BrewLocation;
 
 import java.util.ArrayList;
 
 public interface BeerMappingParser {
 
-   ArrayList<Pub> parseCity(String city);
+   ArrayList<BrewLocation> parseCity(String city);
 
-   ArrayList<Pub> parseState(String state);
+   ArrayList<BrewLocation> parseState(String state);
 
-   ArrayList<Pub> parsePiece(String piece);
+   ArrayList<BrewLocation> parsePiece(String piece);
    
    // TODO need a data structure to hold
    /*

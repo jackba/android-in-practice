@@ -15,6 +15,6 @@
 		</activity>
 		<activity android:name=".Main" />
 		<activity android:name=".MapResults" />
-		<activity android:name=".PubDetails" />
+		<activity android:name=".BrewLocationDetails" />
 	</application>
 </manifest>

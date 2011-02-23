@@ -1,6 +1,6 @@
 package com.manning.aip.brewmap.model;
 
-public class Pub {
+public class BrewLocation {
 
    private int id;
    private String name;
@@ -13,7 +13,7 @@ public class Pub {
    private double longitude;
    private double latitude;
    
-   public Pub() {
+   public BrewLocation() {
       this.address = new Address();
    }
 
@@ -91,7 +91,7 @@ public class Pub {
    
    @Override
    public String toString() {
-      return "Pub [id=" + this.id + ", name=" + this.name + ", status=" + this.status + ", reviewLink="
+      return "BrewLocation [id=" + this.id + ", name=" + this.name + ", status=" + this.status + ", reviewLink="
                + this.reviewLink + ", proxyLink=" + this.proxyLink + ", address=" + this.address + ", phone="
                + this.phone + ", longitude=" + this.longitude + ", latitude=" + this.latitude + "]";
    }
@@ -121,9 +121,9 @@ public class Pub {
          return true;
       if (obj == null)
          return false;
-      if (!(obj instanceof Pub))
+      if (!(obj instanceof BrewLocation))
          return false;
-      Pub other = (Pub) obj;
+      BrewLocation other = (BrewLocation) obj;
       if (this.address == null) {
          if (other.address != null)
             return false;

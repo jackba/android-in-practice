@@ -3,13 +3,13 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<Button android:id="@+id/button_nearby" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Find pubs near me now" />
+		android:layout_height="wrap_content" android:text="Find brew locations near me now" />
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="Search for pubs near a specified location (enter city, state, etc.):"
+		android:text="Search for brew locations near a city I specify:"
 		style="@style/mainFontMedium" />
 	<EditText android:id="@+id/input" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:hint="query here" />
+		android:layout_height="wrap_content" android:hint="City, State (partial ok)" />
 	<Button android:id="@+id/button_search" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="Search" />
 </LinearLayout>

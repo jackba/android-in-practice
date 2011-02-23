@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.manning.aip.brewmap.model.Pub;
+import com.manning.aip.brewmap.model.BrewLocation;
 
-public class PubDetails extends Activity {
+public class BrewLocationDetails extends Activity {
 
    private BrewMapApp app;
 
@@ -25,8 +25,8 @@ public class PubDetails extends Activity {
       int pubIndex = getIntent().getIntExtra("PUB_INDEX", -1);
 
       if (pubIndex != -1 && pubIndex <= app.getPubs().size()) {
-         Pub pub = app.getPubs().get(pubIndex);
-         text.setText("PUB DETAILS - " + pub.getName());
+         BrewLocation brewLocation = app.getPubs().get(pubIndex);
+         text.setText("PUB DETAILS - " + brewLocation.getName());
       } else {
          Toast.makeText(this, "Invalid pub index, cannot display detail info.", Toast.LENGTH_SHORT).show();
         

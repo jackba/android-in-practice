@@ -5,7 +5,7 @@ import android.util.Xml;
 
 import com.manning.aip.brewmap.Constants;
 import com.manning.aip.brewmap.model.Address;
-import com.manning.aip.brewmap.model.Pub;
+import com.manning.aip.brewmap.model.BrewLocation;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -67,31 +67,31 @@ public class BeerMappingXmlPullParser implements BeerMappingParser {
    }
 
    @Override
-   public ArrayList<Pub> parseCity(String city) {
+   public ArrayList<BrewLocation> parseCity(String city) {
       return parse(getUrl(FEED_URL_CITY, city));
    }
 
    @Override
-   public ArrayList<Pub> parseState(String state) {
+   public ArrayList<BrewLocation> parseState(String state) {
       return parse(getUrl(FEED_URL_CITY, state));
    }
 
    @Override
-   public ArrayList<Pub> parsePiece(String piece) {
+   public ArrayList<BrewLocation> parsePiece(String piece) {
       return parse(getUrl(FEED_URL_CITY, piece));
    }
 
-   private ArrayList<Pub> parse(URL url) {
+   private ArrayList<BrewLocation> parse(URL url) {
       ///Log.d(Constants.LOG_TAG, "parse invoked");
-      ArrayList<Pub> pubs = null;
+      ArrayList<BrewLocation> brewLocations = null;
       XmlPullParser parser = Xml.newPullParser();
       try {
-         Pub currentPub = null;
+         BrewLocation currentPub = null;
 
          // auto-detect the encoding from the stream
          InputStream is = this.getInputStream(url);
          if (is == null) {
-            return pubs;
+            return brewLocations;
          }
          parser.setInput(is, null);
          int eventType = parser.getEventType();
@@ -101,14 +101,14 @@ public class BeerMappingXmlPullParser implements BeerMappingParser {
             switch (eventType) {
                case XmlPullParser.START_DOCUMENT:
                   ///Log.d(Constants.LOG_TAG, " start document");
-                  pubs = new ArrayList<Pub>();
+                  brewLocations = new ArrayList<BrewLocation>();
                   break;
                case XmlPullParser.START_TAG:
                   name = parser.getName();
                   ///Log.d(Constants.LOG_TAG, "  start tag: " + name);                  
 
                   if (name.equalsIgnoreCase(BeerMappingXmlPullParser.LOCATION)) {
-                     currentPub = new Pub();
+                     currentPub = new BrewLocation();
                   }
                 
                   if (currentPub != null && name.equalsIgnoreCase(BeerMappingXmlPullParser.ID)) {
@@ -165,7 +165,7 @@ public class BeerMappingXmlPullParser implements BeerMappingParser {
                   ///Log.d(Constants.LOG_TAG, "  end tag: " + name);
                   if (name != null) {
                      if (name.equalsIgnoreCase(BeerMappingXmlPullParser.LOCATION) && (currentPub != null)) {
-                        pubs.add(currentPub);
+                        brewLocations.add(currentPub);
                         currentPub = null;
                      }
                   }
@@ -177,6 +177,6 @@ public class BeerMappingXmlPullParser implements BeerMappingParser {
          Log.e(Constants.LOG_TAG, "Exception parsing XML", e);
          throw new RuntimeException(e);
       }
-      return pubs;
+      return brewLocations;
    }
 }

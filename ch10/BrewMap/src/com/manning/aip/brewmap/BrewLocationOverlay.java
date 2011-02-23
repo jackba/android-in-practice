@@ -11,39 +11,39 @@ import android.graphics.drawable.Drawable;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
-import com.manning.aip.brewmap.model.Pub;
+import com.manning.aip.brewmap.model.BrewLocation;
 
-public class PubOverlay extends ItemizedOverlay<OverlayItem> {
+public class BrewLocationOverlay extends ItemizedOverlay<OverlayItem> {
 
-   private List<Pub> pubs;
+   private List<BrewLocation> brewLocations;
    private Context context;
 
-   public PubOverlay(Context context, List<Pub> pubs, Drawable marker) {
+   public BrewLocationOverlay(Context context, List<BrewLocation> brewLocations, Drawable marker) {
       super(boundCenterBottom(marker));
       this.context = context;
-      this.pubs = pubs;
+      this.brewLocations = brewLocations;
       populate();
    }
 
    @Override
    protected OverlayItem createItem(int i) {
-      Pub pub = pubs.get(i);
+      BrewLocation brewLocation = brewLocations.get(i);
       // GeoPoint uses lat/long in microdegrees format (1e6)
-      GeoPoint point = new GeoPoint((int) (pub.getLatitude() * 1e6), (int) (pub.getLongitude() * 1e6));
-      return new OverlayItem(point, pub.getName(), "TODO snippet");
+      GeoPoint point = new GeoPoint((int) (brewLocation.getLatitude() * 1e6), (int) (brewLocation.getLongitude() * 1e6));
+      return new OverlayItem(point, brewLocation.getName(), "TODO snippet");
    }  
 
    @Override
    public boolean onTap(final int index) {
-      Pub pub = pubs.get(index);
+      BrewLocation brewLocation = brewLocations.get(index);
       AlertDialog.Builder builder = new AlertDialog.Builder(context);
-      builder.setTitle("Pub")
+      builder.setTitle("BrewLocation")
                .setMessage(
-                        pub.getName() + "\nLatitude:" + pub.getLatitude() + "\nLongitude:" + +pub.getLongitude()
+                        brewLocation.getName() + "\nLatitude:" + brewLocation.getLatitude() + "\nLongitude:" + +brewLocation.getLongitude()
                                  + "\nVisit the pub detail page for more info?").setCancelable(true)
                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int id) {
-                     Intent i = new Intent(context, PubDetails.class);
+                     Intent i = new Intent(context, BrewLocationDetails.class);
                      i.putExtra("PUB_INDEX", index);
                      context.startActivity(i);
                   }
@@ -60,7 +60,7 @@ public class PubOverlay extends ItemizedOverlay<OverlayItem> {
 
    @Override
    public int size() {
-      return pubs.size();
+      return brewLocations.size();
    }
 
 }

@@ -8,7 +8,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import com.manning.aip.brewmap.model.Pub;
+import com.manning.aip.brewmap.model.BrewLocation;
 
 public class MapResults extends MapActivity {
 
@@ -27,17 +27,17 @@ public class MapResults extends MapActivity {
       map = (MapView) findViewById(R.id.map);
       map.setBuiltInZoomControls(true);
 
-      List<Pub> pubs = app.getPubs();
-      PubOverlay pubOverlay = new PubOverlay(this, pubs, this.getResources().getDrawable(R.drawable.beer_icon));
+      List<BrewLocation> brewLocations = app.getPubs();
+      BrewLocationOverlay brewLocationOverlay = new BrewLocationOverlay(this, brewLocations, this.getResources().getDrawable(R.drawable.beer_icon));
       overlays = map.getOverlays();
-      overlays.add(pubOverlay);
+      overlays.add(brewLocationOverlay);
 
       // TODO determine the exact center of the set of coords (now being lazy, just using first point in set)
       map.getController().setCenter(
-               new GeoPoint((int) (pubs.get(0).getLatitude() * 1e6), (int) (pubs.get(0).getLongitude() * 1e6)));
+               new GeoPoint((int) (brewLocations.get(0).getLatitude() * 1e6), (int) (brewLocations.get(0).getLongitude() * 1e6)));
 
       // zoom to the span (without having to calculate bounding box rectangle ourselves, nice for the people Android)      
-      map.getController().zoomToSpan(pubOverlay.getLatSpanE6(), pubOverlay.getLonSpanE6());
+      map.getController().zoomToSpan(brewLocationOverlay.getLatSpanE6(), brewLocationOverlay.getLonSpanE6());
    }
 
    @Override
