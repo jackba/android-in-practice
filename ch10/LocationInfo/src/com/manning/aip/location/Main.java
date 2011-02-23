@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 public class Main extends Activity implements OnItemClickListener {
 
+   public static final String LOG_TAG = "LocationInfo";
    public static final String PROVIDER_NAME = "PROVIDER_NAME";
 
    private LocationManager locationMgr;

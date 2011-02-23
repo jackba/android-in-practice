@@ -24,7 +24,7 @@ public class GetLocationWithGPS extends Activity {
    private GpsStatus gpsStatus;
    private Handler handler;
 
-   private TextView title; 
+   private TextView title;
    private TextView detail;
    private TextView gpsEvents;
    private TextView satelliteStatus;
@@ -40,20 +40,20 @@ public class GetLocationWithGPS extends Activity {
       satelliteStatus = (TextView) findViewById(R.id.satellite_status);
 
       title.setText("Get current location via GPS");
-      detail.setText("Attempting to get current location, please wait\n     (may take up to 20 seconds)...");
+      detail.setText("Attempting to get current location...\n     (may take a few seconds)");
 
       locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-      gpsListener = new GpsListener();   
+      gpsListener = new GpsListener();
 
       handler = new Handler() {
          public void handleMessage(Message m) {
-            Log.d("GetLocationWithGPS", "Handler returned with message: " + m.toString());
+            Log.d(Main.LOG_TAG, "Handler returned with message: " + m.toString());
             if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
-               detail.setText("HANDLER RETURNED\n   lat:" + m.arg1 + " lon:" + m.arg2);
+               detail.setText("HANDLER RETURNED\nlat:" + m.arg1 + "\nlon:" + m.arg2);
             } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
-               detail.setText("HANDLER RETURNED\n   unable to get location");
+               detail.setText("HANDLER RETURNED\nunable to get location");
             } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
-               detail.setText("HANDLER RETURNED\n   provider not present");
+               detail.setText("HANDLER RETURNED\nprovider not present");
             }
          }
       };
@@ -81,10 +81,12 @@ public class GetLocationWithGPS extends Activity {
          AlertDialog alert = builder.create();
          alert.show();
       } else {
-         LocationHelper locationHelper = new LocationHelper(locationMgr, handler);
-         locationHelper.getCurrentLocation();
+         LocationHelper locationHelper = new LocationHelper(locationMgr, handler, Main.LOG_TAG);
+         // here we aren't using a progressdialog around getCurrentLocation (don't want to block entire UI)
+         // (but be advised that you could if the situation absolutely required it)
+         locationHelper.getCurrentLocation(30);
       }
-      
+
       locationMgr.addGpsStatusListener(gpsListener);
    }
 
@@ -93,7 +95,7 @@ public class GetLocationWithGPS extends Activity {
       super.onPause();
       locationMgr.removeGpsStatusListener(gpsListener);
    }
-   
+
    // you can also use a GpsListener to be notified when the GPS is started/stopped, and when first "fix" is obtained
    private class GpsListener implements GpsStatus.Listener {
       public void onGpsStatusChanged(int event) {
@@ -112,9 +114,10 @@ public class GetLocationWithGPS extends Activity {
                gpsStatus = locationMgr.getGpsStatus(gpsStatus);
                StringBuilder sb = new StringBuilder();
                for (GpsSatellite sat : gpsStatus.getSatellites()) {
-                  sb.append("\nSatellite N:" + sat.getPrn() + " AZ:" + sat.getAzimuth() + " EL:" + sat.getElevation() + " S/N:" + sat.getSnr());
+                  sb.append("Satellite N:" + sat.getPrn() + " AZ:" + sat.getAzimuth() + " EL:" + sat.getElevation()
+                           + " S/N:" + sat.getSnr() + "\n");
                }
-               satelliteStatus.setText(sb.toString());           
+               satelliteStatus.setText(sb.toString());
                break;
             case GpsStatus.GPS_EVENT_FIRST_FIX:
                gpsEvents.setText("GPS_EVENT_FIRST_FIX");
