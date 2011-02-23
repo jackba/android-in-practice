@@ -1,7 +1,6 @@
 package com.manning.aip.location;
 
 import android.app.Activity;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.location.GpsStatus;
 import android.location.LocationManager;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 public class GetGpsDetails extends Activity {
 
    private LocationManager locationMgr;
-   private NotificationManager notificationMgr;
 
    private GpsStatus.Listener gpsListener;
 
@@ -25,12 +23,8 @@ public class GetGpsDetails extends Activity {
       setContentView(R.layout.title_detail);
 
       locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-      notificationMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-      gpsListener = new GpsListener();
-
-      // there is also a listener specifically for GPS status changes
-      locationMgr.addGpsStatusListener(gpsListener);
+      gpsListener = new GpsListener();      
 
       title = (TextView) findViewById(R.id.title);
       detail = (TextView) findViewById(R.id.detail);
@@ -39,6 +33,13 @@ public class GetGpsDetails extends Activity {
       detail.setText("Listening for GPS events . . .");
    }
 
+   @Override
+   protected void onResume() {
+      super.onResume();
+      // listener specifically for GPS status changes
+      locationMgr.addGpsStatusListener(gpsListener);
+   }
+   
    @Override
    protected void onPause() {
       super.onPause();
