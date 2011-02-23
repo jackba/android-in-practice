@@ -18,6 +18,5 @@ public class BrewMapApp extends Application {
 
    public void setBrewLocations(List<BrewLocation> brewLocations) {
       this.brewLocations = brewLocations;
-   }
-   
+   }   
 }
