@@ -83,9 +83,7 @@ public class Main extends Activity {
          public void handleMessage(Message m) {
             Log.d("GetCurrentLocation", "Handler returned with message: " + m.toString());
             progressDialog.dismiss();
-            if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
-               Toast.makeText(Main.this, "HANDLER RETURNED -- lat:" + m.arg1 + " lon:" + m.arg2, Toast.LENGTH_SHORT)
-                        .show();
+            if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {               
                List<Address> addresses = null;
                try {
                   addresses = geocoder.getFromLocation(m.arg1 / 1e6, m.arg2 / 1e6, 1);
