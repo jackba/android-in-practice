@@ -69,8 +69,6 @@ public class Main extends Activity {
 
       progressDialog3 = new ProgressDialog(this);
       progressDialog3.setCancelable(false);
-      progressDialog3.setIndeterminate(false);
-      progressDialog3.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
       progressDialog3.setTitle("Geocoding address");
 
       geocoder = new Geocoder(this);
