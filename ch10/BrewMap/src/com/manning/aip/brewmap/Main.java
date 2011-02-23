@@ -93,9 +93,9 @@ public class Main extends Activity {
                }
                if (addresses != null && !addresses.isEmpty()) {
                   Address a = addresses.get(0);
-                  String search = a.getLocality() + ", " + a.getCountryName();
-                  Log.d(Constants.LOG_TAG, "********************************* Address search string geocoded from lat/long:" + search);
-                  new ParseFeedTask().execute(search);
+                  String search = a.getLocality() + ", " + a.getAdminArea();
+                  Log.d(Constants.LOG_TAG, "Address search string geocoded from lat/long:" + search);
+                  new ParseFeedTask().execute(new String[] { CITY, search });
                } else {
                   Toast.makeText(Main.this, "Current location unavailable, please try again later", Toast.LENGTH_SHORT)
                            .show();
@@ -124,7 +124,7 @@ public class Main extends Activity {
          @Override
          public void onClick(View v) {
             if (input.getText() != null && !input.getText().toString().trim().equals("")) {
-               new ParseFeedTask().execute(new String[] { PIECE, input.getText().toString() });
+               new ParseFeedTask().execute(new String[] { CITY, input.getText().toString() });
                input.setText("");
             } else {
                Toast.makeText(Main.this, "Search criteria required", Toast.LENGTH_SHORT).show();
