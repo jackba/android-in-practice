@@ -28,12 +28,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-// NOTE -- this is far from complete, just an interim checkin
-
 // 2.2 emulator fails geocoding -- http://code.google.com/p/android/issues/detail?id=8816
 
-// TODO filter out results that don't geocode
-// TODO show progressdialog with each address as they are being geocoded (separate from parsing XML)
 public class Main extends Activity {
 
    private static final String CITY = "CITY";
@@ -74,7 +70,7 @@ public class Main extends Activity {
       progressDialog3 = new ProgressDialog(this);
       progressDialog3.setCancelable(false);
       progressDialog3.setIndeterminate(false);
-      progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+      progressDialog3.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
       progressDialog3.setTitle("Geocoding address");
 
       geocoder = new Geocoder(this);
