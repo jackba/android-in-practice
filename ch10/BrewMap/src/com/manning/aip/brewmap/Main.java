@@ -32,9 +32,6 @@ import java.util.List;
 
 // 2.2 emulator fails geocoding -- http://code.google.com/p/android/issues/detail?id=8816
 
-// TODO for main page have entry form, and button to get pubs near me
-// TODO try to skip geocoding, or do it in a batch?
-
 // TODO filter out results that don't geocode
 // TODO show progressdialog with each address as they are being geocoded (separate from parsing XML)
 public class Main extends Activity {
@@ -45,7 +42,11 @@ public class Main extends Activity {
 
    private BrewMapApp app;
 
+   private LocationManager locationMgr;
+
    private ProgressDialog progressDialog;
+   private ProgressDialog progressDialog2;
+   private ProgressDialog progressDialog3;
 
    private Geocoder geocoder;
 
@@ -60,11 +61,72 @@ public class Main extends Activity {
 
       app = (BrewMapApp) getApplication();
 
-      // determine if GPS is enabled or not, if not prompt user to enable it
-      LocationManager lMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-      if (!lMgr.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+      locationMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+      progressDialog = new ProgressDialog(this);
+      progressDialog.setCancelable(false);
+      progressDialog.setMessage("Getting current location...");
+
+      progressDialog2 = new ProgressDialog(this);
+      progressDialog2.setCancelable(false);
+      progressDialog2.setMessage("Retrieving brew location data...");
+
+      progressDialog3 = new ProgressDialog(this);
+      progressDialog3.setCancelable(false);
+      progressDialog3.setIndeterminate(false);
+      progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+      progressDialog3.setTitle("Geocoding address");
+
+      geocoder = new Geocoder(this);
+      // note that API level 9 added the "isPresent" method which could be checked here
+
+      parser = new BeerMappingXmlPullParser();
+
+      // Use Handler and LocationHelper to check for current Location (see LocationHelper for details)
+      // (will return last known location from FINE provider if recent, else will listen for updates for 20 seconds)
+      handler = new Handler() {
+         public void handleMessage(Message m) {
+            Log.d("GetCurrentLocation", "Handler returned with message: " + m.toString());
+            progressDialog.dismiss();
+            if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
+               Toast.makeText(Main.this, "HANDLER RETURNED -- lat:" + m.arg1 + " lon:" + m.arg2, Toast.LENGTH_SHORT)
+                        .show();
+            } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
+               Toast.makeText(Main.this, "HANDLER RETURNED -- unable to get location", Toast.LENGTH_SHORT).show();
+            } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
+               Toast.makeText(Main.this, "HANDLER RETURNED -- provider not present", Toast.LENGTH_SHORT).show();
+            }
+         }
+      };
+
+      final LocationHelper locationHelper = new LocationHelper(locationMgr, handler, Constants.LOG_TAG);
+
+      final EditText input = (EditText) findViewById(R.id.input);
+      Button near = (Button) findViewById(R.id.button_nearby);
+      near.setOnClickListener(new OnClickListener() {
+         @Override
+         public void onClick(View v) {
+            progressDialog.show();
+            locationHelper.getCurrentLocation(30); // fire off async call to get current location, which will use handler    
+         }
+      });
+      Button search = (Button) findViewById(R.id.button_search);
+      search.setOnClickListener(new OnClickListener() {
+         @Override
+         public void onClick(View v) {
+            new ParseFeedTask().execute(new String[] { PIECE, input.getText().toString() });
+         }
+      });
+   }
+
+   @Override
+   protected void onResume() {
+      super.onResume();
+
+      // determine if GPS is enabled or not, if not prompt user to enable it      
+      if (!locationMgr.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
          AlertDialog.Builder builder = new AlertDialog.Builder(this);
-         builder.setTitle("GPS Settings are not enabled")
+         builder.setTitle("GPS is not enabled")
                   .setMessage("Would you like to go the location settings and enable GPS?").setCancelable(true)
                   .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                      public void onClick(DialogInterface dialog, int id) {
@@ -79,52 +141,14 @@ public class Main extends Activity {
          AlertDialog alert = builder.create();
          alert.show();
       }
+   }
 
-      progressDialog = new ProgressDialog(this);
-      progressDialog.setCancelable(false);
-      progressDialog.setMessage("Retrieving data...");
-
-      geocoder = new Geocoder(this);
-      // note that API level 9 added the "isPresent" method which could be checked here
-
-      parser = new BeerMappingXmlPullParser();
-
-      // Use Handler and LocationHelper to check for current Location (see LocationHelper for details)
-      // (will return last known location from FINE provider if recent, else will listen for updates for 20 seconds)
-      handler = new Handler() {
-         public void handleMessage(Message m) {
-            if (progressDialog.isShowing()) {
-               progressDialog.hide();
-               if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
-                  Toast.makeText(Main.this, "HANDLER RETURNED -- lat:" + m.arg1 + " lon:" + m.arg2, Toast.LENGTH_SHORT)
-                           .show();
-               } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
-                  Toast.makeText(Main.this, "HANDLER RETURNED -- unable to get location", Toast.LENGTH_SHORT).show();
-               } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
-                  Toast.makeText(Main.this, "HANDLER RETURNED -- provider not present", Toast.LENGTH_SHORT).show();
-               }
-            }
-         }
-      };
-
-      final LocationHelper locationHelper = new LocationHelper(lMgr, handler);
-
-      final EditText input = (EditText) findViewById(R.id.input);      
-      Button near = (Button) findViewById(R.id.button_nearby);
-      near.setOnClickListener(new OnClickListener() {
-         @Override
-         public void onClick(View v) {
-            progressDialog.show();
-            locationHelper.getCurrentLocation(); // fire off async call to get current location, which will use handler    
-         }
-      });
-      Button search = (Button) findViewById(R.id.button_search);
-      search.setOnClickListener(new OnClickListener() {
-         @Override
-         public void onClick(View v) {
-            new ParseFeedTask().execute(new String[] { PIECE, input.getText().toString() });
-         }
-      });
+   @Override
+   protected void onPause() {
+      super.onPause();
+      progressDialog.dismiss();
+      progressDialog2.dismiss();
+      progressDialog3.dismiss();
    }
 
    private void handleResults(List<BrewLocation> brewLocations) {
@@ -132,7 +156,7 @@ public class Main extends Activity {
          app.setPubs(brewLocations);
          startActivity(new Intent(this, MapResults.class));
       } else {
-         Toast.makeText(this, "Pubs empty!", Toast.LENGTH_SHORT).show();
+         Toast.makeText(this, "Brew locations empty!", Toast.LENGTH_SHORT).show();
       }
    }
 
@@ -140,7 +164,7 @@ public class Main extends Activity {
 
       @Override
       protected void onPreExecute() {
-         progressDialog.show();
+         progressDialog2.show();
       }
 
       @Override
@@ -159,17 +183,63 @@ public class Main extends Activity {
             result = parser.parsePiece(input);
          }
 
+         return result;
+      }
+
+      @SuppressWarnings("unchecked")
+      @Override
+      protected void onPostExecute(List<BrewLocation> brewLocations) {
+         progressDialog2.dismiss();
+         if (brewLocations != null && !brewLocations.isEmpty()) {
+            new GeocodeAddressesTask().execute(brewLocations);
+         }
+      }
+   }
+
+   private class GeocodeAddressesTask extends AsyncTask<List<BrewLocation>, ProgressBean, List<BrewLocation>> {
+
+      @Override
+      protected void onPreExecute() {
+         progressDialog3.show();
+      }
+
+      @Override
+      protected void onProgressUpdate(ProgressBean... values) {
+         super.onProgressUpdate(values);
+         ProgressBean bean = values[0];
+         if (bean.current == 1) {
+            progressDialog3.setMax(bean.total);
+         }
+         progressDialog3.setProgress(bean.current);
+         progressDialog3.setMessage(bean.message);
+      }
+
+      @Override
+      protected List<BrewLocation> doInBackground(List<BrewLocation>... args) {
+         List<BrewLocation> result = new ArrayList<BrewLocation>();
+         if (args == null) {
+            return result;
+         }
+
          // geocode the city/state/zip form addresses in the task too
-         if (result != null) {
-            for (BrewLocation p : result) {
+         if (args[0] != null && !args[0].isEmpty()) {
+            for (int i = 0; i < args[0].size(); i++) {
+               BrewLocation bl = args[0].get(i);
+               publishProgress(new ProgressBean(args[0].size(), i + 1, bl.getName()));
                try {
                   List<android.location.Address> addresses =
-                           geocoder.getFromLocationName(p.getAddress().getLocationName(), 1);
+                           geocoder.getFromLocationName(bl.getAddress().getLocationName(), 1);
                   if (addresses != null && !addresses.isEmpty()) {
-                     android.location.Address a = addresses.get(0);
-                     p.setLatitude(a.getLatitude());
-                     p.setLongitude(a.getLongitude());
-                     System.out.println("*** GEOCODED ADDRESS: " + a);
+                     android.location.Address a = addresses.get(0); // just use first address
+                     bl.setLatitude(a.getLatitude());
+                     bl.setLongitude(a.getLongitude());
+                     Log.d(Constants.LOG_TAG, "Geocoded BrewLocation Address: " + bl.getName() + " " + a);
+                     if (bl.getLatitude() > 0 && bl.getLongitude() > 0) {
+                        result.add(bl);
+                     } else {
+                        Log.d(Constants.LOG_TAG, "Skipping BrewLocation: " + bl.getName()
+                                 + " because address was not geocoded.");
+                     }
                   }
                } catch (IOException e) {
                   Log.e(Constants.LOG_TAG, "Error geocoding location name", e);
@@ -182,10 +252,20 @@ public class Main extends Activity {
 
       @Override
       protected void onPostExecute(List<BrewLocation> brewLocations) {
-         if (progressDialog.isShowing()) {
-            progressDialog.hide();
-         }
+         progressDialog3.dismiss();
          handleResults(brewLocations);
+      }
+   }
+
+   private class ProgressBean {
+      protected int current;
+      protected int total;
+      protected String message;
+
+      public ProgressBean(int current, int total, String message) {
+         this.current = current;
+         this.total = total;
+         this.message = message;
       }
    }
 }
