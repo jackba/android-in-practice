@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">BrewMap</string>
+	<string name="app_name">BrewMap</string>
+	<string name="aboutString">This is a sample application that was created for the Manning book
+		<i>Android in Practice</i>.\n\nPowered by http://www.beermapping.com
+	</string>
 </resources>

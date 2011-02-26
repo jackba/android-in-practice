@@ -1,6 +1,5 @@
 package com.manning.aip.brewmap;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -31,7 +30,7 @@ import java.util.List;
 
 // 2.2 emulator fails geocoding -- http://code.google.com/p/android/issues/detail?id=8816
 
-public class Main extends Activity {
+public class Main extends BrewMapActivity {
 
    private static final String CITY = "CITY";
    private static final String STATE = "STATE";
@@ -40,8 +39,6 @@ public class Main extends Activity {
    private static final String MESSAGE1 = "Trying to determine location...";
    private static final String MESSAGE2 = "Retrieving brew location data...";
    private static final String MESSAGE3 = "Geocoding address...";
-
-   private BrewMapApp app;
 
    private LocationManager locationMgr;
 
@@ -54,11 +51,9 @@ public class Main extends Activity {
    private Handler handler;
 
    @Override
-   public void onCreate(Bundle savedInstanceState) {
+   protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
-
-      app = (BrewMapApp) getApplication();
 
       locationMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 

@@ -1,12 +1,11 @@
 package com.manning.aip.brewmap;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.Window;
 
-public class Splash extends Activity {
+public class Splash extends BrewMapActivity {
 
    @Override
    protected void onCreate(final Bundle savedInstanceState) {

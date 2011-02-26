@@ -1,7 +1,5 @@
 package com.manning.aip.brewmap;
 
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +10,8 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 import com.manning.aip.brewmap.model.BrewLocation;
+
+import java.util.List;
 
 public class BrewLocationOverlay extends ItemizedOverlay<OverlayItem> {
 

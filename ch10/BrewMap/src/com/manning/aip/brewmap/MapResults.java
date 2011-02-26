@@ -1,7 +1,5 @@
 package com.manning.aip.brewmap;
 
-import java.util.List;
-
 import android.os.Bundle;
 
 import com.google.android.maps.GeoPoint;
@@ -9,6 +7,8 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.manning.aip.brewmap.model.BrewLocation;
+
+import java.util.List;
 
 public class MapResults extends MapActivity {
 

@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:gravity="center_horizontal"
-	android:background="@drawable/beer_bkgrnd_trans">
+	android:background="@drawable/beer_bkgrnd">
 	<Button android:id="@+id/button_nearby" android:layout_width="200dp"
-		android:layout_height="wrap_content" android:layout_marginTop="40dp"
+		android:layout_height="wrap_content" android:layout_marginTop="50dp"
 		android:layout_marginBottom="20dp" android:background="@drawable/button"
 		style="@style/mainFontMedium" android:text="Find brew locations near me" />
 	<EditText android:id="@+id/input" android:layout_width="fill_parent"

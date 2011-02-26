@@ -1,6 +1,5 @@
 package com.manning.aip.brewmap;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,9 +11,7 @@ import android.widget.Toast;
 
 import com.manning.aip.brewmap.model.BrewLocation;
 
-public class BrewLocationDetails extends Activity implements OnClickListener {
-
-   private BrewMapApp app;
+public class BrewLocationDetails extends BrewMapActivity implements OnClickListener {
 
    private TextView name;
    private TextView status;
@@ -31,8 +28,6 @@ public class BrewLocationDetails extends Activity implements OnClickListener {
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.location_details);
-
-      app = (BrewMapApp) getApplication();
 
       name = (TextView) findViewById(R.id.location_name);
       status = (TextView) findViewById(R.id.location_status);
