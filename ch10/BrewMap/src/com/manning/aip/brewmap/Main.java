@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
@@ -15,11 +14,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.manning.aip.brewmap.model.BrewLocation;
@@ -37,13 +38,12 @@ public class Main extends BrewMapActivity {
    private static final String CITY = "CITY";
    private static final String STATE = "STATE";
    private static final String PIECE = "PIECE";
-   
+
    private static final String MESSAGE1 = "Trying to determine location...";
    private static final String MESSAGE2 = "Retrieving brew location data...";
    private static final String MESSAGE3 = "Geocoding address...";
 
    private LocationManager locationMgr;
-   protected InputMethodManager inputMethodManager;
 
    private ProgressDialog progressDialog;
 
@@ -59,7 +59,6 @@ public class Main extends BrewMapActivity {
       setContentView(R.layout.main);
 
       locationMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-      inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
       progressDialog = new ProgressDialog(this);
       progressDialog.setCancelable(false);
@@ -75,7 +74,7 @@ public class Main extends BrewMapActivity {
          public void handleMessage(Message m) {
             Log.d("GetCurrentLocation", "Handler returned with message: " + m.toString());
             progressDialog.hide();
-            if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {               
+            if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {
                List<Address> addresses = null;
                try {
                   addresses = geocoder.getFromLocation(m.arg1 / 1e6, m.arg2 / 1e6, 1);
@@ -91,36 +90,42 @@ public class Main extends BrewMapActivity {
                            .show();
                }
             } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
-               Toast.makeText(Main.this, "Unable to determine current location, please try again later", Toast.LENGTH_SHORT).show();
+               Toast.makeText(Main.this, "Unable to determine current location, please try again later",
+                        Toast.LENGTH_SHORT).show();
             } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
-               Toast.makeText(Main.this, "GPS provider not present, cannot determine current location", Toast.LENGTH_SHORT).show();
+               Toast.makeText(Main.this, "GPS provider not present, cannot determine current location",
+                        Toast.LENGTH_SHORT).show();
             }
          }
       };
 
-      final LocationHelper locationHelper = new LocationHelper(locationMgr, handler, Constants.LOG_TAG);
-
       final EditText input = (EditText) findViewById(R.id.main_input);
+      input.setOnKeyListener(new OnKeyListener() {
+         public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+               search(input);
+               return true;
+            }
+            return false;
+         }
+      });
+
       Button near = (Button) findViewById(R.id.main_nearby_button);
       near.setOnClickListener(new OnClickListener() {
          @Override
          public void onClick(View v) {
+            // TODO prevent user from re-clicking while still working
+            LocationHelper locationHelper = new LocationHelper(locationMgr, handler, Constants.LOG_TAG);
             progressDialog.setMessage(MESSAGE1);
             progressDialog.show();
-            locationHelper.getCurrentLocation(30); // fire off async call to get current location, which will use handler    
+            locationHelper.getCurrentLocation(30); // fire off async call to get current location, which will use handler  
          }
       });
       Button search = (Button) findViewById(R.id.main_search_button);
       search.setOnClickListener(new OnClickListener() {
          @Override
          public void onClick(View v) {
-            if (input.getText() != null && !input.getText().toString().trim().equals("")) {
-               new ParseFeedTask().execute(new String[] { CITY, input.getText().toString() });
-               input.setText("");
-            } else {
-               Toast.makeText(Main.this, "Search criteria required", Toast.LENGTH_SHORT).show();
-            }
-
+            search(input);
          }
       });
    }
@@ -146,21 +151,22 @@ public class Main extends BrewMapActivity {
                   });
          AlertDialog alert = builder.create();
          alert.show();
-      }
-      
-      /*
-      Configuration configuration = getBaseContext().getResources().getConfiguration();
-      if ((configuration.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES)
-               || (configuration.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_UNDEFINED)) {
-         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
-      }
-      */
+      }    
    }
 
    @Override
    protected void onPause() {
       super.onPause();
-      progressDialog.dismiss();      
+      progressDialog.dismiss();
+   }
+
+   private void search(TextView in) {
+      if (in.getText() != null && !in.getText().toString().trim().equals("")) {
+         new ParseFeedTask().execute(new String[] { CITY, in.getText().toString() });
+         in.setText("");
+      } else {
+         Toast.makeText(Main.this, "Search criteria required", Toast.LENGTH_SHORT).show();
+      }
    }
 
    private void handleResults(List<BrewLocation> brewLocations) {
@@ -222,7 +228,7 @@ public class Main extends BrewMapActivity {
       @Override
       protected void onProgressUpdate(String... values) {
          super.onProgressUpdate(values);
-         String name = values[0];         
+         String name = values[0];
          progressDialog.setMessage("Geocoding location:\n" + name);
       }
 

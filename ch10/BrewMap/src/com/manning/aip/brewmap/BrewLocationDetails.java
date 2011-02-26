@@ -64,7 +64,7 @@ public class BrewLocationDetails extends BrewMapActivity implements OnClickListe
          Intent i = new Intent();
          if (v.equals(map)) {
             i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("geo:" + brewLocation.getLatitude() + "," + brewLocation.getLongitude() + "?z=10"));
+            i.setData(Uri.parse("geo:" + brewLocation.getLatitude() + "," + brewLocation.getLongitude() + "?q=my+street+address"));
          } else if (v.equals(call)) {
             i.setAction(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:" + brewLocation.getPhone()));
