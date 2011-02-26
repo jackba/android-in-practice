@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
@@ -16,6 +17,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -41,6 +43,7 @@ public class Main extends BrewMapActivity {
    private static final String MESSAGE3 = "Geocoding address...";
 
    private LocationManager locationMgr;
+   protected InputMethodManager inputMethodManager;
 
    private ProgressDialog progressDialog;
 
@@ -56,6 +59,7 @@ public class Main extends BrewMapActivity {
       setContentView(R.layout.main);
 
       locationMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+      inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
       progressDialog = new ProgressDialog(this);
       progressDialog.setCancelable(false);
@@ -143,6 +147,14 @@ public class Main extends BrewMapActivity {
          AlertDialog alert = builder.create();
          alert.show();
       }
+      
+      /*
+      Configuration configuration = getBaseContext().getResources().getConfiguration();
+      if ((configuration.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES)
+               || (configuration.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_UNDEFINED)) {
+         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
+      }
+      */
    }
 
    @Override

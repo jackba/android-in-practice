@@ -14,7 +14,8 @@
 	<EditText android:id="@+id/main_input" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_marginTop="40dp"
 		android:layout_marginLeft="15dp" android:layout_marginRight="15dp"
-		android:inputType="text" android:hint="City, State, etc. (partial ok)" />
+		android:inputType="text|textAutoCorrect|textCapWords"
+        android:imeOptions="actionGo" android:hint="City, State, etc. (partial ok)" />
 	<Button android:id="@+id/main_search_button" android:layout_width="200dp"
 		android:layout_height="wrap_content" android:background="@drawable/button"
 		style="@style/buttonFont" android:text="Search" />
