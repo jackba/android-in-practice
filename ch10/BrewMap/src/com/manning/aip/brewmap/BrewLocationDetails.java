@@ -68,7 +68,7 @@ public class BrewLocationDetails extends Activity implements OnClickListener {
             i.setData(Uri.parse("geo:" + brewLocation.getLatitude() + "," + brewLocation.getLongitude()
                      + "?q=my+street+address"));
          } else if (v.equals(call)) {
-            i.setAction(Intent.ACTION_CALL);
+            i.setAction(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:" + brewLocation.getPhone()));
          } else if (v.equals(web)) {
             i.setAction(Intent.ACTION_VIEW);
