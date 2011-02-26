@@ -36,14 +36,16 @@ public class Main extends Activity {
    private static final String CITY = "CITY";
    private static final String STATE = "STATE";
    private static final String PIECE = "PIECE";
+   
+   private static final String MESSAGE1 = "Trying to determine location...";
+   private static final String MESSAGE2 = "Retrieving brew location data...";
+   private static final String MESSAGE3 = "Geocoding address...";
 
    private BrewMapApp app;
 
    private LocationManager locationMgr;
 
    private ProgressDialog progressDialog;
-   private ProgressDialog progressDialog2;
-   private ProgressDialog progressDialog3;
 
    private Geocoder geocoder;
 
@@ -62,15 +64,6 @@ public class Main extends Activity {
 
       progressDialog = new ProgressDialog(this);
       progressDialog.setCancelable(false);
-      progressDialog.setMessage("Trying to determine location...");
-
-      progressDialog2 = new ProgressDialog(this);
-      progressDialog2.setCancelable(false);
-      progressDialog2.setMessage("Retrieving brew location data...");
-
-      progressDialog3 = new ProgressDialog(this);
-      progressDialog3.setCancelable(false);
-      progressDialog3.setTitle("Geocoding address");
 
       geocoder = new Geocoder(this);
       // note that API level 9 added the "isPresent" method which could be checked here
@@ -113,6 +106,7 @@ public class Main extends Activity {
       near.setOnClickListener(new OnClickListener() {
          @Override
          public void onClick(View v) {
+            progressDialog.setMessage(MESSAGE1);
             progressDialog.show();
             locationHelper.getCurrentLocation(30); // fire off async call to get current location, which will use handler    
          }
@@ -159,9 +153,7 @@ public class Main extends Activity {
    @Override
    protected void onPause() {
       super.onPause();
-      progressDialog.dismiss();
-      progressDialog2.dismiss();
-      progressDialog3.dismiss();
+      progressDialog.dismiss();      
    }
 
    private void handleResults(List<BrewLocation> brewLocations) {
@@ -177,7 +169,8 @@ public class Main extends Activity {
 
       @Override
       protected void onPreExecute() {
-         progressDialog2.show();
+         progressDialog.setMessage(MESSAGE2);
+         progressDialog.show();
       }
 
       @Override
@@ -202,7 +195,7 @@ public class Main extends Activity {
       @SuppressWarnings("unchecked")
       @Override
       protected void onPostExecute(List<BrewLocation> brewLocations) {
-         progressDialog2.dismiss();
+         progressDialog.dismiss();
          if (brewLocations != null && !brewLocations.isEmpty()) {
             new GeocodeAddressesTask().execute(brewLocations);
          } else {
@@ -211,22 +204,19 @@ public class Main extends Activity {
       }
    }
 
-   private class GeocodeAddressesTask extends AsyncTask<List<BrewLocation>, ProgressBean, List<BrewLocation>> {
+   private class GeocodeAddressesTask extends AsyncTask<List<BrewLocation>, String, List<BrewLocation>> {
 
       @Override
       protected void onPreExecute() {
-         progressDialog3.show();
+         progressDialog.setMessage(MESSAGE3);
+         progressDialog.show();
       }
 
       @Override
-      protected void onProgressUpdate(ProgressBean... values) {
+      protected void onProgressUpdate(String... values) {
          super.onProgressUpdate(values);
-         ProgressBean bean = values[0];
-         if (bean.current == 1) {
-            progressDialog3.setMax(bean.total);
-         }
-         progressDialog3.setProgress(bean.current);
-         progressDialog3.setMessage(bean.message);
+         String name = values[0];         
+         progressDialog.setMessage("Geocoding location:\n" + name);
       }
 
       @Override
@@ -240,7 +230,7 @@ public class Main extends Activity {
          if (args[0] != null && !args[0].isEmpty()) {
             for (int i = 0; i < args[0].size(); i++) {
                BrewLocation bl = args[0].get(i);
-               publishProgress(new ProgressBean(args[0].size(), i + 1, bl.getName()));
+               publishProgress(bl.getName());
                try {
                   List<android.location.Address> addresses =
                            geocoder.getFromLocationName(bl.getAddress().getLocationName(), 1);
@@ -267,20 +257,8 @@ public class Main extends Activity {
 
       @Override
       protected void onPostExecute(List<BrewLocation> brewLocations) {
-         progressDialog3.dismiss();
+         progressDialog.dismiss();
          handleResults(brewLocations);
-      }
-   }
-
-   private class ProgressBean {
-      protected int current;
-      protected int total;
-      protected String message;
-
-      public ProgressBean(int current, int total, String message) {
-         this.current = current;
-         this.total = total;
-         this.message = message;
       }
    }
 }
