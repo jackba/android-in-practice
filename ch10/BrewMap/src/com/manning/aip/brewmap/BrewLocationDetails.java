@@ -64,16 +64,27 @@ public class BrewLocationDetails extends BrewMapActivity implements OnClickListe
          Intent i = new Intent();
          if (v.equals(map)) {
             i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("geo:" + brewLocation.getLatitude() + "," + brewLocation.getLongitude() + "?q=my+street+address"));
+            if (brewLocation.getAddress() != null) {
+               i.setData(Uri.parse("geo:0,0?q=" + brewLocation.getAddress().toString()));
+            } else {
+               Toast.makeText(BrewLocationDetails.this, "Address not available", Toast.LENGTH_SHORT).show();
+            }
          } else if (v.equals(call)) {
-            i.setAction(Intent.ACTION_DIAL);
-            i.setData(Uri.parse("tel:" + brewLocation.getPhone()));
+            if (brewLocation.getPhone() != null) {
+               i.setAction(Intent.ACTION_DIAL);
+               i.setData(Uri.parse("tel:" + brewLocation.getPhone()));
+            } else {
+               Toast.makeText(BrewLocationDetails.this, "Phone not available", Toast.LENGTH_SHORT).show();
+            }
          } else if (v.equals(web)) {
-            i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(brewLocation.getReviewLink()));
+            if (brewLocation.getReviewLink() != null) {
+               i.setAction(Intent.ACTION_VIEW);
+               i.setData(Uri.parse(brewLocation.getReviewLink()));
+            } else {
+               Toast.makeText(BrewLocationDetails.this, "Link not available", Toast.LENGTH_SHORT).show();
+            }
          }
          startActivity(i);
       }
    }
-
 }
