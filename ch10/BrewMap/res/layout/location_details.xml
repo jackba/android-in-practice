@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent">
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="@drawable/beer_bkgrnd_trans">
 
 	<TextView android:id="@+id/location_name"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
@@ -13,10 +14,16 @@
 		android:layout_marginRight="10dp" android:layout_below="@id/location_name"
 		android:text="STATUS" style="@style/mainFontSmall" />
 
-	<TextView android:id="@+id/location_address"
+	<TextView android:id="@+id/location_phone"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:layout_marginTop="10dp" android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp" android:layout_below="@id/location_status"
+		android:text="PHONE" style="@style/mainFontSmall" />
+
+	<TextView android:id="@+id/location_address"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_marginTop="10dp" android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp" android:layout_below="@id/location_phone"
 		android:text="ADDRESS" style="@style/mainFontSmall" />
 
 	<Button android:id="@+id/location_map_button"

@@ -18,6 +18,7 @@ public class BrewLocationDetails extends Activity implements OnClickListener {
 
    private TextView name;
    private TextView status;
+   private TextView phone;
    private TextView address;
 
    private Button map;
@@ -35,6 +36,7 @@ public class BrewLocationDetails extends Activity implements OnClickListener {
 
       name = (TextView) findViewById(R.id.location_name);
       status = (TextView) findViewById(R.id.location_status);
+      phone = (TextView) findViewById(R.id.location_phone);
       address = (TextView) findViewById(R.id.location_address);
 
       map = (Button) findViewById(R.id.location_map_button);
@@ -53,6 +55,7 @@ public class BrewLocationDetails extends Activity implements OnClickListener {
 
          name.setText(brewLocation.getName());
          status.setText(brewLocation.getStatus());
+         phone.setText(brewLocation.getPhone());
          address.setText(brewLocation.getAddress().toString());
 
       } else {
@@ -65,8 +68,7 @@ public class BrewLocationDetails extends Activity implements OnClickListener {
          Intent i = new Intent();
          if (v.equals(map)) {
             i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse("geo:" + brewLocation.getLatitude() + "," + brewLocation.getLongitude()
-                     + "?q=my+street+address"));
+            i.setData(Uri.parse("geo:" + brewLocation.getLatitude() + "," + brewLocation.getLongitude() + "?q=z=10"));
          } else if (v.equals(call)) {
             i.setAction(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:" + brewLocation.getPhone()));
