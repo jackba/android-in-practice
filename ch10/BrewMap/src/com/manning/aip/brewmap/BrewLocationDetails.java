@@ -30,6 +30,7 @@ public class BrewLocationDetails extends BrewMapActivity implements OnClickListe
       setContentView(R.layout.location_details);
 
       name = (TextView) findViewById(R.id.location_name);
+      name.setSelected(true); // so the marquee will work, if name is long
       status = (TextView) findViewById(R.id.location_status);
       phone = (TextView) findViewById(R.id.location_phone);
       address = (TextView) findViewById(R.id.location_address);

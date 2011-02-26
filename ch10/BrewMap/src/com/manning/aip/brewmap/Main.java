@@ -70,7 +70,7 @@ public class Main extends BrewMapActivity {
       handler = new Handler() {
          public void handleMessage(Message m) {
             Log.d("GetCurrentLocation", "Handler returned with message: " + m.toString());
-            progressDialog.dismiss();
+            progressDialog.hide();
             if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_FOUND) {               
                List<Address> addresses = null;
                try {
@@ -96,8 +96,8 @@ public class Main extends BrewMapActivity {
 
       final LocationHelper locationHelper = new LocationHelper(locationMgr, handler, Constants.LOG_TAG);
 
-      final EditText input = (EditText) findViewById(R.id.input);
-      Button near = (Button) findViewById(R.id.button_nearby);
+      final EditText input = (EditText) findViewById(R.id.main_input);
+      Button near = (Button) findViewById(R.id.main_nearby_button);
       near.setOnClickListener(new OnClickListener() {
          @Override
          public void onClick(View v) {
@@ -106,7 +106,7 @@ public class Main extends BrewMapActivity {
             locationHelper.getCurrentLocation(30); // fire off async call to get current location, which will use handler    
          }
       });
-      Button search = (Button) findViewById(R.id.button_search);
+      Button search = (Button) findViewById(R.id.main_search_button);
       search.setOnClickListener(new OnClickListener() {
          @Override
          public void onClick(View v) {
@@ -190,7 +190,7 @@ public class Main extends BrewMapActivity {
       @SuppressWarnings("unchecked")
       @Override
       protected void onPostExecute(List<BrewLocation> brewLocations) {
-         progressDialog.dismiss();
+         progressDialog.hide();
          if (brewLocations != null && !brewLocations.isEmpty()) {
             new GeocodeAddressesTask().execute(brewLocations);
          } else {
@@ -252,7 +252,7 @@ public class Main extends BrewMapActivity {
 
       @Override
       protected void onPostExecute(List<BrewLocation> brewLocations) {
-         progressDialog.dismiss();
+         progressDialog.hide();
          handleResults(brewLocations);
       }
    }
