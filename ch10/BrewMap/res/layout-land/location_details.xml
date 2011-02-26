@@ -5,36 +5,40 @@
 	<TextView android:id="@+id/location_name"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:layout_marginTop="5dp" android:layout_marginLeft="10dp"
-		android:layout_alignParentLeft="true" android:ellipsize="marquee"
+		android:layout_marginRight="10dp" android:ellipsize="marquee"
 		android:maxLines="1" style="@style/mainFontLargeBlack" />
 	<TextView android:id="@+id/location_status"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_marginTop="20dp" android:layout_marginLeft="10dp"
+		android:layout_marginTop="10dp" android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp" android:layout_below="@id/location_name"
-		android:layout_alignParentLeft="true" style="@style/mainFontLargeBlack" />
+		style="@style/mainFontLargeBlack" />
 	<TextView android:id="@+id/location_phone"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:layout_marginTop="10dp" android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp" android:layout_below="@id/location_status"
-		android:layout_alignParentLeft="true" style="@style/mainFontLargeBlack" />
+		style="@style/mainFontLargeBlack" />	
 
-	<Button android:id="@+id/location_map_button"
-		android:layout_width="90dp" android:layout_height="wrap_content"
-		android:layout_marginTop="30dp" android:layout_marginLeft="3dp"
-		android:layout_marginRight="10dp" android:layout_alignParentRight="true"
-		android:background="@drawable/button" style="@style/buttonFont"
-		android:text="Map" />
-	<Button android:id="@+id/location_call_button"
-		android:layout_width="90dp" android:layout_height="wrap_content"
-		android:layout_marginTop="30dp" android:layout_marginLeft="3dp"
-		android:layout_marginRight="10dp" android:layout_below="@id/location_address"
-		android:layout_alignParentRight="true" android:background="@drawable/button"
-		style="@style/buttonFont" android:text="Call" />
-	<Button android:id="@+id/location_web_button"
-		android:layout_width="90dp" android:layout_height="wrap_content"
-		android:layout_marginTop="30dp" android:layout_marginLeft="3dp"
-		android:layout_marginRight="10dp" android:layout_below="@id/location_address"
-		android:layout_alignParentRight="true" android:background="@drawable/button"
-		style="@style/buttonFont" android:text="Browse" />
-
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_below="@id/location_phone"
+		android:gravity="center">
+		<Button android:id="@+id/location_map_button"
+			android:layout_width="90dp" android:layout_height="wrap_content"
+			android:layout_marginTop="20dp" android:layout_marginLeft="10dp"
+			android:layout_marginRight="3dp" android:background="@drawable/button"
+			style="@style/buttonFont" android:text="Map" />
+		<Button android:id="@+id/location_call_button"
+			android:layout_width="90dp" android:layout_height="wrap_content"
+			android:layout_marginTop="30dp" android:layout_marginLeft="3dp"
+			android:layout_marginRight="3dp" android:layout_below="@id/location_address"
+			android:layout_toRightOf="@id/location_map_button"
+			android:background="@drawable/button" style="@style/buttonFont"
+			android:text="Call" />
+		<Button android:id="@+id/location_web_button"
+			android:layout_width="90dp" android:layout_height="wrap_content"
+			android:layout_marginTop="30dp" android:layout_marginLeft="3dp"
+			android:layout_marginRight="10dp" android:layout_below="@id/location_address"
+			android:layout_toRightOf="@id/location_call_button"
+			android:background="@drawable/button" style="@style/buttonFont"
+			android:text="Browse" />
+	</RelativeLayout>
 </RelativeLayout>

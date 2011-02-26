@@ -42,18 +42,21 @@ public class BrewLocationDetails extends BrewMapActivity implements OnClickListe
       // can also set the click listener in XML (but that can be confusing for those looking at code)
       map.setOnClickListener(this);
       call.setOnClickListener(this);
-      web.setOnClickListener(this);
-
+      web.setOnClickListener(this);      
+   }
+   
+   @Override
+   protected void onResume() {
+      super.onResume();
       int pubIndex = getIntent().getIntExtra(BrewMapApp.PUB_INDEX, -1);
-
       if (pubIndex != -1 && pubIndex <= app.getBrewLocations().size()) {
          brewLocation = app.getBrewLocations().get(pubIndex);
-
          name.setText(brewLocation.getName());
          status.setText(brewLocation.getStatus());
          phone.setText(brewLocation.getPhone());
-         address.setText(brewLocation.getAddress().toString());
-
+         if (address != null && brewLocation.getAddress() != null) { // left address out of landscape layout
+            address.setText(brewLocation.getAddress().toString());
+         }
       } else {
          Toast.makeText(this, "Invalid pub data, cannot display detail info.", Toast.LENGTH_SHORT).show();
       }
