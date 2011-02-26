@@ -11,6 +11,7 @@ import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 import com.manning.aip.brewmap.model.BrewLocation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BrewLocationOverlay extends ItemizedOverlay<OverlayItem> {
@@ -22,6 +23,9 @@ public class BrewLocationOverlay extends ItemizedOverlay<OverlayItem> {
       super(boundCenterBottom(marker));
       this.context = context;
       this.brewLocations = brewLocations;
+      if (brewLocations == null) {
+         brewLocations = new ArrayList<BrewLocation>();
+      }
       populate();
    }
 
