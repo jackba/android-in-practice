@@ -6,12 +6,12 @@
 	<Button android:id="@+id/button_nearby" android:layout_width="200dp"
 		android:layout_height="wrap_content" android:layout_marginTop="50dp"
 		android:layout_marginBottom="20dp" android:background="@drawable/button"
-		style="@style/mainFontMedium" android:text="Find brew locations near me" />
+		style="@style/mainFontMediumBlack" android:text="Find brew locations near me" />
 	<EditText android:id="@+id/input" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_marginTop="40dp"
 		android:layout_marginLeft="15dp" android:layout_marginRight="15dp"
 		android:inputType="text" android:hint="City, State, etc. (partial ok)" />
 	<Button android:id="@+id/button_search" android:layout_width="200dp"
 		android:layout_height="wrap_content" android:background="@drawable/button"
-		style="@style/mainFontMedium" android:text="Search" />
+		style="@style/buttonFont" android:text="Search" />
 </LinearLayout>
