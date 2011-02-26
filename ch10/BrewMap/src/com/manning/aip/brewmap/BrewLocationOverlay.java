@@ -39,7 +39,7 @@ public class BrewLocationOverlay extends ItemizedOverlay<OverlayItem> {
       BrewLocation brewLocation = brewLocations.get(index);
       AlertDialog.Builder builder = new AlertDialog.Builder(context);
       builder.setTitle("BrewLocation")
-               .setMessage(brewLocation.getName() + "\n\nVisit the pub detail page for more info?").setCancelable(true)
+               .setMessage(brewLocation.getName() + "\n\nVisit the pub detail page for more information?").setCancelable(true)
                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int id) {
                      Intent i = new Intent(context, BrewLocationDetails.class);
@@ -61,5 +61,4 @@ public class BrewLocationOverlay extends ItemizedOverlay<OverlayItem> {
    public int size() {
       return brewLocations.size();
    }
-
 }
