@@ -62,7 +62,7 @@ public class Main extends Activity {
 
       progressDialog = new ProgressDialog(this);
       progressDialog.setCancelable(false);
-      progressDialog.setMessage("Getting current location...");
+      progressDialog.setMessage("Trying to determine location...");
 
       progressDialog2 = new ProgressDialog(this);
       progressDialog2.setCancelable(false);
@@ -99,9 +99,9 @@ public class Main extends Activity {
                            .show();
                }
             } else if (m.what == LocationHelper.MESSAGE_CODE_LOCATION_NULL) {
-               Toast.makeText(Main.this, "Unable to get location, please try again later", Toast.LENGTH_SHORT).show();
+               Toast.makeText(Main.this, "Unable to determine current location, please try again later", Toast.LENGTH_SHORT).show();
             } else if (m.what == LocationHelper.MESSAGE_CODE_PROVIDER_NOT_PRESENT) {
-               Toast.makeText(Main.this, "GPS provider not present, cannot get current location", Toast.LENGTH_SHORT).show();
+               Toast.makeText(Main.this, "GPS provider not present, cannot determine current location", Toast.LENGTH_SHORT).show();
             }
          }
       };
