@@ -54,7 +54,20 @@ public class ProviderDetail extends Activity {
       } else {
          sb.append("\nlast location: null\n");
       }
-
+     
+      sb.append("\n");
+      sb.append("\nprovider properties");
+      sb.append("\n--------------------------------");
+      sb.append("\naccuracy: " + provider.getAccuracy());
+      sb.append("\npower requirement: " + provider.getPowerRequirement());
+      sb.append("\nhas monetary cost: " + provider.hasMonetaryCost());
+      sb.append("\nsupports altitude: " + provider.supportsAltitude());
+      sb.append("\nsupports bearing: " + provider.supportsBearing());
+      sb.append("\nsupports speed: " + provider.supportsSpeed());
+      sb.append("\nrequires cell: " + provider.requiresCell());
+      sb.append("\nrequires network: " + provider.requiresNetwork());
+      
+      // extra details for GpsStatus if provider is GPS
       if (providerName.equalsIgnoreCase(LocationManager.GPS_PROVIDER)) {
          GpsStatus gpsStatus = locationMgr.getGpsStatus(null);
          sb.append("\ngps status");
@@ -75,18 +88,6 @@ public class ProviderDetail extends Activity {
             }
          }
       }
-
-      sb.append("\n");
-      sb.append("\nprovider properties");
-      sb.append("\n--------------------------------");
-      sb.append("\naccuracy: " + provider.getAccuracy());
-      sb.append("\npower requirement: " + provider.getPowerRequirement());
-      sb.append("\nhas monetary cost: " + provider.hasMonetaryCost());
-      sb.append("\nsupports altitude: " + provider.supportsAltitude());
-      sb.append("\nsupports bearing: " + provider.supportsBearing());
-      sb.append("\nsupports speed: " + provider.supportsSpeed());
-      sb.append("\nrequires cell: " + provider.requiresCell());
-      sb.append("\nrequires network: " + provider.requiresNetwork());
 
       title.setText("Provider: " + providerName);
       detail.setText(sb.toString());
