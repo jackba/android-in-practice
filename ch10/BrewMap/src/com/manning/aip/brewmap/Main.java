@@ -241,8 +241,7 @@ public class Main extends BrewMapActivity {
 
          // geocode the city/state/zip form addresses in the task too
          if (args[0] != null && !args[0].isEmpty()) {
-            for (int i = 0; i < args[0].size(); i++) {
-               BrewLocation bl = args[0].get(i);
+            for (BrewLocation bl : args[0]) {
                publishProgress(bl.getName());
                try {
                   List<android.location.Address> addresses =
