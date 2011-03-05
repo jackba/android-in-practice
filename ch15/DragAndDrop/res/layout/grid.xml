@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+  <TableRow>
+    <LinearLayout android:layout_width="640px"
+        android:layout_height="345px"
+        android:id="@+id/topLeft"
+        android:background="@drawable/border">
+         <StackView android:id="@+id/stack"
+            android:layout_width="250px"
+            android:layout_height="250px"
+            android:clickable="true"
+            android:loopViews="true"
+            android:longClickable="true"
+         />
+    </LinearLayout>
+    <LinearLayout android:layout_width="640px"
+        android:layout_height="345px"
+        android:id="@+id/topRight"
+        android:background="@drawable/border2"
+    />    
+  </TableRow>
+  <TableRow>
+    <LinearLayout android:layout_width="640px"
+        android:layout_height="345px"
+        android:id="@+id/bottomLeft"
+        android:background="@drawable/border2"
+    />
+    <LinearLayout android:layout_width="640px"
+        android:layout_height="345px"
+        android:id="@+id/bottomRight"
+        android:background="@drawable/border"
+    >
+         <StackView android:id="@+id/stack2"
+            android:layout_width="250px"
+            android:layout_height="250px"
+            android:clickable="true"
+            android:loopViews="true"
+            android:longClickable="true"
+         />        
+    </LinearLayout>    
+  </TableRow>  
+</TableLayout>
