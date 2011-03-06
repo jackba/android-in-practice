@@ -21,11 +21,18 @@ public class SectionDetailsFragment extends ListFragment {
     	super.onActivityCreated(savedInstanceState);
     	app = (DealsApp) this.getActivity().getApplication();
     	
+    	section = app.currentSection;
+    	
     	if (savedInstanceState != null){
     		currentPosition = savedInstanceState.getInt("currentPosition");
+    	} else if (app.currentItem != null){
+    		for (int i=0;i<section.items.size();i++){
+    			if (app.currentItem.equals(section.items.get(i))){
+    				currentPosition = i;
+    				break;
+    			}
+    		}
     	}
-    	
-    	section = app.currentSection;
     	
     	ListView listView = this.getListView();
     	listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -36,7 +43,8 @@ public class SectionDetailsFragment extends ListFragment {
     	}
     	setListAdapter(new ArrayAdapter<String>(getActivity(), 
     			R.layout.deal_title_list_entry, dealTitles));
-    	showDeal(currentPosition);
+    	listView.setSelection(currentPosition);
+    	showDeal(currentPosition); 	
     }
     
     private void showDeal(int position){

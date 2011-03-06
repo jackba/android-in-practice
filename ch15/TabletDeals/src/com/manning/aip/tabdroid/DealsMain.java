@@ -95,7 +95,7 @@ public class DealsMain extends Activity {
 			if (imgView == null){
 				imgView = new ImageView(DealsMain.this);
 			}
-			Item item = (Item) getItem(index);
+			final Item item = (Item) getItem(index);
 			Bitmap bmp = app.imageCache.get(item.itemId);
 			if (bmp == null){
 				imgView.setBackgroundResource(R.drawable.placeholder);
@@ -109,6 +109,7 @@ public class DealsMain extends Activity {
 				@Override
 				public void onClick(View v) {
 					app.currentSection = section;
+					app.currentItem = item;
 					Intent intent = new Intent(ctx, DetailsActivity.class);
 					startActivity(intent);
 				}
