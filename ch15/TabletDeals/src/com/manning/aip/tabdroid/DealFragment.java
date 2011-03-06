@@ -25,7 +25,7 @@ public class DealFragment extends Fragment {
             Bundle savedInstanceState) {
     	app = (DealsApp) getActivity().getApplication();
     	
-    	View dealView = inflater.inflate(R.layout.dealdetails, container, false);
+    	View dealView = inflater.inflate(R.layout.deal_details, container, false);
         progressBar = (ProgressBar) dealView.findViewById(R.id.progress);
         progressBar.setIndeterminate(true);
         Item item = app.currentItem;
@@ -39,7 +39,7 @@ public class DealFragment extends Fragment {
 	private void populateDealView(View dealView, Item item) {
 		ImageView icon = (ImageView) dealView.findViewById(R.id.details_icon);
            icon.setImageResource(R.drawable.placeholder);
-           new RetrieveImageTask(icon).execute(item.pic175Url);
+           new RetrieveImageTask(icon).execute(item.picUrl);
 
            TextView title = (TextView) dealView.findViewById(R.id.details_title);
            title.setText(item.title);
