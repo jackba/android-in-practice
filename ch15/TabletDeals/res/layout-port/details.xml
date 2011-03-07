@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/details_container" android:gravity="bottom">
+    
+    <fragment class="com.manning.aip.tabdroid.DealFragment"
+            android:id="@+id/deal_fragment"
+            android:layout_marginTop="?android:attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+    />
+            
+    <fragment class="com.manning.aip.tabdroid.FilmstripFragment"
+            android:id="@+id/section_filmstrip_fragment"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" 
+            android:layout_gravity="bottom"
+     />
+</LinearLayout>

@@ -14,6 +14,9 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
 import android.preference.PreferenceManager;
 
 public class DealsApp extends Application {
@@ -64,4 +67,16 @@ public class DealsApp extends Application {
 	      }
 	      return idList;
 	   }
+	   public boolean connectionPresent() {
+		      ConnectivityManager cMgr = (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
+		      if (cMgr != null) {
+		         NetworkInfo netInfo = cMgr.getActiveNetworkInfo();
+		         if (netInfo != null && netInfo.getState() != null) {
+		            return netInfo.getState().equals(State.CONNECTED);
+		         } else {
+		            return false;
+		         }
+		      }
+		      return false;
+		   }	   
 }

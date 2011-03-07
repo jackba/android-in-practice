@@ -1,19 +1,6 @@
 package com.manning.aip.tabdroid;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
-
-import com.manning.aip.dealdroid.DealsApp;
-import com.manning.aip.dealdroid.RetrieveImageTask;
-import com.manning.aip.dealdroid.Util;
-import com.manning.aip.dealdroid.model.Item;
-import com.manning.aip.dealdroid.model.Section;
-import com.manning.aip.dealdroid.xml.DailyDealsFeedParser;
-import com.manning.aip.dealdroid.xml.DailyDealsXmlPullFeedParser;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -27,11 +14,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.StackView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
+
+import com.manning.aip.dealdroid.DealsApp;
+import com.manning.aip.dealdroid.RetrieveImageTask;
+import com.manning.aip.dealdroid.model.Item;
+import com.manning.aip.dealdroid.model.Section;
 
 public class DealsMain extends Activity {
 	
@@ -60,17 +51,17 @@ public class DealsMain extends Activity {
         	for (int j=0;j<row.getChildCount();j++){
         		StackView stack = (StackView) row.getChildAt(j);
         		stack.setAdapter(
-        				new DealsStackAdapter(app.sectionList.get(stackNum++)));
+        				new DealsImageAdapter(app.sectionList.get(stackNum++)));
         	}
         }
     }
     
-    class DealsStackAdapter extends BaseAdapter{
+    class DealsImageAdapter extends BaseAdapter{
     	
     	private final Section section;
     	private final Context ctx = DealsMain.this;
     	
-    	DealsStackAdapter(Section section){
+    	DealsImageAdapter(Section section){
     		this.section =section;
     	}
     	
