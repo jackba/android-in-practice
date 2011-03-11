@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class MainActivity extends Activity {
+public class Main extends Activity {
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
