@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.totsp.robrot.R;
-
 public class ViewActivity extends Activity {
 
    private MandelbrotView brot = null;
