@@ -16,7 +16,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class MandelbrotView extends View {
+   
    private static final ComplexNumber temp = new ComplexNumber(0, 0);
+   
    private Bitmap renderBitmap;
    private Canvas renderCanvas;
    private Handler handler = new Handler();
