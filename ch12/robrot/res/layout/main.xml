@@ -12,7 +12,7 @@
 	    android:id="@+id/reset"
 	    android:layout_alignParentBottom="true"
 	    />
-	<com.totsp.robrot.MandelbrotView  
+	<com.manning.aip.robrot.MandelbrotView  
 	    android:layout_width="fill_parent" 
 	    android:layout_height="fill_parent" 
 	    android:layout_above="@id/reset"
