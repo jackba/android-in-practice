@@ -14,18 +14,21 @@ public class Main extends Activity {
    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        ImageView image = (ImageView) this.findViewById(R.id.imageView);        
+        setContentView(R.layout.main);        
         
         Bitmap bitmap = Bitmap.createBitmap(300, 300, Bitmap.Config.RGB_565); 
         bitmap.eraseColor(Color.WHITE);
         Canvas canvas = new Canvas(bitmap); 
+        
         Paint textPaint = new Paint(); 
         textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(24);
         textPaint.setAntiAlias(true);
         textPaint.setTextAlign(Align.LEFT);
-        canvas.drawText("Hello, Canvas!", 35F, 35F, textPaint);        
+        
+        canvas.drawText("Hello, Canvas!", 35F, 35F, textPaint);
+        
+        ImageView image = (ImageView) this.findViewById(R.id.imageView);        
         image.setImageBitmap(bitmap);        
     }
 }
