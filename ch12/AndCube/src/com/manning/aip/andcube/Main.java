@@ -1,4 +1,4 @@
-package com.totsp.andcube;
+package com.manning.aip.andcube;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;

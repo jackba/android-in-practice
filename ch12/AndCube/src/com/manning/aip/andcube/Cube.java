@@ -1,9 +1,11 @@
-package com.totsp.andcube;
+package com.manning.aip.andcube;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
+
+import com.totsp.andcube.R;
 
 import java.io.IOException;
 import java.io.InputStream;
