@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
 
       try {
          // load in main thread for simplified example (in real world don't do this)
-         URL url = new URL("http://placekitten.com/g/550/250");
+         URL url = new URL("http://placekitten.com/g/405/265");
          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
          conn.setDoInput(true);
          conn.setConnectTimeout(3000);
@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
          output.eraseColor(Color.BLACK);
          Canvas canvas = new Canvas(output);
 
-         canvas.drawBitmap(kitten, 100, 100, new Paint());
+         canvas.drawBitmap(kitten, 50, 50, new Paint());
          canvas.drawBitmap(frame, 0, 0, new Paint());
 
          Paint textPaint = new Paint();
