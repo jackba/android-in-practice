@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
          Bitmap kitten = BitmapFactory.decodeStream(conn.getInputStream());
          conn.disconnect();
 
-         Bitmap frame = BitmapFactory.decodeResource(getResources(), R.drawable.frame);
+         Bitmap frame = BitmapFactory.decodeResource(getResources(), R.drawable.frame500);
          Bitmap output = Bitmap.createBitmap(frame.getWidth(), frame.getHeight(), Bitmap.Config.ARGB_8888);
          output.eraseColor(Color.BLACK);
          Canvas canvas = new Canvas(output);
