@@ -72,7 +72,7 @@ public class MandelbrotView extends View {
          }
       };
 
-      setOnTouchListener(new OnTouchListener() {
+      this.setOnTouchListener(new OnTouchListener() {
          @Override
          public boolean onTouch(View v, MotionEvent event) {
             if ((onTouchListener != null) && onTouchListener.onTouch(v, event)) {
@@ -109,10 +109,19 @@ public class MandelbrotView extends View {
    }
 
    @Override
-   public void setOnTouchListener(OnTouchListener onTouchListener) {
-      this.onTouchListener = onTouchListener;
+   protected void onMeasure(int widthSpecId, int heightSpecId) {
+      stopRender();
+      height = View.MeasureSpec.getSize(heightSpecId);
+      width = View.MeasureSpec.getSize(widthSpecId);
+      setMeasuredDimension(width, height);
+      start();
    }
-
+   
+   @Override
+   protected void onDraw(Canvas canvas) {
+      canvas.drawBitmap(renderBitmap, 0, 0, simplePaint);
+   }   
+   
    public void setScale(float scale) {
       this.scale = scale;
    }
@@ -136,34 +145,11 @@ public class MandelbrotView extends View {
       }
    }
 
-   @Override
-   protected void onDraw(Canvas canvas) {
-      canvas.drawBitmap(renderBitmap, 0, 0, simplePaint);
-   }
-
-   @Override
-   protected void onMeasure(int widthSpecId, int heightSpecId) {
-      stopRender();
-      height = View.MeasureSpec.getSize(heightSpecId);
-      width = View.MeasureSpec.getSize(widthSpecId);
-      setMeasuredDimension(width, height);
-      start();
-   }
-
-   private static int escapeIteration(ComplexNumber startValue, int maxIterations) {
-      MandelbrotView.temp.setValue(startValue);
-
-      for (int i = 0; i < maxIterations; i++) {
-         if (MandelbrotView.temp.abs() > 2.0) {
-            return i;
-         }
-
-         MandelbrotView.temp.multiply(MandelbrotView.temp).add(startValue);
-      }
-
-      return maxIterations;
-   }
-
+   
+   //
+   // private
+   // 
+   
    private void readColors() throws IOException {
       InputStream stream = getContext().getResources().openRawResource(R.raw.colors);
       BufferedReader r = new BufferedReader(new InputStreamReader(stream));
@@ -178,6 +164,20 @@ public class MandelbrotView extends View {
 
       r.close();
    }
+   
+   private static int escapeIteration(ComplexNumber startValue, int maxIterations) {
+      MandelbrotView.temp.setValue(startValue);
+
+      for (int i = 0; i < maxIterations; i++) {
+         if (MandelbrotView.temp.abs() > 2.0) {
+            return i;
+         }
+
+         MandelbrotView.temp.multiply(MandelbrotView.temp).add(startValue);
+      }
+
+      return maxIterations;
+   }   
 
    private void renderMandelbrot() {
       if (colorSpace == null) {
