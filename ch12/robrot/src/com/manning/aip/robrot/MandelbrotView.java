@@ -27,9 +27,9 @@ public class MandelbrotView extends View {
    private Canvas renderCanvas;
    private Handler handler;
    private OnTouchListener onTouchListener;
-   
+
    private Paint simplePaint;
-   
+
    private final Runnable invalidator;
    private final Runnable renderer;
 
@@ -109,12 +109,12 @@ public class MandelbrotView extends View {
    @Override
    public void setOnTouchListener(OnTouchListener onTouchListener) {
       this.onTouchListener = onTouchListener;
-   }  
+   }
 
    public void setScale(float scale) {
       this.scale = scale;
    }
-  
+
    public void cancel() {
       stopRender();
    }
@@ -170,8 +170,7 @@ public class MandelbrotView extends View {
 
       for (int i = 0; (line != null) && (i < 256); i++) {
          String[] vals = line.split(" ");
-         colorSpace[i] =
-                  Color.rgb(Integer.parseInt(vals[0]), Integer.parseInt(vals[1]), Integer.parseInt(vals[2]));
+         colorSpace[i] = Color.rgb(Integer.parseInt(vals[0]), Integer.parseInt(vals[1]), Integer.parseInt(vals[2]));
          line = r.readLine();
       }
 
