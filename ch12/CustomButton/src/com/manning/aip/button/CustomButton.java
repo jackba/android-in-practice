@@ -16,18 +16,33 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class CustomButton extends View {
-   
-   private Paint border = new Paint();
-   private Paint textPaint = new Paint();
-   private Paint count = new Paint();
-   private Paint square = new Paint();
-   private PathEffect borderRadius = new CornerPathEffect(5);
-   private String text = "Some Text";
-   private int countValue = 100;
+
+   private Paint borderPaint;
+   private PathEffect borderRadius;
+
+   private Paint textPaint;
+   private Paint countPaint;
+   private Paint squarePaint;
+
    private int height;
    private int width;
 
-   {
+   private int count;
+   private String text;
+
+   public CustomButton(Context context) {
+      super(context);
+
+      borderPaint = new Paint();
+      borderPaint.setStyle(Style.STROKE);
+      borderPaint.setColor(Color.rgb(75, 75, 75));
+      borderPaint.setPathEffect(borderRadius);
+      borderPaint.setStrokeWidth(2F);
+      borderPaint.setAntiAlias(true);
+
+      borderRadius = new CornerPathEffect(5);
+
+      textPaint = new Paint();
       textPaint.setShadowLayer(1.0F, 0F, 2F, Color.WHITE);
       textPaint.setTextAlign(Align.CENTER);
       textPaint.setColor(Color.BLACK);
@@ -35,27 +50,19 @@ public class CustomButton extends View {
       textPaint.setAntiAlias(true);
       textPaint.setTypeface(Typeface.SANS_SERIF);
 
-      count.setShadowLayer(1.0F, 0F, 2F, Color.WHITE);
-      count.setTextAlign(Align.RIGHT);
-      count.setColor(Color.BLACK);
-      count.setStyle(Style.FILL);
-      count.setTypeface(Typeface.MONOSPACE);
-      count.setAntiAlias(true);
+      countPaint = new Paint();
+      countPaint.setShadowLayer(1.0F, 0F, 2F, Color.WHITE);
+      countPaint.setTextAlign(Align.RIGHT);
+      countPaint.setColor(Color.BLACK);
+      countPaint.setStyle(Style.FILL);
+      countPaint.setTypeface(Typeface.MONOSPACE);
+      countPaint.setAntiAlias(true);
 
-      square.setStyle(Style.FILL);
-      square.setColor(Color.rgb(245, 245, 245));
-      square.setPathEffect(borderRadius);
-      square.setAntiAlias(true);
-
-      border.setStyle(Style.STROKE);
-      border.setColor(Color.rgb(75, 75, 75));
-      border.setPathEffect(borderRadius);
-      border.setStrokeWidth(2F);
-      border.setAntiAlias(true);
-   }
-
-   public CustomButton(Context context) {
-      super(context);
+      squarePaint = new Paint();
+      squarePaint.setStyle(Style.FILL);
+      squarePaint.setColor(Color.rgb(245, 245, 245));
+      squarePaint.setPathEffect(borderRadius);
+      squarePaint.setAntiAlias(true);
    }
 
    public CustomButton(Context context, AttributeSet attrs) {
@@ -67,11 +74,11 @@ public class CustomButton extends View {
    }
 
    public void setCount(int count) {
-      this.countValue = count;
+      this.count = count;
    }
 
    public int getCount() {
-      return countValue;
+      return count;
    }
 
    public void setText(String text) {
@@ -83,17 +90,15 @@ public class CustomButton extends View {
    }
 
    @Override
-   public void draw(Canvas canvas) {
-      square.setShader(new LinearGradient(0F, 0F, 0F, height, Color.rgb(245, 245, 245), Color.rgb(221, 221, 221),
+   public void onDraw(Canvas canvas) {
+      squarePaint.setShader(new LinearGradient(0F, 0F, 0F, height, Color.rgb(245, 245, 245), Color.rgb(221, 221, 221),
                Shader.TileMode.REPEAT));
-
-      this.textPaint.setTextSize(height * 0.8F);
-      this.count.setTextSize(height * 0.28F);
-
+      textPaint.setTextSize(height * 0.8F);
+      countPaint.setTextSize(height * 0.28F);
       Rect rect = new Rect(0, 0, width, height);
-      canvas.drawRect(rect, square);
-      canvas.drawText(text, (width / 2) - (width / 10) + 10, (height / 2) + (height / 3), this.textPaint);
-      canvas.drawText("" + countValue, (int) (width * 0.92), height / 3, this.count);
+      canvas.drawRect(rect, squarePaint);
+      canvas.drawText(text, (width / 2) - (width / 10) + 10, (height / 2) + (height / 3), textPaint);
+      canvas.drawText("" + count, (int) (width * 0.92), height / 3, countPaint);
    }
 
    @Override
