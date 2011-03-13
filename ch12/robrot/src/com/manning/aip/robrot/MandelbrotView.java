@@ -16,40 +16,61 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class MandelbrotView extends View {
-   
+
    private static final ComplexNumber temp = new ComplexNumber(0, 0);
-   
-   private Bitmap renderBitmap;
-   private Canvas renderCanvas;
-   private Handler handler = new Handler();
-   private OnTouchListener onTouchListener = null;
-   private Paint simplePaint = new Paint();
-   private final Runnable invalidator = new Runnable() {
-      @Override
-      public void run() {
-         invalidate();
-      }
-   };
 
-   private final Runnable renderRunnable = new Runnable() {
-      @Override
-      public void run() {
-         renderMandelbrot();
-      }
-   };
-
-   private Thread renderThread = null;
-   private int[] colorSpace = null;
    private float scale = 2;
    private float xc = -0.5f;
    private float yc = 0f;
+
+   private Bitmap renderBitmap;
+   private Canvas renderCanvas;
+   private Handler handler;
+   private OnTouchListener onTouchListener;
+   
+   private Paint simplePaint;
+   
+   private final Runnable invalidator;
+   private final Runnable renderer;
+
+   private Thread renderThread;
+
+   private int[] colorSpace;
+
    private int height;
    private int width;
 
-   {
-      this.simplePaint.setColor(Color.WHITE);
-      this.simplePaint.setStyle(Paint.Style.STROKE);
-      super.setOnTouchListener(new OnTouchListener() {
+   public MandelbrotView(Context context) {
+      this(context, null);
+   }
+
+   public MandelbrotView(Context context, AttributeSet attrs) {
+      this(context, attrs, 0);
+   }
+
+   public MandelbrotView(Context context, AttributeSet attrs, int defStyle) {
+      super(context, attrs, defStyle);
+      handler = new Handler();
+
+      simplePaint = new Paint();
+      simplePaint.setColor(Color.WHITE);
+      simplePaint.setStyle(Paint.Style.STROKE);
+
+      invalidator = new Runnable() {
+         @Override
+         public void run() {
+            invalidate();
+         }
+      };
+
+      renderer = new Runnable() {
+         @Override
+         public void run() {
+            renderMandelbrot();
+         }
+      };
+
+      setOnTouchListener(new OnTouchListener() {
          @Override
          public boolean onTouch(View v, MotionEvent event) {
             if ((onTouchListener != null) && onTouchListener.onTouch(v, event)) {
@@ -85,65 +106,45 @@ public class MandelbrotView extends View {
       });
    }
 
-   public MandelbrotView(Context context, AttributeSet attrs, int defStyle) {
-      super(context, attrs, defStyle);
-   }
-
-   public MandelbrotView(Context context, AttributeSet attrs) {
-      super(context, attrs);
-   }
-
-   public MandelbrotView(Context context) {
-      super(context);
-   }
-
    @Override
    public void setOnTouchListener(OnTouchListener onTouchListener) {
       this.onTouchListener = onTouchListener;
-   }
-
-   public OnTouchListener getOnTouchListener() {
-      return onTouchListener;
-   }
+   }  
 
    public void setScale(float scale) {
       this.scale = scale;
    }
-
-   public float getScale() {
-      return scale;
-   }
-
+  
    public void cancel() {
-      this.stopRender();
+      stopRender();
    }
 
    public void reset() {
-      this.cancel();
+      cancel();
       xc = -0.5f;
       yc = 0f;
       scale = 2;
-      this.start();
+      start();
    }
 
    public void start() {
-      if (this.renderThread == null) {
-         this.renderThread = new Thread(this.renderRunnable);
-         this.renderThread.start();
+      if (renderThread == null) {
+         renderThread = new Thread(renderer);
+         renderThread.start();
       }
    }
 
    @Override
    protected void onDraw(Canvas canvas) {
-      canvas.drawBitmap(this.renderBitmap, 0, 0, this.simplePaint);
+      canvas.drawBitmap(renderBitmap, 0, 0, simplePaint);
    }
 
    @Override
    protected void onMeasure(int widthSpecId, int heightSpecId) {
-      this.stopRender();
-      this.height = View.MeasureSpec.getSize(heightSpecId);
-      this.width = View.MeasureSpec.getSize(widthSpecId);
-      setMeasuredDimension(this.width, this.height);
+      stopRender();
+      height = View.MeasureSpec.getSize(heightSpecId);
+      width = View.MeasureSpec.getSize(widthSpecId);
+      setMeasuredDimension(width, height);
       start();
    }
 
@@ -162,14 +163,14 @@ public class MandelbrotView extends View {
    }
 
    private void readColors() throws IOException {
-      InputStream stream = this.getContext().getResources().openRawResource(R.raw.colors);
+      InputStream stream = getContext().getResources().openRawResource(R.raw.colors);
       BufferedReader r = new BufferedReader(new InputStreamReader(stream));
       String line = r.readLine();
-      this.colorSpace = new int[256];
+      colorSpace = new int[256];
 
       for (int i = 0; (line != null) && (i < 256); i++) {
          String[] vals = line.split(" ");
-         this.colorSpace[i] =
+         colorSpace[i] =
                   Color.rgb(Integer.parseInt(vals[0]), Integer.parseInt(vals[1]), Integer.parseInt(vals[2]));
          line = r.readLine();
       }
@@ -178,16 +179,16 @@ public class MandelbrotView extends View {
    }
 
    private void renderMandelbrot() {
-      if (this.colorSpace == null) {
+      if (colorSpace == null) {
          try {
-            this.readColors();
+            readColors();
          } catch (IOException e) {
             throw new Error(e);
          }
       }
 
-      this.renderBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-      this.renderCanvas = new Canvas(this.renderBitmap);
+      renderBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+      renderCanvas = new Canvas(renderBitmap);
 
       int maxIterations = 255;
       float xScale = scale;
@@ -202,32 +203,32 @@ public class MandelbrotView extends View {
       Paint p = new Paint();
       p.setStyle(Paint.Style.FILL_AND_STROKE);
 
-      for (int x = 0; x < this.width; x++) {
-         for (int y = 0; y < this.height; y++) {
-            float xVal = xc - (xScale / 2) + ((xScale * x) / this.width);
-            float yVal = yc - (yScale / 2) + ((yScale * y) / this.height);
+      for (int x = 0; x < width; x++) {
+         for (int y = 0; y < height; y++) {
+            float xVal = xc - (xScale / 2) + ((xScale * x) / width);
+            float yVal = yc - (yScale / 2) + ((yScale * y) / height);
             ComplexNumber z = new ComplexNumber(xVal, yVal);
             int escape = MandelbrotView.escapeIteration(z, maxIterations);
-            p.setColor(this.colorSpace[escape]);
-            this.renderCanvas.drawPoint(x, y, p);
+            p.setColor(colorSpace[escape]);
+            renderCanvas.drawPoint(x, y, p);
          }
 
          if (Thread.currentThread().isInterrupted()) {
             return;
          }
 
-         this.threadShiftInvalidate();
+         threadShiftInvalidate();
       }
    }
 
    private void stopRender() {
-      if (this.renderThread != null) {
-         this.renderThread.interrupt();
-         this.renderThread = null;
+      if (renderThread != null) {
+         renderThread.interrupt();
+         renderThread = null;
       }
    }
 
    private void threadShiftInvalidate() {
-      this.handler.post(invalidator);
+      handler.post(invalidator);
    }
 }
