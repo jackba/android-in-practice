@@ -1,6 +1,7 @@
 package com.manning.aip.button;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.CornerPathEffect;
@@ -32,6 +33,30 @@ public class CustomButton extends View {
 
    public CustomButton(Context context) {
       super(context);
+   }
+
+   public CustomButton(Context context, AttributeSet attrs) {
+      this(context, attrs, 0);
+   }
+
+   public CustomButton(Context context, AttributeSet attrs, int defStyle) {
+      super(context, attrs, defStyle);
+
+      this.text = "Button";
+      this.count = 0;
+
+      if (attrs != null) {
+         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CustomButton, 0, 0);
+         String attText = a.getString(R.styleable.CustomButton_text);
+         int attCount = a.getInt(R.styleable.CustomButton_count, 0);
+         if (attText != null) {
+            text = attText;
+         }
+         if (attCount > 0) {
+            count = attCount;
+         }
+         a.recycle();
+      }
 
       borderPaint = new Paint();
       borderPaint.setStyle(Style.STROKE);
@@ -53,7 +78,7 @@ public class CustomButton extends View {
       countPaint = new Paint();
       countPaint.setShadowLayer(1.0F, 0F, 2F, Color.WHITE);
       countPaint.setTextAlign(Align.RIGHT);
-      countPaint.setColor(Color.BLACK);
+      countPaint.setColor(Color.BLUE);
       countPaint.setStyle(Style.FILL);
       countPaint.setTypeface(Typeface.MONOSPACE);
       countPaint.setAntiAlias(true);
@@ -63,14 +88,6 @@ public class CustomButton extends View {
       squarePaint.setColor(Color.rgb(245, 245, 245));
       squarePaint.setPathEffect(borderRadius);
       squarePaint.setAntiAlias(true);
-   }
-
-   public CustomButton(Context context, AttributeSet attrs) {
-      super(context, attrs);
-   }
-
-   public CustomButton(Context context, AttributeSet attrs, int defStyle) {
-      super(context, attrs, defStyle);
    }
 
    public void setCount(int count) {
@@ -91,10 +108,13 @@ public class CustomButton extends View {
 
    @Override
    public void onDraw(Canvas canvas) {
-      squarePaint.setShader(new LinearGradient(0F, 0F, 0F, height, Color.rgb(245, 245, 245), Color.rgb(221, 221, 221),
+      squarePaint.setShader(new LinearGradient(0F, 0F, 0F, height, Color.rgb(254, 254, 254), Color.rgb(221, 221, 221),
                Shader.TileMode.REPEAT));
-      textPaint.setTextSize(height * 0.8F);
-      countPaint.setTextSize(height * 0.28F);
+
+      textPaint.setTextSize(width * 0.09F);
+
+      countPaint.setTextSize(height * 0.3F);
+
       Rect rect = new Rect(0, 0, width, height);
       canvas.drawRect(rect, squarePaint);
       canvas.drawText(text, (width / 2) - (width / 10) + 10, (height / 2) + (height / 3), textPaint);
