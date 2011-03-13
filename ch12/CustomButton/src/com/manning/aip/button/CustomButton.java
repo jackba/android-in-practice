@@ -32,7 +32,7 @@ public class CustomButton extends View {
    private String text;
 
    public CustomButton(Context context) {
-      super(context);
+      this(context, null);
    }
 
    public CustomButton(Context context, AttributeSet attrs) {
