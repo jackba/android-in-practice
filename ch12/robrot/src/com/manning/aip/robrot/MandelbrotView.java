@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+// TODO profile this, improve algorithm, improve speed
+
 public class MandelbrotView extends View {
 
    private static final ComplexNumber temp = new ComplexNumber(0, 0);
