@@ -15,6 +15,7 @@ public class Shape {
    protected FloatBuffer vertices;
    protected FloatBuffer colors;
    protected ByteBuffer indices;
+   
    protected FloatBuffer textureBuffer;
    
    // A raw pointer to our textures.
