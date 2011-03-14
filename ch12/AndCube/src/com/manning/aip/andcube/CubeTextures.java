@@ -34,7 +34,7 @@ public class CubeTextures extends CubeColors {
          return;
       }
       textures = new int[1];
-      InputStream is = context.getResources().openRawResource(R.drawable.smile);
+      InputStream is = context.getResources().openRawResource(R.drawable.aipcube);
       Bitmap bitmap = null;
       try {
          bitmap = BitmapFactory.decodeStream(is);
