@@ -30,7 +30,7 @@ public class CubeTextures extends CubeColors {
 
    @Override
    public void loadGLTexture(GL10 gl, Context context) {
-      if (textures == null) {
+      if (textures != null) {
          return;
       }
       textures = new int[1];
