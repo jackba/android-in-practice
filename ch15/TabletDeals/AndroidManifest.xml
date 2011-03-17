@@ -20,7 +20,7 @@
             </intent-filter>   
         </activity>
         <activity android:name=".DetailsActivity" />
-                <receiver android:name=".DealBootReceiver">
+        <!--  receiver android:name=".DealBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -28,7 +28,7 @@
         
         <receiver android:name=".DealAlarmReceiver" />
         
-        <service android:name=".DealService" android:process=":foo"/>
+        <service android:name=".DealService" android:process=":foo"/ -->
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

@@ -3,32 +3,43 @@
    android:layout_width="match_parent"
    android:layout_height="match_parent"
    android:id="@+id/stackTable">
-   <TableRow android:padding="5px">
-       <StackView android:layout_width="400px"
+   <TableRow>
+       <FrameLayout android:id="@+id/a0"
+           android:layout_width="400px"
            android:layout_height="350px"
-           android:loopViews="true"
-       />
-       <StackView android:layout_width="400px"
+           android:orientation="horizontal">
+           <StackView android:id="@+id/stack0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:loopViews="true"
+           />
+       </FrameLayout>
+       <FrameLayout android:id="@+id/a1"
+           android:layout_width="400px"
            android:layout_height="350px"
-           android:loopViews="true"
+           android:orientation="horizontal"
        />
-       <StackView android:layout_width="400px"
+       <FrameLayout android:id="@+id/a2"
+           android:layout_width="400px"
            android:layout_height="350px"
-           android:loopViews="true"
-       />
+           android:orientation="horizontal"
+       />              
    </TableRow>
    <TableRow>
-       <StackView android:layout_width="400px"
+       <FrameLayout android:id="@+id/b0"
+           android:layout_width="400px"
            android:layout_height="350px"
-           android:loopViews="true"
+           android:orientation="horizontal"
        />
-       <StackView android:layout_width="400px"
+       <FrameLayout android:id="@+id/b1"
+           android:layout_width="400px"
            android:layout_height="350px"
-           android:loopViews="true"
+           android:orientation="horizontal"
        />
-       <StackView android:layout_width="400px"
+       <FrameLayout android:id="@+id/b2"
+           android:layout_width="400px"
            android:layout_height="350px"
-           android:loopViews="true"
+           android:orientation="horizontal"
        />
    </TableRow>    
  </TableLayout>

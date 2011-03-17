@@ -30,11 +30,6 @@ public class SectionDetailsFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		app = (DealsApp) this.getActivity().getApplication();  	
-	}
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-    	super.onActivityCreated(savedInstanceState);
-    	
     	section = app.currentSection;
     	
     	if (savedInstanceState != null){
@@ -52,24 +47,25 @@ public class SectionDetailsFragment extends ListFragment {
     			}
     		}
     	}
+    	
+	}
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+    	super.onActivityCreated(savedInstanceState);
+    	
     	buildUi();
     }
     
     private void buildUi(){
     	ListView listView = this.getListView();
     	listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-    	if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-	    	String[] dealTitles = new String[section.items.size()];
-	    	int i = 0;
-	    	for (Item item : section.items){
-	    		dealTitles[i++] = item.title;
-	    	}
-	    	setListAdapter(new ArrayAdapter<String>(getActivity(), 
-	    			R.layout.deal_title_list_entry, dealTitles));
-    	} else { // portrait
-    		listView.setHorizontalScrollBarEnabled(true);
-    		setListAdapter(new DealsImageAdapter());
+    	String[] dealTitles = new String[section.items.size()];
+    	int i = 0;
+    	for (Item item : section.items){
+    		dealTitles[i++] = item.title;
     	}
+    	setListAdapter(new ArrayAdapter<String>(getActivity(), 
+    			R.layout.deal_title_list_entry, dealTitles)); 
     	listView.setSelection(currentPosition);
     	showDeal(currentPosition); 
     }
