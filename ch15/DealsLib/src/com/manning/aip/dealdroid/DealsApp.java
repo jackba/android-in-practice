@@ -48,7 +48,7 @@ public class DealsApp extends Application {
 	   public void setPreviousDealIdsToPrefs(final List<Long> previousDealIds) {
 	      // should never get this error, but it's a good idea to fail fast in case
 	      if ((previousDealIds == null) || (previousDealIds.size() != 4)) {
-	         throw new IllegalArgumentException("Error, previousDealIds size must be 4");
+	         //throw new IllegalArgumentException("Error, previousDealIds size must be 4");
 	      }
 	      Editor editor = prefs.edit();
 	      editor.putLong(Constants.DEAL1, previousDealIds.get(0));
