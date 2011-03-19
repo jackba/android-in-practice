@@ -13,7 +13,7 @@ import android.os.Message;
 
 public class UpdateNoticeTask extends AsyncTask<Void, Void, String> {
 
-   private String updateUrl =
+   private static final String UPDATE_URL =
             "http://android-in-practice.googlecode.com/files/update_notice.txt";
 
    private HttpURLConnection connection;
@@ -27,7 +27,7 @@ public class UpdateNoticeTask extends AsyncTask<Void, Void, String> {
    @Override
    protected String doInBackground(Void... params) {
       try {
-         URL url = new URL(updateUrl);
+         URL url = new URL(UPDATE_URL);
          connection = (HttpURLConnection) url.openConnection();
          connection.setRequestMethod("GET");
          connection.setRequestProperty("Accept", "text/plain");
@@ -36,11 +36,13 @@ public class UpdateNoticeTask extends AsyncTask<Void, Void, String> {
          if (statusCode != HttpURLConnection.HTTP_OK) {
             return "Error: Failed getting update notes";
          }
-         String text = readTextFromServer();
-         connection.disconnect();
-         return text;
+         return readTextFromServer();
       } catch (Exception e) {
          return "Error: " + e.getMessage();
+      } finally {
+         if (connection != null) {
+            connection.disconnect();
+         }
       }
    }
 
