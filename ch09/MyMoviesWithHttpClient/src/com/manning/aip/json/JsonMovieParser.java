@@ -1,6 +1,7 @@
 package com.manning.aip.json;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -15,12 +16,17 @@ public class JsonMovieParser {
       BufferedReader reader = new BufferedReader(new InputStreamReader(json));
       StringBuilder sb = new StringBuilder();
 
-      String line = reader.readLine();
-      while (line != null) {
-         sb.append(line);
-         line = reader.readLine();
+      try {
+         String line = reader.readLine();
+         while (line != null) {
+            sb.append(line);
+            line = reader.readLine();
+         }
+      } catch (IOException e) {
+         throw e;
+      } finally {
+         reader.close();
       }
-      reader.close();
       JSONArray jsonReply = new JSONArray(sb.toString());
 
       Movie movie = new Movie();
