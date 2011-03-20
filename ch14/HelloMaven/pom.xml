@@ -41,16 +41,6 @@
   
     <plugins>
     
-      <!-- configure the Java compiler plugin to use Java 6 -->
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-    
       <!-- configure the Android plugin -->
       <plugin>
         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
@@ -67,11 +57,12 @@
           <!-- we only want clean installs -->
           <undeployBeforeDeploy>true</undeployBeforeDeploy>
           
-          <!-- grant a little more memory, the dex task tends to crash otherwise -->
+          <!-- uncomment to grant a little more memory should the dex task crash with OOM
           <jvmArguments>
             <jvmArgument>-Xms256m</jvmArgument>
           </jvmArguments>
-          
+           -->
+           
           <emulator>
             <avd>android-2.2-normal-mdpi</avd>
             <wait>30000</wait>
