@@ -78,15 +78,16 @@ public class DealDetails extends Activity {
       switch (item.getItemId()) {
          case MENU_MAIL:
             shareDealUsingChooser("text/html");
-            break;
+            return true;
          case MENU_BROWSE:
             openDealInBrowser();
-            break;
+            return true;
          case MENU_SHARE:
             shareDealUsingChooser("text/*");
-            break;
-      }
-      return false;
+            return true;
+         default:
+            return super.onOptionsItemSelected(item);
+      }      
    }
 
    private void shareDealUsingChooser(String type) {
