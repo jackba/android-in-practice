@@ -101,6 +101,7 @@ public class MyMovies extends ListActivity {
       getListView().setSelection(0);
    }
 
+   // TODO make sure text has bugfix that was made here (lines 111-112)
    @Override
    protected void onListItemClick(ListView l, View v, int position, long id) {
       ///cursor.moveToPosition(position);
