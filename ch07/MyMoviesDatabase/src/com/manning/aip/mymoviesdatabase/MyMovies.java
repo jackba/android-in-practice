@@ -107,7 +107,8 @@ public class MyMovies extends ListActivity {
       ///long movieId = cursor.getInt(cursor.getColumnIndex("_id"));
       Intent intent = new Intent(this, MovieDetail.class);
       ///intent.putExtra(MovieDetail.MOVIE_ID_KEY, movieId);
-      intent.putExtra(MovieDetail.MOVIE_ID_KEY, Long.valueOf(position)); ///
+      long movieId = ((Movie)l.getItemAtPosition(position)).getId(); ///
+      intent.putExtra(MovieDetail.MOVIE_ID_KEY, movieId); ///
       startActivity(intent);
    }
 
