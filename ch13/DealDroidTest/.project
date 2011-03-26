@@ -3,7 +3,7 @@
 	<name>DealDroidTest</name>
 	<comment></comment>
 	<projects>
-		<project>DealDroid</project>
+		<project>DealDroidWithExport</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
