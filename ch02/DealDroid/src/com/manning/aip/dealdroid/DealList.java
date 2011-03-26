@@ -125,13 +125,13 @@ public class DealList extends ListActivity {
       switch (item.getItemId()) {
          case MENU_REPARSE:
             if (app.connectionPresent()) {
-               new ParseFeedTask().execute();
+               new ParseFeedTask().execute();               
             } else {
                Toast.makeText(this, getString(R.string.deal_list_network_unavailable), Toast.LENGTH_LONG).show();
             }
-            break;
+            return true;
       }
-      return false;
+      return super.onOptionsItemSelected(item);
    }   
 
    // Use a custom Adapter to control the layout and views
