@@ -56,7 +56,7 @@ public class MovieDao implements Dao<Movie> {
       values.put(MovieColumns.URL, entity.getUrl());
       values.put(MovieColumns.YEAR, entity.getYear());
       db.update(MovieTable.TABLE_NAME, values, BaseColumns._ID + " = ?", new String[] { String
-               .valueOf(entity.getName()) });
+               .valueOf(entity.getId()) });
    }
 
    @Override

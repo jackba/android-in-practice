@@ -33,7 +33,7 @@ public class DataManagerImpl implements DataManager {
    private MovieDao movieDao;
    private MovieCategoryDao movieCategoryDao;
 
-   public DataManagerImpl(final Context context) {
+   public DataManagerImpl(Context context) {
 
       this.context = context;
 
