@@ -24,6 +24,8 @@ public class InternalStorage extends Activity {
    // also be aware of getCacheDir, which writes to an internal
    // directory that the system may clean up
    
+   private static final String LINE_SEP = System.getProperty("line.separator");
+   
    private EditText input;
    private TextView output;
    private Button write;
@@ -83,7 +85,7 @@ public class InternalStorage extends Activity {
          // scanner does mean one more object, but it's easier to work with
          scanner = new Scanner(fis);
          while (scanner.hasNextLine()) {
-            sb.append(scanner.nextLine() + System.getProperty("line.separator"));
+            sb.append(scanner.nextLine() + LINE_SEP);
          }
          Toast.makeText(this, "File read", Toast.LENGTH_SHORT).show();
       } catch (FileNotFoundException e) {
