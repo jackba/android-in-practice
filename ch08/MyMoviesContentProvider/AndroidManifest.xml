@@ -31,7 +31,7 @@
 		<activity android:name=".Preferences" />
 
 		<provider android:name="com.manning.aip.mymoviesdatabase.provider.MyMoviesProvider"
-			android:authorities="com.manning.aip.mymoviesdatabase.movies" />
+			android:authorities="com.manning.aip.mymoviesdatabase" />
 
 	</application>
 

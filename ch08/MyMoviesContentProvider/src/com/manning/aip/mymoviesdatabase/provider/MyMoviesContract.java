@@ -5,22 +5,16 @@ import com.manning.aip.mymoviesdatabase.data.MovieTable;
 
 import java.util.HashMap;
 
-public final class MyMoviesContract {
-   
+public final class MyMoviesContract {   
 
    public static final String AUTHORITY = "com.manning.aip.mymoviesdatabase";
-
    public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
-
-   public static final class Movies {
-      private Movies() {
-      }
-
+   
+   public static final class Movies {      
+   
       public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "movies");
-
-      public static abstract class MovieColumns extends MovieTable.MovieColumns {
-         private MovieColumns() {
-         }
+      
+      public static abstract class MovieColumns extends MovieTable.MovieColumns {         
 
          public static final String CATEGORIES = "category_names";
 
@@ -39,6 +33,11 @@ public final class MyMoviesContract {
             }
          };
 
+         private MovieColumns() {
+         }         
+      }
+      
+      private Movies() {
       }
    }
    

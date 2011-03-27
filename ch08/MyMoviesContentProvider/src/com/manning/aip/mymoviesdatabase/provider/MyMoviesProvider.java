@@ -26,6 +26,8 @@ import com.manning.aip.mymoviesdatabase.data.MovieTable.MovieColumns;
 import com.manning.aip.mymoviesdatabase.data.OpenHelper;
 import com.manning.aip.mymoviesdatabase.model.Category;
 
+// TODO cleanup
+
 final public class MyMoviesProvider extends ContentProvider {
 
    final private static int MOVIES = 1;
@@ -44,30 +46,42 @@ final public class MyMoviesProvider extends ContentProvider {
    public boolean onCreate() {
       SQLiteOpenHelper openHelper = new OpenHelper(getContext());
       db = openHelper.getWritableDatabase();
-
       return true;
    }
 
    @Override
    public Cursor query(Uri uri, final String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
+      Set<String> projectionCols = new HashSet<String>();
+      if (projection != null) {
+         projectionCols = new HashSet<String>(Arrays.asList(projection));
+         if (!MyMoviesContract.Movies.MovieColumns.projectionMap.keySet().containsAll(projectionCols)) {
+            throw new IllegalArgumentException("Unrecognized column(s) in projection");
+         }
+      }
+
+      SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
       switch (uriMatcher.match(uri)) {
+
+         case MOVIES:
+            qb.setTables(MovieTable.TABLE_NAME);
+            return qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+
          case MOVIE_ID:
 
             long movieId = ContentUris.parseId(uri);
 
-            Set<String> projectionCols = new HashSet<String>(Arrays.asList(projection));
-            if (!MyMoviesContract.Movies.MovieColumns.projectionMap.keySet().containsAll(projectionCols)) {
-               throw new IllegalArgumentException("Unrecognized column(s) in projection");
-            }
-
-            SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-
             StringBuilder tables = new StringBuilder(MovieTable.TABLE_NAME).append(" as outer_movie");
 
             LinkedList<String> newSelectionArgs = new LinkedList<String>();
+            newSelectionArgs.add(String.valueOf(movieId));
+            if (selectionArgs != null) {
+               newSelectionArgs.addAll(Arrays.asList(selectionArgs));
+            }
+            String[] allSelectionArgs = newSelectionArgs.toArray(new String[0]);
 
-            // we represent categories as comma-delimited list of category names.  in order to do so, we use a
+            // we represent categories as comma-delimited list of category names. in order to do so, we use a
             // sub-select across the join table to retrieve the movie's categories and SQLite's group_concat()
             // function to build the string representation.
             if (projectionCols.contains(MyMoviesContract.Movies.MovieColumns.CATEGORIES)) {
@@ -78,23 +92,14 @@ final public class MyMoviesProvider extends ContentProvider {
                         .append(MovieCategoryTable.TABLE_NAME).append(".").append(MovieCategoryColumns.CATEGORY_ID)
                         .append("=").append(CategoryTable.TABLE_NAME).append(".").append(CategoryColumns._ID)
                         .append(") mcat");
-
-               newSelectionArgs.add(String.valueOf(movieId));
             }
 
             StringBuilder where = new StringBuilder();
             where.append("outer_movie.").append(MovieColumns._ID).append("= ?");
 
-            newSelectionArgs.add(String.valueOf(movieId));
-
             qb.setProjectionMap(MyMoviesContract.Movies.MovieColumns.projectionMap);
             qb.setTables(tables.toString());
             qb.appendWhere(where.toString());
-
-            if (selectionArgs != null) {
-               newSelectionArgs.addAll(Arrays.asList(selectionArgs));
-            }
-            String[] allSelectionArgs = newSelectionArgs.toArray(new String[0]);
 
             return qb.query(db, projection, selection, allSelectionArgs, null, null, sortOrder);
 
@@ -151,8 +156,6 @@ final public class MyMoviesProvider extends ContentProvider {
       switch (uriMatcher.match(uri)) {
          case MOVIE_ID:
             long movieId = ContentUris.parseId(uri);
-
-            SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
             StringBuilder where = new StringBuilder(MovieColumns._ID).append("=?");
             if (selection != null) {
