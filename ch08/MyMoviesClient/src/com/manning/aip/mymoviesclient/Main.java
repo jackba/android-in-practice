@@ -10,11 +10,16 @@ import android.widget.TextView;
 
 public class Main extends Activity {
    
+   // this is defined in the provider (see MyMoviesContentProvider)
    public static final String AUTHORITY = "com.manning.aip.mymoviesdatabase";
    public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
    public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "movies");
    
    private TextView output;
+   
+   // TODO add buttons and a simple form, allow query all movies, by id
+   // also add/delete/update movies
+   // also discuss/deal with content provider listeners   
    
     @Override
     public void onCreate(Bundle savedInstanceState) {
