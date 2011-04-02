@@ -27,7 +27,8 @@ public class DealListTest extends ActivityInstrumentationTestCase2<DealList> {
       assertNotNull("task should not be null", task);
 
       List<Section> taskResult = task.waitAndUpdate();
-      assertNotNull("task did not return any sections", taskResult);
+      boolean noSections = taskResult == null || taskResult.isEmpty();
+      assertFalse("task did not return any sections", noSections);
 
       instr.waitForIdleSync();
 
