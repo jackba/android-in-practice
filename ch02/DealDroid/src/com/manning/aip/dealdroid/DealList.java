@@ -143,8 +143,6 @@ public class DealList extends ListActivity {
 
       @Override
       public View getView(int position, View convertView, ViewGroup parent) {
-
-         // TODO should call super.getView()?
          
          if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
