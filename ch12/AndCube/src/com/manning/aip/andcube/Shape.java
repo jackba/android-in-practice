@@ -1,12 +1,13 @@
 package com.manning.aip.andcube;
 
-import android.content.Context;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
+
+import android.content.Context;
+import android.util.Log;
 
 public abstract class Shape {
    
@@ -66,7 +67,8 @@ public abstract class Shape {
 
       gl.glDrawElements(GL10.GL_TRIANGLES, 36, GL10.GL_UNSIGNED_BYTE, this.indices);
       
-      // gl.glGetError
+      Log.i("AndCube", "****** glGetError:" + gl.glGetError());
+      
       ///gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
       
       if (textures != null) {
