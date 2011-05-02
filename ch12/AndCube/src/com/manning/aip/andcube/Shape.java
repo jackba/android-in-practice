@@ -50,8 +50,12 @@ public class Shape {
       if (textures != null) {
          gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
       }
-      gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-      gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+      
+      // can't enable or map before drawElements, causes 1282 unsupported op error
+      // http://www.opengl.org/sdk/docs/man/xhtml/glDrawElements.xml
+      //gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+      //gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+      
       gl.glFrontFace(GL10.GL_CW);
       gl.glVertexPointer(3, GL10.GL_FLOAT, 0, this.vertices);
       if (textures != null) {
@@ -61,8 +65,10 @@ public class Shape {
       }
 
       gl.glDrawElements(GL10.GL_TRIANGLES, 36, GL10.GL_UNSIGNED_BYTE, this.indices);
-      gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-      gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+      
+      // gl.glGetError
+      //gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+      //gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
    }
 
    public void loadGLTexture(GL10 gl, Context context) {
