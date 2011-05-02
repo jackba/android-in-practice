@@ -8,7 +8,7 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class Shape {
+public abstract class Shape {
    
    public static final int ONE = 0x10000;
 
@@ -74,6 +74,5 @@ public class Shape {
       }
    }
 
-   public void loadGLTexture(GL10 gl, Context context) {
-   }
+   public abstract void loadGLTexture(GL10 gl, Context context);   
 }
