@@ -1,10 +1,5 @@
 package com.manning.aip.andcube;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.opengl.GLUtils;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -12,10 +7,17 @@ import java.nio.ByteOrder;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.opengl.GLUtils;
+import android.util.Log;
+
 public class CubeTextures extends CubeColors {
 
    public CubeTextures() {
       super();
+      
       float[] textureVertices =
                { 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
                         0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
@@ -25,12 +27,14 @@ public class CubeTextures extends CubeColors {
       byteBuf.order(ByteOrder.nativeOrder());
       textureBuffer = byteBuf.asFloatBuffer();
       textureBuffer.put(textureVertices);
-      textureBuffer.position(0);
+      textureBuffer.position(0);    
    }
 
    @Override
    public void loadGLTexture(GL10 gl, Context context) {
+      Log.i("AndCube", "****** loadGLTexture");
       if (textures != null) {
+         Log.i("AndCube", "****** textures NOT null, return");
          return;
       }
       textures = new int[1];
