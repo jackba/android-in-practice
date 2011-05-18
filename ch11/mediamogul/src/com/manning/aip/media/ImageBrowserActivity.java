@@ -65,10 +65,18 @@ public class ImageBrowserActivity extends Activity {
 	private List<Bitmap> thumbs;
 	// max size of thumbnails
 	private static final double MAX_DIMENSION = 200.0D;
+
+    protected static final int NO_PICS = 19;
 	
 	private Handler loadingHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
+		    if (msg.what == NO_PICS){
+		        Toast.makeText(ImageBrowserActivity.this, R.string.empty_pics_msg, 
+                        Toast.LENGTH_LONG).show();
+                imageFiles = new ArrayList<File>(0);
+                thumbs = new ArrayList<Bitmap>(0);
+		    }
 			grid.setAdapter(new GridAdapter());
 			dialog.dismiss();
 	        if (grid.getCount() == 0){
@@ -95,55 +103,9 @@ public class ImageBrowserActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_browser);
-        playThemeMusic();
-        // Setup UI and event listeners
-        // could take awhile to load all of the pics, show a progress dialog
-        dialog = ProgressDialog.show(this, "", "Loading pics");
+
         grid = (GridView) findViewById(R.id.grid);
-        Runnable loader = new Runnable(){
-			@Override
-			public void run() {
-				// get pics from /Pictures
-				File picturesDir = 
-		        	getExternalStoragePublicDirectory(DIRECTORY_PICTURES);
-				if (picturesDir == null || picturesDir.list() == null || 
-						picturesDir.list().length == 0){
-					Toast.makeText(ImageBrowserActivity.this, R.string.empty_pics_msg, 
-							Toast.LENGTH_LONG);
-					imageFiles = new ArrayList<File>(0);
-					thumbs = new ArrayList<Bitmap>(0);
-					return;
-				}
-				int maxNumFiles;
-				String[] nameArray = picturesDir.list();
-				if (nameArray == null){
-					maxNumFiles = 0; 
-				} else {
-					maxNumFiles = nameArray.length;
-				}
-				ArrayList<File> theFiles = new ArrayList<File>(maxNumFiles);
-				if (maxNumFiles == 0) return;
-				for (String fileName : nameArray){
-					File file = new File(picturesDir, fileName);
-					if (file.isFile()){
-						theFiles.add(file);
-					}
-				}
-				imageFiles = Collections.unmodifiableList(theFiles);
-				ArrayList<Bitmap> tempThumbs = 
-					new ArrayList<Bitmap>(imageFiles.size());
-				for (int i=0;i<imageFiles.size();i++){
-					Bitmap thumb = makeThumb(i);
-					if (thumb != null){
-						tempThumbs.add(thumb);
-					}
-				}
-				thumbs = Collections.unmodifiableList(tempThumbs);
-		        loadingHandler.sendMessage(Message.obtain());
-			}
-        };
-        Thread loadingThread = new Thread(loader);
-        loadingThread.start();
+
         // button to go to next activity
         Button nxtBtn = (Button) findViewById(R.id.nxtBtn1);
         nxtBtn.setOnClickListener(new OnClickListener(){
@@ -237,9 +199,56 @@ public class ImageBrowserActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
+        // Setup UI and event listeners
+        // could take awhile to load all of the pics, show a progress dialog
+        dialog = ProgressDialog.show(this, "", "Loading pics");
+        playThemeMusic();
 		if (player != null){
 			player.start();
 		}
+        Runnable loader = new Runnable(){
+            @Override
+            public void run() {
+                // get pics from /Pictures
+                File picturesDir = 
+                    getExternalStoragePublicDirectory(DIRECTORY_PICTURES);
+                if (picturesDir == null || picturesDir.list() == null || 
+                        picturesDir.list().length == 0){
+                    Message none = Message.obtain();
+                    none.what = NO_PICS;
+                    loadingHandler.sendMessage(none);
+                    return;
+                }
+                int maxNumFiles;
+                String[] nameArray = picturesDir.list();
+                if (nameArray == null){
+                    maxNumFiles = 0; 
+                } else {
+                    maxNumFiles = nameArray.length;
+                }
+                ArrayList<File> theFiles = new ArrayList<File>(maxNumFiles);
+                if (maxNumFiles == 0) return;
+                for (String fileName : nameArray){
+                    File file = new File(picturesDir, fileName);
+                    if (file.isFile()){
+                        theFiles.add(file);
+                    }
+                }
+                imageFiles = Collections.unmodifiableList(theFiles);
+                ArrayList<Bitmap> tempThumbs = 
+                    new ArrayList<Bitmap>(imageFiles.size());
+                for (int i=0;i<imageFiles.size();i++){
+                    Bitmap thumb = makeThumb(i);
+                    if (thumb != null){
+                        tempThumbs.add(thumb);
+                    }
+                }
+                thumbs = Collections.unmodifiableList(tempThumbs);
+                loadingHandler.sendMessage(Message.obtain());
+            }
+        };
+        Thread loadingThread = new Thread(loader);
+        loadingThread.start();
 	}
 	/**
 	 * Creates a thumbnail image for the image at the given postion in the
