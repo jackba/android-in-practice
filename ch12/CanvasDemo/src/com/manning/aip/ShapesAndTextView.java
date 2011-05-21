@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Typeface;
 import android.view.View;
 
 /**
@@ -20,9 +21,12 @@ public class ShapesAndTextView extends View {
 
 	public ShapesAndTextView(Context context) {
 		super(context);
+		// Loading up the font
+		font = Typeface.createFromAsset(context.getAssets(), "256bytes.ttf");
 	}
 
 	private Paint paint;
+	private Typeface font;
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -54,9 +58,10 @@ public class ShapesAndTextView extends View {
 	}
 
 	private void drawText(Canvas canvas) {
-		String text = "LHX Style";
+		String text = "256 byte Style";
 		paint.setColor(Color.WHITE);
-		paint.setTextSize(48);
-		canvas.drawText(text, 60, 300, paint);
+		paint.setTextSize(40);
+		paint.setTypeface(font);
+		canvas.drawText(text, 50, 300, paint);
 	}
 }
