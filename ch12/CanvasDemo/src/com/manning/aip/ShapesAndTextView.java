@@ -4,6 +4,8 @@
 package com.manning.aip;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -23,17 +25,21 @@ public class ShapesAndTextView extends View {
 		super(context);
 		// Loading up the font
 		font = Typeface.createFromAsset(context.getAssets(), "256bytes.ttf");
+		// loading the bitmap
+		bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.copter);
 	}
 
-	private Paint paint;
-	private Typeface font;
+	private Paint 		paint;
+	private Typeface 	font;
+	private Bitmap 		bitmap;
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.drawRGB(0, 0, 0); 								// #1
 		drawShapes(canvas);										// #2
 		drawText(canvas);										// #3
-		invalidate();											// #4
+		drawBitmap(canvas);										// #4
+		invalidate();											// #5
 	}
 
 	private void drawShapes(Canvas canvas) {
@@ -62,6 +68,11 @@ public class ShapesAndTextView extends View {
 		paint.setColor(Color.WHITE);
 		paint.setTextSize(40);
 		paint.setTypeface(font);
-		canvas.drawText(text, 50, 300, paint);
+		canvas.drawText(text, 50, canvas.getHeight() - 20, paint);
+	}
+	
+	private void drawBitmap(Canvas canvas) {
+		paint = new Paint();
+		canvas.drawBitmap(bitmap, 0, 0, paint);
 	}
 }
