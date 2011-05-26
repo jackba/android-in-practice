@@ -13,7 +13,8 @@ import android.view.WindowManager;
 
 public class OpenGLDemoActivity extends Activity {
 	
-	private GLSurfaceView glView;
+	private GLSurfaceView 	glView;
+	private Triangle 		triangle;
 	
     /** Called when the activity is first created. */
     @Override
@@ -33,17 +34,23 @@ public class OpenGLDemoActivity extends Activity {
     	public void onSurfaceChanged(GL10 gl, int width, int height) {	// #8
     		Log.d("MyOpenGLRenderer", "Surface changed. Width=" + width
     				+ " Height=" + height);
+    		gl.glViewport(0, 0, width, height);
+    		gl.glMatrixMode(GL10.GL_PROJECTION);
+    		gl.glLoadIdentity();
+    		gl.glOrthof(0, 320, 0, 480, 1, -1);
     	}
     	
     	@Override
     	public void onSurfaceCreated(GL10 gl, EGLConfig config) {		// #9
     		Log.d("MyOpenGLRenderer", "Surface created");
+    		triangle = new Triangle();
     	}
 
     	@Override
-		public void onDrawFrame(GL10 gl) {								// #10
-			gl.glClearColor(0.0f, 0.5f, 0.0f, 1f);						// #11
-			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);						// #12
+		public void onDrawFrame(GL10 gl) {								
+			gl.glClearColor(0.0f, 0.5f, 0.0f, 1f);						
+			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+			triangle.draw(gl);
 		}
     }
 }
