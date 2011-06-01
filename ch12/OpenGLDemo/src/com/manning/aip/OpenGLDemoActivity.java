@@ -15,7 +15,7 @@ import android.view.WindowManager;
 public class OpenGLDemoActivity extends Activity {
 	
 	private GLSurfaceView 	glView;
-	private Pyramid		pyramid;
+	private ColouredPyramid		pyramid;
 	
     /** Called when the activity is first created. */
     @Override
@@ -49,7 +49,7 @@ public class OpenGLDemoActivity extends Activity {
     	@Override
     	public void onSurfaceCreated(GL10 gl, EGLConfig config) {	
     		Log.d("MyOpenGLRenderer", "Surface created");
-    		pyramid = new Pyramid();
+    		pyramid = new ColouredPyramid();
     	}
 
     	@Override
@@ -58,8 +58,8 @@ public class OpenGLDemoActivity extends Activity {
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			gl.glLoadIdentity();
 //			triangle.draw(gl);
-			gl.glTranslatef(0.0f, 0.0f, -10.0f);     // move 5 units INTO the screen
-	                                                // is the same as moving the camera 5 units away
+			gl.glTranslatef(0.0f, 0.0f, -10.0f);    // move 10 units INTO the screen
+	                                                // is the same as moving the camera 10 units away
 			pyramid.draw(gl);
 		}
     }
