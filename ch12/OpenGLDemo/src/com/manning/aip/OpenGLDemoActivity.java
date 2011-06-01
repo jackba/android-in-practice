@@ -15,25 +15,24 @@ import android.view.WindowManager;
 public class OpenGLDemoActivity extends Activity {
 	
 	private GLSurfaceView 	glView;
-	private Triangle 		triangle;
 	private Pyramid		pyramid;
 	
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {					// #1
+    public void onCreate(Bundle savedInstanceState) {					
         super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);					// #2
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,// #3
+		requestWindowFeature(Window.FEATURE_NO_TITLE);					
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		glView = new GLSurfaceView(this);								// #4
-		glView.setRenderer(new MyOpenGLRenderer());						// #5
-        setContentView(glView);											// #6
+		glView = new GLSurfaceView(this);								
+		glView.setRenderer(new MyOpenGLRenderer());						
+        setContentView(glView);											
     }
 
-    class MyOpenGLRenderer implements Renderer {						// #7
+    class MyOpenGLRenderer implements Renderer {						
 
     	@Override
-    	public void onSurfaceChanged(GL10 gl, int width, int height) { // #8
+    	public void onSurfaceChanged(GL10 gl, int width, int height) { 
     		Log.d("MyOpenGLRenderer", "Surface changed. Width=" + width
     				+ " Height=" + height);
     		gl.glViewport(0, 0, width, height);
@@ -48,9 +47,8 @@ public class OpenGLDemoActivity extends Activity {
     	}
     	
     	@Override
-    	public void onSurfaceCreated(GL10 gl, EGLConfig config) {		// #9
+    	public void onSurfaceCreated(GL10 gl, EGLConfig config) {	
     		Log.d("MyOpenGLRenderer", "Surface created");
-    		triangle = new Triangle();
     		pyramid = new Pyramid();
     	}
 
