@@ -4,9 +4,12 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
-import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
+import android.opengl.GLUtils;
+import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -14,8 +17,9 @@ import android.view.WindowManager;
 
 public class OpenGLDemoActivity extends Activity {
 	
-	private GLSurfaceView 	glView;
-	private ColouredPyramid		pyramid;
+	private GLSurfaceView 		glView;
+	private TexturedPyramid		pyramid;
+	private Bitmap				texture;
 	
     /** Called when the activity is first created. */
     @Override
@@ -49,7 +53,20 @@ public class OpenGLDemoActivity extends Activity {
     	@Override
     	public void onSurfaceCreated(GL10 gl, EGLConfig config) {	
     		Log.d("MyOpenGLRenderer", "Surface created");
-    		pyramid = new ColouredPyramid();
+			texture = BitmapFactory.decodeResource(getResources(),
+					R.drawable.texture_brick);
+			
+			int textureIds[] = new int[1];
+			gl.glGenTextures(1, textureIds, 0);
+			gl.glBindTexture(GL10.GL_TEXTURE_2D, textureIds[0]);
+			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, texture, 0);
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
+					GL10.GL_NEAREST);
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
+					GL10.GL_NEAREST);
+			gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
+			texture.recycle();
+			pyramid = new TexturedPyramid(textureIds[0]);
     	}
 
     	@Override
@@ -57,9 +74,7 @@ public class OpenGLDemoActivity extends Activity {
 			gl.glClearColor(0.0f, 0.0f, 0.0f, 1f);						
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			gl.glLoadIdentity();
-//			triangle.draw(gl);
-			gl.glTranslatef(0.0f, 0.0f, -10.0f);    // move 10 units INTO the screen
-	                                                // is the same as moving the camera 10 units away
+			gl.glTranslatef(0.0f, 0.0f, -5.0f);
 			pyramid.draw(gl);
 		}
     }
