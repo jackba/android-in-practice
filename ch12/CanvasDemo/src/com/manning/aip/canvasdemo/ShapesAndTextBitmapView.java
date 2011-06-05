@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Typeface;
 import android.view.View;
 
 /**
@@ -21,13 +20,10 @@ import android.view.View;
 public class ShapesAndTextBitmapView extends View {
 
    private Paint paint;
-   private Typeface font;
    private Bitmap bitmap;
 
    public ShapesAndTextBitmapView(Context context) {
       super(context);
-      // Loading up the font
-      font = Typeface.createFromAsset(context.getAssets(), "256bytes.ttf");
       // loading the bitmap
       bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.copter);
    }

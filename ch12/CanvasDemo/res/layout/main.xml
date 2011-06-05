@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:aip="http://schemas.android.com/apk/res/com.manning.aip.canvasdemo"
+	android:layout_width="fill_parent" android:layout_height="wrap_content">
+	<LinearLayout android:orientation="vertical"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:layout_margin="10dp">
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" style="@android:style/TextAppearance.Large"
+			android:text="CanvasDemo" />
 
+		<Button android:id="@+id/randcolor_button"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="RandomColor" />
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:layout_margin="10dp">
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" style="@android:style/TextAppearance.Large"
-		android:text="CanvasDemo" />
+		<Button android:id="@+id/randcolor_fullscreen_button"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="RandomColor_FullScreen" />
 
-	<Button android:id="@+id/randcolor_button" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="RandomColor" />
+		<Button android:id="@+id/randomshapes_button"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="RandomShapes" />
 
-	<Button android:id="@+id/randcolor_fullscreen_button"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:text="RandomColor_FullScreen" />
+		<Button android:id="@+id/randomshapes_alpha_button"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="RandomShapes_WithAlpha" />
 
-	<Button android:id="@+id/randomshapes_button"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:text="RandomShapes" />
+		<Button android:id="@+id/randomshapes_redraw_button"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="RandomShapes_Redraw" />
 
-	<Button android:id="@+id/randomshapes_alpha_button"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:text="RandomShapes_WithAlpha" />
+		<Button android:id="@+id/shapesandtext_lhx_button"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="ShapesAndText_LHXStyle" />
 
-	<Button android:id="@+id/randomshapes_redraw_button"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:text="RandomShapes_Redraw" />
+		<Button android:id="@+id/shapesandtext_font_button"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="ShapesAndText_TrueTypeFont" />
 
-	<Button android:id="@+id/shapesandtext_lhx_button"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:text="ShapesAndText_LHXStyle" />
+		<Button android:id="@+id/shapesandtext_bitmap_button"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="ShapesAndText_Bitmap" />
 
-	<Button android:id="@+id/shapesandtext_font_button"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:text="ShapesAndText_TrueTypeFont" />
-
-	<Button android:id="@+id/shapesandtext_bitmap_button"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:text="ShapesAndText_Bitmap" />
-
-</LinearLayout>
+		<com.manning.aip.canvasdemo.CustomButton
+			android:id="@+id/custom_button" android:layout_margin="15dp"
+			android:layout_width="fill_parent" android:layout_height="60dp"
+			aip:count="100" aip:text="Super Fancy Button" />
+	</LinearLayout>
+</ScrollView>
