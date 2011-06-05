@@ -45,7 +45,7 @@ public class Main extends Activity {
             startActivity(new Intent(Main.this, Canvas2DRandomShapesWithAlphaActivity.class));
          }
       });
-      
+
       Button randomShapesRedrawButton = (Button) findViewById(R.id.randomshapes_redraw_button);
       randomShapesRedrawButton.setOnClickListener(new OnClickListener() {
          @Override
@@ -53,6 +53,29 @@ public class Main extends Activity {
             startActivity(new Intent(Main.this, Canvas2DRandomShapesRedrawActivity.class));
          }
       });
-   }
 
+      Button shapesAndTextLHXButton = (Button) findViewById(R.id.shapesandtext_lhx_button);
+      shapesAndTextLHXButton.setOnClickListener(new OnClickListener() {
+         @Override
+         public void onClick(View v) {
+            startActivity(new Intent(Main.this, Canvas2DShapesAndTextLHXStyleActivity.class));
+         }
+      });
+
+      Button shapesAndTextFontButton = (Button) findViewById(R.id.shapesandtext_font_button);
+      shapesAndTextFontButton.setOnClickListener(new OnClickListener() {
+         @Override
+         public void onClick(View v) {
+            startActivity(new Intent(Main.this, Canvas2DShapesAndTextFontActivity.class));
+         }
+      });
+      
+      Button shapesAndTextBitmapButton = (Button) findViewById(R.id.shapesandtext_bitmap_button);
+      shapesAndTextBitmapButton.setOnClickListener(new OnClickListener() {
+         @Override
+         public void onClick(View v) {
+            startActivity(new Intent(Main.this, Canvas2DShapesAndTextBitmapActivity.class));
+         }
+      });
+   }
 }

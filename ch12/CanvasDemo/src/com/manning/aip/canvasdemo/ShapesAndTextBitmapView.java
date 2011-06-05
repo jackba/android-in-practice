@@ -4,36 +4,39 @@
 package com.manning.aip.canvasdemo;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Typeface;
 import android.view.View;
 
 /**
- * View to display an LHX type intro.
+ * View to display a Bitmap.
  * 
  * @author tamas
  * 
  */
-public class ShapesAndTextView extends View {
+public class ShapesAndTextBitmapView extends View {
 
    private Paint paint;
-   private String text;
+   private Typeface font;
+   private Bitmap bitmap;
 
-   public ShapesAndTextView(Context context) {
+   public ShapesAndTextBitmapView(Context context) {
       super(context);
-   }
-
-   public void setText(String text) {
-      this.text = text;
+      // Loading up the font
+      font = Typeface.createFromAsset(context.getAssets(), "256bytes.ttf");
+      // loading the bitmap
+      bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.copter);
    }
 
    @Override
    protected void onDraw(Canvas canvas) {
       canvas.drawRGB(0, 0, 0);
       drawShapes(canvas);
-      drawText(canvas);
+      drawBitmap(canvas);
    }
 
    private void drawShapes(Canvas canvas) {
@@ -54,9 +57,8 @@ public class ShapesAndTextView extends View {
       canvas.drawPath(triangle, paint);
    }
 
-   private void drawText(Canvas canvas) {
-      paint.setColor(Color.WHITE);
-      paint.setTextSize(48);
-      canvas.drawText(text, 60, 300, paint);
+   private void drawBitmap(Canvas canvas) {
+      paint = new Paint();
+      canvas.drawBitmap(bitmap, 0, 0, paint);
    }
 }

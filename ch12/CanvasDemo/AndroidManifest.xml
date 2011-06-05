@@ -18,6 +18,9 @@
 		<activity android:name="Canvas2DRandomShapesActivity" />
 		<activity android:name="Canvas2DRandomShapesWithAlphaActivity" />
 		<activity android:name="Canvas2DRandomShapesRedrawActivity" />
+		<activity android:name="Canvas2DShapesAndTextLHXStyleActivity" />
+		<activity android:name="Canvas2DShapesAndTextFontActivity" />
+		<activity android:name="Canvas2DShapesAndTextBitmapActivity" />
 
 	</application>
 </manifest>

@@ -8,21 +8,25 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Typeface;
 import android.view.View;
 
 /**
- * View to display an LHX type intro.
+ * View to display a true type font via Canvas.
  * 
  * @author tamas
  * 
  */
-public class ShapesAndTextView extends View {
+public class ShapesAndTextFontView extends View {
 
    private Paint paint;
+   private Typeface font;
    private String text;
 
-   public ShapesAndTextView(Context context) {
+   public ShapesAndTextFontView(Context context) {
       super(context);
+      // Loading up the font
+      font = Typeface.createFromAsset(context.getAssets(), "256bytes.ttf");
    }
 
    public void setText(String text) {
@@ -56,7 +60,8 @@ public class ShapesAndTextView extends View {
 
    private void drawText(Canvas canvas) {
       paint.setColor(Color.WHITE);
-      paint.setTextSize(48);
+      paint.setTextSize(40);
+      paint.setTypeface(font);
       canvas.drawText(text, 60, 300, paint);
    }
 }

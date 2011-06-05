@@ -26,6 +26,7 @@ public class Canvas2DRandomShapesWithAlphaActivity extends Activity {
          super(context);
       }
 
+      @Override
       protected void onDraw(Canvas canvas) {
          canvas.drawRGB(0, 0, 0);
          for (int i = 0; i < 10; i++) {
@@ -36,8 +37,8 @@ public class Canvas2DRandomShapesWithAlphaActivity extends Activity {
             canvas.drawCircle(random.nextInt(canvas.getWidth() - 30), random.nextInt(canvas.getHeight() - 30),
                      random.nextInt(30), paint);
             canvas.drawRect(random.nextInt(canvas.getWidth()), random.nextInt(canvas.getHeight()),
-                     random.nextInt(canvas.getWidth()), random.nextInt(canvas.getHeight()), paint);            
-         }         
+                     random.nextInt(canvas.getWidth()), random.nextInt(canvas.getHeight()), paint);
+         }
       }
    }
 }

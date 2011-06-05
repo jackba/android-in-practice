@@ -14,11 +14,11 @@ public class Canvas2DRandomColorFullScreenActivity extends Activity {
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);      
+      super.onCreate(savedInstanceState);
 
       requestWindowFeature(Window.FEATURE_NO_TITLE);
       getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-      
+
       setContentView(new CanvasView(this));
    }
 
