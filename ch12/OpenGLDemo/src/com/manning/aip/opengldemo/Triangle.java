@@ -17,7 +17,7 @@ public class Triangle {
 
    private FloatBuffer vertexBuffer;
    private float vertices[] = {
-            //	      0.0f,   0.0f,   0.0f,        // V1 - first vertex (x,y,z)
+            //	         0.0f,   0.0f,   0.0f,        // V1 - first vertex (x,y,z)
             //          319.0f, 0.0f,   0.0f,        // V2 - second vertex
             //          160.0f, 479.0f, 0.0f         // V3 - third vertex
             100.0f, 150.0f, 0.0f, // V1 - first vertex (x,y,z)
@@ -44,5 +44,4 @@ public class Triangle {
       // Disable the client state before leaving
       gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
    }
-
 }
