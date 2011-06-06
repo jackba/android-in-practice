@@ -5,12 +5,9 @@
 	<LinearLayout android:orientation="vertical"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:layout_margin="10dp">
-		<TextView android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_margin="8dp"
-			android:text="CanvasDemo" style="@android:style/TextAppearance.Large" />
 
 		<Button android:id="@+id/randcolor_button"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_marginTop="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:text="1. Random Color" />
 
 		<Button android:id="@+id/randcolor_fullscreen_button"
