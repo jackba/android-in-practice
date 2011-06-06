@@ -12,6 +12,10 @@
 		</activity>
 
 		<activity android:name=".OpenGLGreenScreenActivity" />
+		<activity android:name=".OpenGLTriangleActivity" />
+		<activity android:name=".OpenGLPyramidActivity" />
+		<activity android:name=".OpenGLColouredPyramidActivity" />
+		<activity android:name=".OpenGLTexturedPyramidActivity" />
 
 	</application>
 </manifest>

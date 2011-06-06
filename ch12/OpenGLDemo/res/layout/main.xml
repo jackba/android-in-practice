@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:aip="http://schemas.android.com/apk/res/com.manning.aip.canvasdemo"
+	android:layout_width="fill_parent" android:layout_height="wrap_content">
+	<LinearLayout android:orientation="vertical"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:layout_margin="10dp">
+
+		<Button android:id="@+id/greenscreen_button"
+			android:layout_marginTop="10dp" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="1. Green Screen" />
+
+		<Button android:id="@+id/triangle_button"
+			android:layout_marginTop="10dp" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="2. Triangle" />
+
+		<Button android:id="@+id/pyramid_button"
+			android:layout_marginTop="10dp" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="3. Pyramid" />
+
+		<Button android:id="@+id/colouredpyramid_button"
+			android:layout_marginTop="10dp" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="4. Coloured Pyramid" />
+
+		<Button android:id="@+id/texturedpyramid_button"
+			android:layout_marginTop="10dp" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="5. Textured Pyramid" />
+
+	</LinearLayout>
+</ScrollView>
