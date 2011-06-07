@@ -20,7 +20,7 @@ public class TexturedPyramid {
    private static final int VERTEX_SIZE = (3 + 2) * 4;
    private float vertices[] = {
 
-   0.0f, 1.0f, 0.0f, 0.5f, 0.0f, // V1 + mapping
+            0.0f, 1.0f, 0.0f, 0.5f, 0.0f, // V1 + mapping
             -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // V2
             0.0f, 0.0f, -1.0f, 1.0f, 1.0f, // V3
 
