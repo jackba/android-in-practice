@@ -16,7 +16,8 @@ import javax.microedition.khronos.opengles.GL10;
 public class Pyramid {
 
    private FloatBuffer vertexBuffer;
-   private float vertices[] = { 0.0f, 1.0f, 0.0f, // V1
+   private float vertices[] = { 
+            0.0f, 1.0f, 0.0f, // V1
             -1.0f, 0.0f, 0.0f, // V2
             0.0f, 0.0f, -1.0f, // V3
 
