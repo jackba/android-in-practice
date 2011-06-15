@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="button0">Select a Photo</string>
+    <string name="button1">Transform!</string>
+    <string name="app_name">GoodShares</string>
+    <string name="next">RPC-style</string>
+    <string name="label0">X Scale</string>
+    <string name="label1">Y Scale</string>   
+    <string name="label2">Rotation angle</string> 
+    <string name="mash">Mash It!</string>
+    <string name="sync">Sync?</string>
+</resources>

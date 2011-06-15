@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<LinearLayout android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:text="@string/button0" android:id="@+id/btn0" />
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:text="@string/sync"/>
+    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:id="@+id/syncBox" />
+    </LinearLayout>
+    <ImageView android:layout_width="match_parent" android:layout_height="wrap_content"
+      android:id="@+id/pic0" />
+
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/label0"
+      />
+      <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/input0" android:inputType="numberDecimal"
+      />  
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/label1"
+      />
+      <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/input1" android:inputType="numberDecimal"
+      />  
+    </LinearLayout>
+    
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/label2"
+      />
+      <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/input2" android:inputType="numberDecimal"
+      />  
+    </LinearLayout>    
+    
+    <Button android:layout_width="match_parent" android:layout_height="wrap_content"
+      android:id="@+id/button" android:text="@string/mash"/>
+ 
+     <ImageView android:layout_width="match_parent" android:layout_height="wrap_content"
+      android:id="@+id/image"/>
+    
+</LinearLayout>
+</ScrollView>
