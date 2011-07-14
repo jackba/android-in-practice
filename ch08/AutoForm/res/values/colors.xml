@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="app_background">#dee6ed</color>
+  <color name="header">#6f7bb0</color>
+  <color name="subheader">#b2bcdf</color>
+  <color name="module_background">#f8f8f9</color>
+  <color name="bubble_bg">#ffffff</color>
+  <color name="table_view_bg">#ffffff</color>
+  <color name="call_to_action">#f5f4b6</color>
+  <color name="background_selected">#848fcf</color>
+  <color name="white">#ffffff</color>
+  <color name="black">#000000</color>
+  <color name="dark_gray">#222222</color>
+  <color name="gray">#888888</color>
+  <color name="light_gray">#a8a8a8</color>
+  <color name="blue_text">#0000ff</color>
+  <color name="blue_title_text">#3d588a</color>
+  <color name="myinfo_edit_bg">#fffefdd9</color>
+  <color name="myinfo_card_border">#fff14b66</color>
+  <color name="photo_selected_border_color">#ffff7f24</color>
+  <color name="warming_up">#ffea8030</color>
+
+  <!--
+  Use android transparent to avoid a bug where background set to transparent shows an image instead:
+  Stack overflow here:http://stackoverflow.com/questions/3822123/weird-layout-problem-please-see-the-attached-image
+  -->
+  <color name="transparent">@android:color/transparent</color>
+</resources>
+

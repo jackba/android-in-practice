@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AutoForm</string>
+    <string name="label_enter_your_info">
+      Enter your contact info to get started
+    </string>
+    <string name="label_first_name">First name</string>
+    <string name="label_phone_number">Your phone number</string>
+    <string name="label_last_name">Last</string>
+    <string name="label_email_address">Email address</string>
+    <string name="done">Done</string>
+</resources>
