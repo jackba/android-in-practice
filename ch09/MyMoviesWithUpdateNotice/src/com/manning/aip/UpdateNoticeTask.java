@@ -31,6 +31,8 @@ public class UpdateNoticeTask extends AsyncTask<Void, Void, String> {
          connection = (HttpURLConnection) url.openConnection();
          connection.setRequestMethod("GET");
          connection.setRequestProperty("Accept", "text/plain");
+         connection.setReadTimeout(10);
+         connection.setConnectTimeout(10);
          connection.connect();
          int statusCode = connection.getResponseCode();
          if (statusCode != HttpURLConnection.HTTP_OK) {
