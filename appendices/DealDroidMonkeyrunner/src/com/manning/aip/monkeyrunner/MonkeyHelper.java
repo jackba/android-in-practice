@@ -1,11 +1,11 @@
 package com.manning.aip.monkeyrunner;
 
-import com.android.monkeyrunner.MonkeyDevice;
-import com.android.monkeyrunner.MonkeyDevice.TouchPressType;
-
 import org.python.core.PyInteger;
 import org.python.core.PyObject;
 import org.python.core.PyString;
+
+import com.android.monkeyrunner.MonkeyDevice;
+import com.android.monkeyrunner.core.TouchPressType;
 
 public class MonkeyHelper {
 
