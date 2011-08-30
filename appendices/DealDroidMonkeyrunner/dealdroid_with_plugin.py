@@ -1,6 +1,9 @@
 from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
+from com.manning.aip.monkeyrunner import MonkeyHelper
 import commands
 import sys
+
+print hello
 
 devices = commands.getoutput('adb devices').strip().split('\n')[1:]
 if len(devices) == 0:
@@ -26,20 +29,12 @@ print "Starting DealDroid..."
 device.startActivity(component='com.manning.aip.dealdroid/.DealList')
 MonkeyRunner.sleep(7)
 
-device.touch(100, 450, 'DOWN_AND_UP')
-MonkeyRunner.sleep(2)
-device.touch(100, 250, 'DOWN_AND_UP')
-MonkeyRunner.sleep(2)
-device.touch(100, 150, 'DOWN_AND_UP')
-MonkeyRunner.sleep(2)
-device.press('KEYCODE_MENU', 'DOWN_AND_UP', None)
-MonkeyRunner.sleep(1)
-device.touch(280, 450, 'DOWN_AND_UP')
-MonkeyRunner.sleep(2)
+MonkeyHelper.tap(device, 100, 450)
+MonkeyHelper.tap(device, 100, 250)
+MonkeyHelper.tap(device, 100, 150)
+MonkeyHelper.press(device, 'menu')
+MonkeyHelper.tap(device, 280, 450)
 device.type("555-13456")
-MonkeyRunner.sleep(2)
-device.press('KEYCODE_BACK', 'DOWN_AND_UP', None)
-MonkeyRunner.sleep(1)
-device.press('KEYCODE_BACK', 'DOWN_AND_UP', None)
-MonkeyRunner.sleep(1)
-device.press('KEYCODE_BACK', 'DOWN_AND_UP', None)
+MonkeyHelper.press(device, 'back')
+MonkeyHelper.press(device, 'back')
+MonkeyHelper.press(device, 'back')
