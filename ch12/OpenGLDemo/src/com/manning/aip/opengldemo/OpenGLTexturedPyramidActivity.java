@@ -44,7 +44,7 @@ public class OpenGLTexturedPyramidActivity extends Activity {
 
       @Override
       public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-         texture = BitmapFactory.decodeResource(getResources(), R.drawable.texture_brick);
+         texture = BitmapFactory.decodeResource(getResources(), R.drawable.texture);
          int textureIds[] = new int[1];
          gl.glGenTextures(1, textureIds, 0);
          gl.glBindTexture(GL10.GL_TEXTURE_2D, textureIds[0]);
