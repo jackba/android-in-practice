@@ -1,16 +1,19 @@
 package com.manning.aip.media;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -28,6 +31,8 @@ import com.manning.aip.media.AudioBrowserActivity.Song;
  */
 public class SlideshowActivity extends Activity {
 
+	private static final String LOG_TAG = "SlideshowActivity";
+	
 	private ImageView leftSlide;
 	private ImageView rightSlide;
 	private Handler handler = new Handler();
@@ -37,11 +42,19 @@ public class SlideshowActivity extends Activity {
 	private MediaController videoPlayer;
 	private VideoView video;
 	private boolean playingSlides = true;
+	private int maxEdge = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.slideshow);
+		
+		// determine screen size
+		DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		maxEdge = Math.max(metrics.widthPixels, metrics.heightPixels);
+		Log.d(LOG_TAG, "Max edge for this device = " + maxEdge);
+		
 		// create the UI
 		// this is two images in a frame being swapped in and out
 		leftSlide = (ImageView) findViewById(R.id.slide0);
@@ -125,7 +138,14 @@ public class SlideshowActivity extends Activity {
 			count = 1;
 		}
 		private Bitmap getImage(int index){
-			return BitmapFactory.decodeFile(images.get(index));
+			File file = new File(images.get(index));
+			Bitmap bmp = null;
+			try{
+				bmp = BitmapUtil.decodeDownsizedBitmapStream(file, maxEdge, SlideshowActivity.this);
+			} catch (IOException e) {
+				Log.e(LOG_TAG, "Exception loading image",e);
+			}
+			return bmp;
 		}
 		private void nextSlide() {
 			AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);

@@ -138,7 +138,7 @@ public class AudioBrowserActivity extends Activity {
 				long timeLeft = maxTime;
 				Runnable autoStop;
 				@Override
-				public void onClick(View arg0) {
+				public void onClick(View view) {
 					if (player == null){
 						player = MediaPlayer.create(activity, song.uri);
 					}
